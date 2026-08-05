@@ -6,31 +6,38 @@ function RoutePage() {
     const [train, setTrain] = useState('KTX');
     // 역(도착지) 선택
     const [selected, setSelected] = useState('선택');
+
     const handleSelect = (e) => {
         setSelected(e.target.value);
     };
 
+    const handleTrainChange = (trainType) => {
+        setTrain(trainType);
+        setSelected('선택');
+    };
+
+    // 선택한 역에 따라 '출발, 도착 선택' 조건부 랜더링
     const filterStation = stationList.filter((item) => {
         if (train === 'KTX') {
             return item.times.ktx !== null;
         }
         if (train === 'ITX') {
-            return item.times.ITX !== null;
+            return item.times.itx !== null;
         }
         if (train === '무궁화') {
             return item.times.mugunghwa !== null;
         }
     });
-    // 기차 종류를 선택했을때, 그에 따라 selectbox의 option에 다른 값을 받아와야한다.
-    // 근데? 아니지. 아 맞지 option의 내용이 달라지는거니까.
-    // 현재는 map item으로 json데이터를 연결해 city의 값으로 받아오고 있으므로,
-    // 조건에 times를 걸어서 만약에 onClick된 setTrain값에 따라 -
-    // times의 값이 있다면 해당 데이터를 받아오고, 아닐 때는 그 값을 안 받아온다!
-    // 라고 조건을 짠다면.. 선택값에 따른 option 값을 다르게 받아올 수 있을 것 같은데?
+
+    const selectedStation = filterStation.find((item) => item.city === selected);
+    const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
+
+    // 오늘 날짜 출력
+    const today = new Date();
 
     return (
         <section id="center">
-            <form onSubmit="handleSubmit">
+            <form onSubmit={(e) => e.preventDefault()}>
                 <>
                     <div>
                         <h1>focus train</h1>
@@ -45,7 +52,7 @@ function RoutePage() {
                                     className="counter"
                                     role="radio"
                                     aria-checked={train === 'KTX'}
-                                    onClick={() => setTrain('KTX')}>
+                                    onClick={() => handleTrainChange('KTX')}>
                                     KTX
                                 </button>
                             </li>
@@ -55,7 +62,7 @@ function RoutePage() {
                                     className="counter"
                                     role="radio"
                                     aria-checked={train === 'ITX'}
-                                    onClick={() => setTrain('ITX')}>
+                                    onClick={() => handleTrainChange('ITX')}>
                                     ITX
                                 </button>
                             </li>
@@ -65,14 +72,16 @@ function RoutePage() {
                                     className="counter"
                                     role="radio"
                                     aria-checked={train === '무궁화'}
-                                    onClick={() => setTrain('무궁화')}>
+                                    onClick={() => handleTrainChange('무궁화')}>
                                     무궁화
                                 </button>
                             </li>
                         </ul>
                     </div>
 
-                    {/* 출발, 도착지 선택 */}
+                    <hr></hr>
+
+                    {/* 출발, 도착 선택 */}
                     <div>
                         <div>
                             <h4>출발</h4>
@@ -82,10 +91,13 @@ function RoutePage() {
                                 </option>
                             </select>
                         </div>
-                        <button>⇔</button>
+                        <button type="button">⇔</button>
                         <div>
                             <h4>도착</h4>
                             <select onChange={handleSelect} value={selected}>
+                                <option value="선택" disabled>
+                                    선택
+                                </option>
                                 {filterStation.map((item) => {
                                     return (
                                         <option value={item.city} key={item.id}>
@@ -96,6 +108,28 @@ function RoutePage() {
                             </select>
                         </div>
                     </div>
+
+                    <hr></hr>
+
+                    {/* 도착지까지 정보 표시 */}
+                    <div>
+                        <div>
+                            <h4>날짜</h4>
+                            <div>{today.toLocaleDateString()}</div>
+                        </div>
+                        <div>
+                            <h4>소요시간</h4>
+                            {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
+                            <div>{selectedStation ? selectedStation.times[trainKey] : ''}</div>
+                        </div>
+                        <div>
+                            <h4>거리</h4>
+                            {/* 선택된 역이 있으면 거리 바로 출력 */}
+                            <div>{selectedStation ? selectedStation.distance : ''}</div>
+                        </div>
+                    </div>
+
+                    <hr></hr>
                 </>
             </form>
         </section>
