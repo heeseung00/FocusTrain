@@ -5,9 +5,9 @@ export const stationList = [
         line: '경부선',
         times: {
             // 분단위로 입력 후 나중에 ${hour}시간 ${minute}분`으로 출력
-            ktx: '25',
-            itx: '30',
-            mugunghwa: '35',
+            ktx: 25,
+            itx: 30,
+            mugunghwa: 35,
         },
         distance: '41km',
     },
@@ -16,9 +16,9 @@ export const stationList = [
         city: '부산',
         line: '경부선',
         times: {
-            ktx: '150',
-            itx: '280',
-            mugunghwa: '330',
+            ktx: 150,
+            itx: 280,
+            mugunghwa: 330,
         },
         distance: '423.9km',
     },
@@ -27,9 +27,9 @@ export const stationList = [
         city: '대구(동대구)',
         line: '경부선',
         times: {
-            ktx: '110',
-            itx: '210',
-            mugunghwa: '240',
+            ktx: 110,
+            itx: 210,
+            mugunghwa: 240,
         },
         distance: '287.9km',
     },
@@ -38,9 +38,9 @@ export const stationList = [
         city: '대전',
         line: '경부선',
         times: {
-            ktx: '60',
-            itx: '110',
-            mugunghwa: '120',
+            ktx: 60,
+            itx: 110,
+            mugunghwa: 120,
         },
         distance: '159.8km',
     },
@@ -49,7 +49,7 @@ export const stationList = [
         city: '포항',
         line: '경부선(포항 KTX)',
         times: {
-            ktx: '130',
+            ktx: 130,
             itx: null,
             mugunghwa: null,
         },
@@ -60,7 +60,7 @@ export const stationList = [
         city: '광주(광주송정역)',
         line: '호남선',
         times: {
-            ktx: '90',
+            ktx: 90,
             itx: null,
             mugunghwa: null,
         },
@@ -82,7 +82,7 @@ export const stationList = [
         city: '여수(여수엑스포)',
         line: '전라선',
         times: {
-            ktx: '180',
+            ktx: 180,
             itx: null,
             mugunghwa: null,
         },
@@ -93,7 +93,7 @@ export const stationList = [
         city: '전주',
         line: '전라선',
         times: {
-            ktx: '100',
+            ktx: 100,
             itx: null,
             mugunghwa: null,
         },
@@ -104,7 +104,7 @@ export const stationList = [
         city: '강릉',
         line: '경강선',
         times: {
-            ktx: '120',
+            ktx: 120,
             itx: null,
             mugunghwa: null,
         },
@@ -115,7 +115,7 @@ export const stationList = [
         city: '원주',
         line: '경강선',
         times: {
-            ktx: '50',
+            ktx: 50,
             itx: null,
             mugunghwa: null,
         },
@@ -126,7 +126,7 @@ export const stationList = [
         city: '천안아산',
         line: '경부선',
         times: {
-            ktx: '30',
+            ktx: 30,
             itx: null,
             mugunghwa: null,
         },
@@ -137,7 +137,7 @@ export const stationList = [
         city: '익산',
         line: '호남선',
         times: {
-            ktx: '90',
+            ktx: 90,
             itx: null,
             mugunghwa: null,
         },
@@ -148,7 +148,7 @@ export const stationList = [
         city: '순천',
         line: '전라선',
         times: {
-            ktx: '160',
+            ktx: 160,
             itx: null,
             mugunghwa: null,
         },
@@ -159,8 +159,8 @@ export const stationList = [
         city: '창원',
         line: '경전선',
         times: {
-            ktx: '180',
-            itx: '300',
+            ktx: 180,
+            itx: 300,
             mugunghwa: null,
         },
         distance: '400km',
