@@ -1,7 +1,6 @@
-
 import { stationList } from '../utils/stationList.js';
 
-function TicketPage() {
+function SeatPage() {
     return (
         <section id="center">
             <form onSubmit={(e) => e.preventDefault()}>
@@ -15,4 +14,4 @@ function TicketPage() {
     );
 }
 
-export default TicketPage;
+export default SeatPage;

@@ -32,7 +32,9 @@ function RoutePage() {
     const [focusTime, setFocusTime] = useState(0);
     // 다음 페이지 이동
     const navigate = useNavigate();
-
+    const navigateGoToSeat = () => {
+        navigate('/seat');
+    };
     const navigateGoToTicket = () => {
         navigate('/ticket');
     };
@@ -198,8 +200,11 @@ function RoutePage() {
 
                     {/* 다음 페이지 이동 */}
                     <div>
+                        <button type="submit" onClick={navigateGoToSeat}>
+                            좌석 선택
+                        </button>
                         <button type="submit" onClick={navigateGoToTicket}>
-                            예매하기
+                            바로 예매
                         </button>
                     </div>
                 </>
