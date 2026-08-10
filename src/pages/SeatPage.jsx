@@ -32,7 +32,7 @@ const SeatPage = () => {
     // 기차 호차 선택
     const handleCoachClick = (coachId) => {
         // 항상 표시
-        setActiveCoach(coachId);
+        setActiveCoach(Number(coachId));
         // // 선택 - 해제 둘 다 포함
         // setActiveCoach(activeCoach === coachId ? null : coachId);
         setSelectedSeat(null);
@@ -72,7 +72,8 @@ const SeatPage = () => {
                             key={coachId}
                             className={`coach-button ${activeCoach === Number(coachId) ? 'active' : ''}`}
                             onClick={() => handleCoachClick(coachId)}>
-                            <div className="coach-label">{coachId}호차</div>
+                            {coachId}호차
+                            {/* <div className="coach-label">{coachId}호차</div> */}
                         </div>
                     ))}
                 </div>
