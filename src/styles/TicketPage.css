@@ -1,0 +1,227 @@
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;700&display=swap");
+
+:root {
+    --bg-color: #d1cfc7;
+    --paper-color: #fcfcfb;
+    --ink-color: #1a1a1a;
+    --accent-color: #e63946;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+/* 
+.ticket-page {
+    background-color: var(--bg-color);
+    font-family: "Manrope", sans-serif;
+    color: var(--ink-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+} */
+
+.ambient-light {
+    position: absolute;
+    width: 50vw;
+    height: 50vh;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* =========================================
+   The Ticket Wrapper & Shadow Magic
+   ========================================= */
+.ticket-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    gap: 0px;
+    filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
+    transition:
+        gap 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+        transform 0.4s ease;
+    cursor: grab;
+}
+
+.ticket-container:hover {
+    gap: 24px;
+    transform: translateY(-5px) scale(1.02);
+}
+
+.ticket-container:active {
+    cursor: grabbing;
+}
+
+/* =========================================
+   Main Ticket Anatomy
+   ========================================= */
+.ticket-main {
+    position: relative;
+    width: 380px;
+    /* Increased height to contain all content */
+    height: 270px;
+    background: var(--paper-color);
+    padding: 32px;
+    border-radius: 24px 36px 36px 24px;
+
+    @supports (corner-shape: bevel) {
+        corner-shape: squircle scoop scoop squircle;
+    }
+}
+
+.ticket-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+}
+
+.serial {
+    color: var(--accent-color);
+}
+
+.title {
+    font-family: "Cinzel", serif;
+    font-size: 2.8rem;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin: 16px 0 8px;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: #666;
+}
+
+.ticket-footer {
+    display: flex;
+    gap: 40px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 16px;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.info-block .label {
+    font-size: 0.65rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.info-block .value {
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.perforation-line {
+    position: absolute;
+    right: -2px;
+    top: 40px;
+    bottom: 40px;
+    width: 4px;
+    background-image: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 12px;
+    transition: opacity 0.3s ease;
+}
+
+.ticket-container:hover .perforation-line {
+    opacity: 0;
+}
+
+/* =========================================
+   The Tear-Away Stub
+   ========================================= */
+.ticket-stub {
+    position: relative;
+    width: 140px;
+    /* Matched height with main ticket */
+    height: 270px;
+    background: var(--paper-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Changed to center with a gap to prevent squishing */
+    justify-content: center;
+    gap: 28px;
+    padding: 32px 0;
+    border-radius: 36px 24px 24px 36px;
+
+    @supports (corner-shape: bevel) {
+        corner-shape: scoop squircle squircle scoop;
+    }
+}
+
+/* =========================================
+   The Holographic Star Seal 
+   ========================================= */
+.foil-seal {
+    /* Added min-height/width to prevent flexbox from crushing it */
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 50%;
+
+    @supports (corner-shape: bevel) {
+        corner-shape: notch;
+    }
+
+    background: linear-gradient(135deg, #e0e0e0, #ffffff 40%, #a8a8a8 60%, #e0e0e0);
+    background-size: 200% 200%;
+    animation: shimmer 3s infinite linear;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* Procedural Barcode - Fixed to draw vertically without transforms */
+.barcode {
+    width: 40px;
+    height: 90px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--ink-color),
+        var(--ink-color) 2px,
+        transparent 2px,
+        transparent 4px,
+        var(--ink-color) 4px,
+        var(--ink-color) 5px,
+        transparent 5px,
+        transparent 8px
+    );
+    opacity: 0.8;
+}
+
+.stub-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: var(--accent-color);
+}
