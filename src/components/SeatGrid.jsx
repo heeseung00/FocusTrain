@@ -1,4 +1,6 @@
-function SeatGrid({ seats, activeCoach, selectedSeat, onSeatClick }) {
+import React from 'react';
+
+function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
         <div className="coach">
             <h2>Coach {activeCoach}</h2>
@@ -47,6 +49,17 @@ function SeatGrid({ seats, activeCoach, selectedSeat, onSeatClick }) {
                     </div>
                 );
             })}
+        </div>
+    );
+}
+
+// 좌석 상태와 클릭 효과
+function Seat({ seatType, seat, selected, onClick }) {
+    const isBooked = Boolean(seat);
+
+    return (
+        <div className={`seat-box ${selected ? 'selected' : ''}`} onClick={onClick}>
+            {seatType}
         </div>
     );
 }

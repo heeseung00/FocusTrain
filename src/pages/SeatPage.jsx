@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/SeatPage.css';
+import SeatGrid from '../components/SeatGrid.jsx';
 
 // https://github.com/Sanskar-Bhushankar/Trainbooking-React-DSA/blob/master/src/styles/TrainBooking.css
 
@@ -85,7 +86,7 @@ const SeatPage = () => {
                     seats={seats}
                     activeCoach={activeCoach}
                     selectedSeat={selectedSeat}
-                    onSeatClick={onSeatClick}
+                    handleSeatClick={handleSeatClick}
                 />
             )}
 
