@@ -42,13 +42,20 @@
     display: flex;
     gap: 0px;
     filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.05));
+    /*자연스럽게 애니메이션 효과 */
     transition:
         gap 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
         transform 0.4s ease;
-    cursor: grab;
+    /* cursor: grab; */
+    cursor: pointer;
 }
 
-.ticket-container:hover {
+/* 티켓 호버시 gap으로 좌우 갈라지기 */
+/* .ticket-container:hover {
+    gap: 24px;
+    transform: translateY(-5px) scale(1.02);
+} */
+.ticket-container.opened {
     gap: 24px;
     transform: translateY(-5px) scale(1.02);
 }
@@ -140,6 +147,7 @@
     font-weight: 700;
 }
 
+/* 티켓 절취선 */
 .perforation-line {
     position: absolute;
     right: -2px;
@@ -151,9 +159,12 @@
     transition: opacity 0.3s ease;
 }
 
-.ticket-container:hover .perforation-line {
+.ticket-container.opened .perforation-line {
     opacity: 0;
 }
+/* .ticket-container:hover .perforation-line {
+    opacity: 0;
+} */
 
 /* =========================================
    The Tear-Away Stub
@@ -245,8 +256,3 @@
         rotate: -90deg;
     }
 }
-/* 
-.barcode-num {
-    place-self: center;
-}
-    */
