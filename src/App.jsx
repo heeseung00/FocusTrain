@@ -7,6 +7,7 @@ import RoutePage from './pages/RoutePage.jsx';
 import SeatPage from './pages/SeatPage.jsx';
 import TicketPage from './pages/TicketPage.jsx';
 import TimerPage from './pages/TimerPage.jsx';
+import ResultPage from './pages/ResultPage.jsx';
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                             <Route path="/seat" element={<SeatPage />}></Route>
                             <Route path="/ticket" element={<TicketPage />}></Route>
                             <Route path="/timer" element={<TimerPage />}></Route>
+                            <Route path="/result" element={<ResultPage />}></Route>
                             {/* <Route path="*" element={<Navigate to="/" />} /> */}
                         </Routes>
                     </section>
