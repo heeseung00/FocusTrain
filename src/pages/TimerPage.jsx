@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
-
+import ProgressBarModule from '@ramonak/react-progress-bar';
+const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
 // 짧은 효과음 사용을 위한 react hook
 import useSound from 'use-sound';
 // import './pomodoroMain.css';
@@ -69,10 +70,10 @@ function TimerPage() {
     } = useTrip();
 
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
-
     const selectedStation = stationList.find((item) => item.city === selected);
-
     const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
+    // 이동시간에 따른 휴식 횟수 (중간 정차역)
+    const restCount = travelTime >= 20 ? Math.floor(travelTime / 20) : 0;
 
     const [initialtimer, setinitalTimer] = useState({
         focusetime: travelTime,
@@ -80,10 +81,28 @@ function TimerPage() {
         sections: 4,
     });
 
+    // const [isPaused, setIsPaused] = useState(false);
+    const [timerState, setTimerState] = useState(true);
+    const [currentSlide, setCurrentSlide] = useState(0);
+
     return (
         <section id="center">
             <div className="pomodoroMainText">
-                <h1>뽀모도로 타이머</h1>
+                <h1>FOCUS TRIP</h1>
+                <ProgressTimer
+                    travelTime={travelTime}
+                    isPaused={!timerState}
+                    resetTrigger={currentSlide}
+                    onComplete={() => {
+                        if (swiperRef.current && swiperRef.current.activeIndex < reviews.length - 1) {
+                            // 5초 카운트 완료 후 다음 슬라이드 이동
+                            swiperRef.current.slideNext();
+                        } else {
+                            // 마지막 슬라이드
+                            navigate(-1);
+                        }
+                    }}
+                />
             </div>
             <div className="pomodoroTimerSet">
                 <p>Timer Set</p>
@@ -91,7 +110,7 @@ function TimerPage() {
             <div className="pomodoroTimerSetList">
                 <PomodoroTimerSettings initialtimer={initialtimer} setinitalTimer={setinitalTimer} />
             </div>
-            <PomodoroMain timerValue={initialtimer} />
+            <PomodoroMain timerValue={initialtimer} timerState={timerState} setTimerState={setTimerState} />
         </section>
     );
 
@@ -147,12 +166,12 @@ function TimerPage() {
     }
 
     // 타이머가 보여지는 부분: PomodoroMain
-    function PomodoroMain({ timerValue }) {
+    function PomodoroMain({ timerValue, timerState, setTimerState }) {
         const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusetime) * 60);
         // const [hours, sethours] = useState(parseInt(timerValue.focusetime));
         // const [minutes, setMinutes] = useState(parseInt(timerValue.focusetime));
         // const [seconds, setSeconds] = useState(parseInt(0));
-        const [timerState, setTimerState] = useState(false);
+        // const [timerState, setTimerState] = useState(false);
         const [timerReset, setTimerReset] = useState(false);
         const [timerList, setTimerList] = useState('focus');
         const [pomodoroTerms, setPomodoroTerms] = useState(0);
@@ -191,6 +210,11 @@ function TimerPage() {
             handleTimerStop();
             setTimerList(timerlist);
         };
+
+        // 페이지가 로드 될 때 타이머 바로 start 실행
+        useEffect(() => {
+            handleTimerStart();
+        }, []);
 
         useEffect(() => {
             setTotalSeconds(parseInt(timerValue.focusetime) * 60);
@@ -300,11 +324,13 @@ function TimerPage() {
                                 <img src={playIcon} alt="play" width={20} height={20} onClick={handleTimerStart}></img>
                                 <img src={pauseIcon} width={20} height={20} onClick={handleTimerStop}></img>
                                 <img src={resetIcon} width={20} height={20} onClick={handleTimerReset}></img> */}
-                                <button onClick={handleTimerStart}>재생</button>
-                                <button onClick={handleTimerStop}>정지</button>
-                                <button onClick={handleTimerReset}>다시</button>
+                                <button onClick={handleTimerStart}>▶재생 </button>
+                                <button onClick={handleTimerStop}>❚❚정지 </button>
+                                <button onClick={handleTimerReset}>⭮다시 </button>
+                                {/* <button onClick={handleTimerReset}>종료</button> */}
                             </div>
                         </div>
+                        <div className="pomodoroStation">정차역{restCount}개</div>
                     </div>
                 </div>
                 <div className="termList">
@@ -313,6 +339,61 @@ function TimerPage() {
                     ))}
                 </div>
             </div>
+        );
+    }
+
+    // 전체시간을 100% 라고 할 때 전체 소요시간에서 남은 시간을 계산하고
+    // 그걸 현재 progress 기차 위치로 지정한다.
+    function ProgressTimer({ travelTime, isPaused }) {
+        const [progress, setProgress] = useState(0);
+
+        const startTimeRef = useRef(null);
+        const elapsedRef = useRef(0);
+
+        useEffect(() => {
+            if (isPaused) return;
+
+            const totalTime = travelTime * 60 * 1000;
+            if (!totalTime) return;
+
+            if (startTimeRef.current === null) {
+                startTimeRef.current = Date.now();
+            }
+
+            const updateProgress = () => {
+                const currentTime = Date.now();
+
+                const elapsed = elapsedRef.current + (currentTime - startTimeRef.current);
+                const percent = Math.min((elapsed / totalTime) * 100, 100);
+
+                setProgress(percent);
+
+                if (percent >= 100) {
+                    return;
+                }
+            };
+
+            updateProgress();
+
+            const timer = setInterval(updateProgress, 1000);
+
+            return () => {
+                elapsedRef.current += Date.now() - startTimeRef.current;
+
+                // startTimeRef.current = null;
+
+                clearInterval(timer);
+            };
+        }, [travelTime, isPaused]);
+
+        return (
+            <ProgressBar
+                completed={progress}
+                height="8px"
+                width="100%"
+                isLabelVisible={false}
+                animateOnRender={false}
+            />
         );
     }
 }

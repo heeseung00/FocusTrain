@@ -165,6 +165,18 @@ export const stationList = [
         },
         distance: '400km',
     },
+     {
+        id: 16,
+        city: '임시데이터',
+        line: '경부선',
+        times: {
+            // 분단위로 입력 후 나중에 ${hour}시간 ${minute}분`으로 출력
+            ktx: 1,
+            itx: 1,
+            mugunghwa: 1,
+        },
+        distance: '41km',
+    },
 ];
 
 export default stationList;
