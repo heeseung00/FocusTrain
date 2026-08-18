@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
 import ProgressBarModule from '@ramonak/react-progress-bar';
@@ -79,7 +80,7 @@ function TimerPage() {
     const [initialtimer, setinitalTimer] = useState({
         focusTime: travelTime,
         shortbreak: 5,
-        sections: 4,
+        // sections: 4,
     });
 
     const [isPaused, setIsPaused] = useState(false);
@@ -131,13 +132,13 @@ function TimerPage() {
     function PomodoroTimerSettings({ initialtimer, setinitalTimer }) {
         const [focusTimer, setFocusTimer] = useState(initialtimer.focusTime);
         const [shortBreak, setShortBreak] = useState(initialtimer.shortbreak);
-        const [sectionsTerms, setSectionsTerms] = useState(initialtimer.sections);
+        // const [sectionsTerms, setSectionsTerms] = useState(initialtimer.sections);
 
         const handleTimerSave = () => {
             setinitalTimer({
                 focusTime: Number(focusTimer),
                 shortbreak: Number(shortBreak),
-                sections: Number(sectionsTerms),
+                // sections: Number(sectionsTerms),
             });
         };
         return (
@@ -158,19 +159,6 @@ function TimerPage() {
                         <option value={15}>15 min</option>
                     </select>
                 </div>
-                <div className="TimerSetting">
-                    <p>term</p>
-                    <select
-                        name="sections"
-                        className="selectlist"
-                        defaultValue={4}
-                        onChange={(e) => setSectionsTerms(e.target.value)}>
-                        <option value={3}>3 term</option>
-                        <option value={4}>4 term</option>
-                        <option value={5}>5 term</option>
-                        <option value={6}>6 term</option>
-                    </select>
-                </div>
                 <button className="saveButton" onClick={handleTimerSave}>
                     save
                 </button>
@@ -185,12 +173,13 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
     const timeminute = parseInt(timerValue.focusTime);
-    const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
+    // const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
 
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
+    const navigate = useNavigate();
     // // 임시 주석 - 소리재생: 타이머 시작할때 시작, 종료음을 위한 코드
     // const [soundPlay] = useSound(focusSound);
     // const [breakSoundPlay] = useSound(breakSound);
@@ -204,7 +193,12 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
         setTimerState(false);
     };
 
-    // 재생 - 일시정지 토글
+    // 종료 버튼 클릭시 결과 화면으로 이동
+    const handleTimerEnd = () => {
+        navigate('/result');
+    };
+
+    // 재생 - 일시정지 토글 버튼
     const handleTimerToggle = () => {
         if (timerState) {
             handleTimerStop();
@@ -226,11 +220,6 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
     }, []);
 
     useEffect(() => {
-        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
-        setTermArray(new Array(timerValue.sections).fill('○'));
-    }, [timerValue]);
-
-    useEffect(() => {
         if (!timerState) return;
 
         const countdown = setInterval(() => {
@@ -245,7 +234,15 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
         }, 1000);
 
         return () => clearInterval(countdown);
-    }, [timerState, timerValue, pomodoroTerms]);
+    }, [timerState, timerValue]);
+
+    useEffect(() => {
+        if (totalSeconds === 0) {
+            setTimerState(false);
+
+            navigate('/result');
+        }
+    }, [totalSeconds, navigate, setTimerState]);
 
     return (
         <div className="pomodoroMain">
@@ -270,15 +267,11 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
                                 <img src={resetIcon} width={20} height={20} onClick={handleTimerReset}></img> */}
                             <button onClick={handleTimerToggle}>{timerState ? '❚❚일시정지' : '▶재생'}</button>
                             <button onClick={handleTimerReset}>⭮다시 </button>
+                            <button onClick={handleTimerEnd}>■종료 </button>
                         </div>
                     </div>
                     <div className="pomodoroStation">정차역{restCount}개</div>
                 </div>
-            </div>
-            <div className="termList">
-                {termArray.map((term, index) => (
-                    <span key={index}>{term}</span>
-                ))}
             </div>
         </div>
     );
