@@ -77,7 +77,7 @@ function TimerPage() {
     const restCount = travelTime >= 20 ? Math.floor(travelTime / 20) : 0;
 
     const [initialtimer, setinitalTimer] = useState({
-        focusetime: travelTime,
+        focusTime: travelTime,
         shortbreak: 5,
         sections: 4,
     });
@@ -95,7 +95,7 @@ function TimerPage() {
                     {/*
                 // progress바 기존 위치 -  ProgressTimer안으로 위치변경
                 <ProgressTimer
-                    totalTime={timerValue.focusetime * 60}
+                    totalTime={timerValue.focusTime * 60}
                     remainingTime={totalSeconds}
                     // onComplete={() => {
                     //     if (swiperRef.current && swiperRef.current.activeIndex < reviews.length - 1) {
@@ -122,19 +122,20 @@ function TimerPage() {
                 restCount={restCount}
                 departure={departure}
                 selectedStation={selectedStation}
+                focusTime={focusTime}
             />
         </>
     );
 
     // 타이머 세팅: PomodoroTimerSettings
     function PomodoroTimerSettings({ initialtimer, setinitalTimer }) {
-        const [focuseTimer, setFocuseTimer] = useState(initialtimer.focusetime);
+        const [focusTimer, setFocusTimer] = useState(initialtimer.focusTime);
         const [shortBreak, setShortBreak] = useState(initialtimer.shortbreak);
         const [sectionsTerms, setSectionsTerms] = useState(initialtimer.sections);
 
         const handleTimerSave = () => {
             setinitalTimer({
-                focusetime: Number(focuseTimer),
+                focusTime: Number(focusTimer),
                 shortbreak: Number(shortBreak),
                 sections: Number(sectionsTerms),
             });
@@ -143,7 +144,7 @@ function TimerPage() {
             <div className="setting">
                 <div className="TimerSetting">
                     <p>focus time</p>
-                    <select name="focusetimer" className="selectlist" onChange={(e) => setFocuseTimer(e.target.value)}>
+                    <select name="focusTimer" className="selectlist" onChange={(e) => setFocusTimer(e.target.value)}>
                         <option value={20}>20 min</option>
                         <option value={25}>25 min</option>
                         <option value={30}>30 min</option>
@@ -179,11 +180,11 @@ function TimerPage() {
 }
 
 // 타이머가 보여지는 부분: PomodoroMain
-function PomodoroMain({ timerValue, timerState, setTimerState, restCount, departure, selectedStation }) {
-    const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusetime) * 60);
+function PomodoroMain({ timerValue, timerState, setTimerState, restCount, departure, selectedStation, focusTime }) {
+    const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
-    const timeminute = parseInt(timerValue.focusetime);
+    const timeminute = parseInt(timerValue.focusTime);
     const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
 
     const hours = Math.floor(totalSeconds / 3600);
@@ -212,7 +213,7 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
         }
     };
     const handleTimerReset = () => {
-        setTotalSeconds(parseInt(timerValue.focusetime) * 60);
+        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
         setTimerState(false);
     };
     const handleTimerSet = (minutes) => {
@@ -225,7 +226,7 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
     }, []);
 
     useEffect(() => {
-        setTotalSeconds(parseInt(timerValue.focusetime) * 60);
+        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
         setTermArray(new Array(timerValue.sections).fill('○'));
     }, [timerValue]);
 
@@ -249,7 +250,7 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
     return (
         <div className="pomodoroMain">
             <ProgressTimer
-                totalTime={parseInt(timerValue.focusetime) * 60}
+                totalTime={parseInt(timerValue.focusTime) * 60}
                 remainingTime={totalSeconds}
                 departure={departure}
                 selectedStation={selectedStation}
