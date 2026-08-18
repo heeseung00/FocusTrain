@@ -249,8 +249,10 @@ function PomodoroMain({
     useEffect(() => {
         if (totalSeconds === 0) {
             setTimerState(false);
-
-            navigate('/result');
+            // 100%까지 완전히 도달하는게 보인 후 다음 페이지로 이동 되도록.
+            setTimeout(() => {
+                navigate('/result');
+            }, 1000);
         }
     }, [totalSeconds, navigate, setTimerState]);
 
@@ -296,12 +298,20 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
     return (
         <div className="progress-bar">
             <div>{departure}</div>
+            <div className="progress-track">
+                <div className="train" style={{ left: `${percent}%`, transition: 'left 1s linear' }}>
+                    🚂
+                    {/* <img src={trainImage} alt="train" /> */}
+                </div>
+            </div>
             <ProgressBar
-                completed={Math.min(progress, 100)}
+                completed={percent}
                 height="8px"
                 width="100%"
                 isLabelVisible={false}
                 animateOnRender={false}
+                transitionDuration="1s"
+                transitionTimingFunction="linear"
             />
             <div className="percent">{percentResult}%</div>
             <div>{selectedStation?.city}</div>
