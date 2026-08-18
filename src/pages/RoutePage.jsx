@@ -33,6 +33,8 @@ function RoutePage() {
         setIsToggleOn,
         focusTime,
         setFocusTime,
+        departure,
+        setDeparture,
         seats,
         setActiveCoach,
         setSelectedSeat,
@@ -183,8 +185,8 @@ function RoutePage() {
                     <div>
                         <div>
                             <h4>출발지</h4>
-                            <select value="서울" disabled>
-                                <option value="서울">서울</option>
+                            <select value="departure" disabled>
+                                <option value="departure">{departure}</option>
                             </select>
                         </div>
                         <button type="button">⇔</button>

@@ -225,3 +225,8 @@ button[aria-checked="false"] {
   border: 1px solid #333;
   cursor: pointer;
 }
+
+/* 타이머 프로그래스 바 */
+/* .progress-bar {
+  display: flex;
+} */
