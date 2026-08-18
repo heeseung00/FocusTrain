@@ -124,6 +124,7 @@ function TimerPage() {
                 departure={departure}
                 selectedStation={selectedStation}
                 focusTime={focusTime}
+                isToggleOn={isToggleOn}
             />
         </>
     );
@@ -168,7 +169,16 @@ function TimerPage() {
 }
 
 // 타이머가 보여지는 부분: PomodoroMain
-function PomodoroMain({ timerValue, timerState, setTimerState, restCount, departure, selectedStation, focusTime }) {
+function PomodoroMain({
+    timerValue,
+    timerState,
+    setTimerState,
+    restCount,
+    departure,
+    selectedStation,
+    focusTime,
+    isToggleOn,
+}) {
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
@@ -270,7 +280,7 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
                             <button onClick={handleTimerEnd}>■종료 </button>
                         </div>
                     </div>
-                    <div className="pomodoroStation">정차역{restCount}개</div>
+                    <div className="pomodoroStation">{isToggleOn ? `정차역${restCount}개` : null}</div>
                 </div>
             </div>
         </div>
