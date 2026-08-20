@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { TripProvider, useTrip } from './context/TripContext.jsx';
+
 import './App.css';
 // import { stationList } from './utils/stationList.js';
-import { TripProvider } from './context/TripContext.jsx';
 import RoutePage from './pages/RoutePage.jsx';
 import SeatPage from './pages/SeatPage.jsx';
 import TicketPage from './pages/TicketPage.jsx';
@@ -14,19 +15,37 @@ function App() {
         <>
             <TripProvider>
                 <BrowserRouter>
-                    {/* <Header /> */}
-                    <section id="center">
-                        <Routes>
-                            <Route path="/" element={<RoutePage />}></Route>
-                            <Route path="/seat" element={<SeatPage />}></Route>
-                            <Route path="/ticket" element={<TicketPage />}></Route>
-                            <Route path="/timer" element={<TimerPage />}></Route>
-                            <Route path="/result" element={<ResultPage />}></Route>
-                            {/* <Route path="*" element={<Navigate to="/" />} /> */}
-                        </Routes>
-                    </section>
+                    <AppRoutes />
                 </BrowserRouter>
             </TripProvider>
+        </>
+    );
+}
+
+function AppRoutes() {
+    const { train, selected, departure } = useTrip();
+    return (
+        <>
+            {/* <Header /> */}
+            <section id="center">
+                <Routes>
+                    <Route path="/" element={<RoutePage />}></Route>
+                    <Route
+                        path="/seat"
+                        element={train && selected ? <SeatPage /> : <Navigate to="/" replace />}></Route>
+                    <Route
+                        path="/ticket"
+                        element={train && selected && departure ? <TicketPage /> : <Navigate to="/" replace />}></Route>
+                    <Route
+                        path="/timer"
+                        element={train && selected && departure ? <TimerPage /> : <Navigate to="/" replace />}></Route>
+                    <Route
+                        path="/result"
+                        element={train && selected && departure ? <ResultPage /> : <Navigate to="/" replace />}></Route>
+                    {/* <Route path="*" element={<Navigate to="/" />} /> */}
+                </Routes>
+            </section>
+            ;
         </>
     );
 }

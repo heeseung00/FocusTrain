@@ -32,6 +32,8 @@ function ResultPage() {
         setResultPercent,
         elapsed,
         setElapsed,
+
+        resetTrip,
     } = useTrip();
 
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
@@ -57,6 +59,8 @@ function ResultPage() {
     const navigate = useNavigate();
     // 처음으로 돌아가기 버튼
     const navigateGoToFirst = () => {
+        // 공통 context 초기화
+        resetTrip();
         navigate('/');
     };
 
