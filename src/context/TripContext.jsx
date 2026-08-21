@@ -1,7 +1,7 @@
 import { Children, createContext, useContext, useState } from 'react';
 import { stationList } from '../utils/stationList.js';
 
-const TripContext = createContext();
+const TripContext = createContext(null);
 
 export function TripProvider({ children }) {
     //  ---- 선택 상태 (역 선택)----
@@ -48,8 +48,8 @@ export function TripProvider({ children }) {
     const resetTrip = () => {
         setTrain('KTX');
         setSelected('선택');
-        setIsToggleOn('true');
-        setFocusTime('0');
+        setIsToggleOn(true);
+        setFocusTime(0);
 
         setDeparture('서울');
         setSeats({
