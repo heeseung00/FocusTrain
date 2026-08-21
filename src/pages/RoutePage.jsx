@@ -1,25 +1,10 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { stationList } from '../utils/stationList.js';
+import { formatTime } from '../utils/time.js';
+import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { useTrip } from '../context/TripContext.jsx';
 // import styled from 'styled-components';
-
-// 전역 사용을 위해 위치 조정
-// 이동시간의 숫자를 시간-분 형태로 출력
-export function formatTime(minutes) {
-    const hour = Math.floor(minutes / 60);
-    const minute = minutes % 60;
-
-    if (hour === 0) {
-        return `${minute}분`;
-    }
-
-    if (minute === 0) {
-        return `${hour}시간`;
-    }
-
-    return `${hour}시간 ${minute}분`;
-}
 
 // 열차, 출발역, 도착역, 시간 선택
 function RoutePage() {
@@ -41,8 +26,8 @@ function RoutePage() {
     } = useTrip();
 
     //  ---- 선택에서 파생되는 값들 ----
-    // 선택한 역에 따라 '출발, 도착'선택 조건부 랜더링
-    const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
+    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
+    // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
     const filterStation = stationList.filter((item) => {
         if (train === 'KTX') {
             return item.times.ktx !== null;
@@ -54,12 +39,6 @@ function RoutePage() {
             return item.times.mugunghwa !== null;
         }
     });
-    // 역이 선택되었을 때 조건 걸기
-    const selectedStation = filterStation.find((item) => item.city === selected);
-    // 선택한 역의 이동시간
-    const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
-    // 이동시간에 따른 휴식 횟수 (중간 정차역)
-    const restCount = travelTime >= 20 ? Math.floor(travelTime / 20) : 0;
 
     // 다음 페이지 이동
     const navigate = useNavigate();
@@ -217,17 +196,6 @@ function RoutePage() {
                             {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
                             <div>{selectedStation ? formatTime(travelTime) : ''}</div>
                         </div>
-                        <>
-                            {' '}
-                            {/* <div>
-                                <h4>날짜</h4>
-                                <div>{today.toLocaleDateString()}</div>
-                            </div>
-                            <div>
-                                <h4>거리</h4>
-                                <div>{selectedStation ? selectedStation.distance : ''}</div>
-                            </div> */}
-                        </>
                     </div>
 
                     <hr></hr>
@@ -241,7 +209,10 @@ function RoutePage() {
                                 <div className="toggleWrap">
                                     <div
                                         className={`toggle ${isToggleOn ? 'toggle--on' : ''}`}
-                                        onClick={() => setIsToggleOn(!isToggleOn)}>
+                                        onClick={() => {
+                                            console.log('토글 클릭 전:', isToggleOn);
+                                            setIsToggleOn(!isToggleOn);
+                                        }}>
                                         <div className="toggle__button"></div>
                                     </div>
                                 </div>

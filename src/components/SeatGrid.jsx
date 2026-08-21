@@ -1,6 +1,3 @@
-import React from 'react';
-import { stationList } from '../utils/stationList.js';
-
 function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
         <div className="coach">

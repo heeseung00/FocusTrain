@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
+import { getTrainInfo } from '../utils/getTrainInfo.js';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
 // 짧은 효과음 사용을 위한 react hook
@@ -13,73 +14,23 @@ import useSound from 'use-sound';
 // import focusSound from './alarm/focus.mp3';
 // import breakSound from './alarm/break.mp3';
 
-// 참고: https:coding-god-life.tistory.com/129
-
-// ┌─────────────────────────────────────┐
-// │                                     │
-// │             FOCUS TRIP              │
-// │                                     │
-// │                                     │
-// │                24:37                │
-// │               집중 중               │
-// │                                     │
-// │        ━━━━━━━━━━━━━━━━━             │
-// │                 62%                 │
-// │                                     │
-// │                                     │
-// │      🚉 대전              대구 🚉    │
-// │       ●━━━━━━━━🚂━━━━━━━━●          │
-// │                                     │
-// │              다음 정차역             │
-// │                 대구역              │
-// │                                     │
-// │             정차까지 12:34           │
-// │                                     │
-// │                                     │
-// │        [ Ⅱ 멈춤 ]   [ ■ 종료 ]      │
-// │                                     │
-// │                                     │
-// │             정차역 14개 ˅            │
-// │                                     │
-// └─────────────────────────────────────┘
-
-// ┌──────────────────────────┐
-// │                          │
-// │      여행을 종료할까요?   │
-// │                          │
-// │      현재 집중 시간       │
-// │         24분 37초         │
-// │                          │
-// │   [ 계속하기 ] [ 종료 ]   │
-// │                          │
-// └──────────────────────────┘
 
 function TimerPage() {
     // ---- 선택 상태 ----
     const {
         train,
-        setTrain,
         selected,
-        setSelected,
         isToggleOn,
-        setIsToggleOn,
         focusTime,
-        setFocusTime,
         departure,
-        seats,
         setActiveCoach,
         setSelectedSeat,
         totalTime,
-        remainingTime,
         elapsed,
         setElapsed,
     } = useTrip();
 
-    const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
-    const selectedStation = stationList.find((item) => item.city === selected);
-    const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
-    // 이동시간에 따른 휴식 횟수 (중간 정차역)
-    const restCount = travelTime >= 20 ? Math.floor(travelTime / 20) : 0;
+    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
 
     const [initialtimer, setinitalTimer] = useState({
         focusTime: travelTime,
@@ -196,7 +147,9 @@ function PomodoroMain({
 
     // 타이머 경과시간 표시
     const currentElapsed = totalSecondsTime - totalSeconds;
-    setElapsed(currentElapsed);
+    useEffect(() => {
+        setElapsed(currentElapsed);
+    }, [currentElapsed, setElapsed]);
 
     const navigate = useNavigate();
     // // 임시 주석 - 소리재생: 타이머 시작할때 시작, 종료음을 위한 코드

@@ -1,7 +1,6 @@
-import { Children, createContext, useContext, useState } from 'react';
-import { stationList } from '../utils/stationList.js';
+import { createContext, useContext, useState } from 'react';
 
-const TripContext = createContext(null);
+const TripContext = createContext();
 
 export function TripProvider({ children }) {
     //  ---- 선택 상태 (역 선택)----
@@ -63,8 +62,6 @@ export function TripProvider({ children }) {
         setSelectedSeat(null);
         setElapsed(0);
         setResultPercent(0);
-
-        console.log('reset 실행 - activeCoach = 1');
     };
 
     return (
