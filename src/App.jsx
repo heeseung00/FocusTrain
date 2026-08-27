@@ -27,7 +27,7 @@ function AppRoutes() {
     return (
         <>
             {/* <Header /> */}
-            <section id="center">
+            <section id="warpper">
                 <Routes>
                     <Route path="/" element={<RoutePage />}></Route>
                     <Route

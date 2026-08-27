@@ -14,7 +14,6 @@ import useSound from 'use-sound';
 // import focusSound from './alarm/focus.mp3';
 // import breakSound from './alarm/break.mp3';
 
-
 function TimerPage() {
     // ---- 선택 상태 ----
     const {
@@ -51,9 +50,6 @@ function TimerPage() {
             <div className="pomodoroTimerSet">
                 <p>Timer Set</p>
             </div>
-            <div className="pomodoroTimerSetList">
-                <PomodoroTimerSettings initialtimer={initialtimer} setinitalTimer={setinitalTimer} />
-            </div>
             <PomodoroMain
                 timerValue={initialtimer}
                 timerState={timerState}
@@ -65,48 +61,9 @@ function TimerPage() {
                 isToggleOn={isToggleOn}
                 elapsed={elapsed}
                 setElapsed={setElapsed}
-                // totalTime={totalTime}
-                // remainingTime={remainingTime}
             />
         </>
     );
-
-    // 타이머 세팅: PomodoroTimerSettings
-    function PomodoroTimerSettings({ initialtimer, setinitalTimer }) {
-        const [focusTimer, setFocusTimer] = useState(initialtimer.focusTime);
-        const [shortBreak, setShortBreak] = useState(initialtimer.shortbreak);
-        // const [sectionsTerms, setSectionsTerms] = useState(initialtimer.sections);
-
-        const handleTimerSave = () => {
-            setinitalTimer({
-                focusTime: Number(focusTimer),
-                shortbreak: Number(shortBreak),
-            });
-        };
-        return (
-            <div className="setting">
-                <div className="TimerSetting">
-                    <p>focus time</p>
-                    <select name="focusTimer" className="selectlist" onChange={(e) => setFocusTimer(e.target.value)}>
-                        <option value={20}>20 min</option>
-                        <option value={25}>25 min</option>
-                        <option value={30}>30 min</option>
-                    </select>
-                </div>
-                <div className="TimerSetting">
-                    <p>break time</p>
-                    <select name="shortbreak" className="selectlist" onChange={(e) => setShortBreak(e.target.value)}>
-                        <option value={5}>5 min</option>
-                        <option value={10}>10 min</option>
-                        <option value={15}>15 min</option>
-                    </select>
-                </div>
-                <button className="saveButton" onClick={handleTimerSave}>
-                    save
-                </button>
-            </div>
-        );
-    }
 }
 
 // 타이머가 보여지는 부분: PomodoroMain
