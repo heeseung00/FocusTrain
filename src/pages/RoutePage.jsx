@@ -69,6 +69,16 @@ function RoutePage() {
         setSelected(e.target.value);
     };
 
+    // 도착지(역)이 선택되지 않으면 다음 페이지로 이동할 수 없게 처리
+    const handleNextPage = (navigate) => {
+        if (!selectedStation) {
+            alert('도착지를 선택해주세요.');
+            return;
+        }
+
+        navigate();
+    };
+
     //  ---- 기타 효과 ----
     useEffect(() => {
         setFocusTime(travelTime);
@@ -123,14 +133,14 @@ function RoutePage() {
                     {/* 출발, 도착 선택 */}
                     <div>
                         <div>
-                            <h4>출발</h4>
+                            <h4>출발지</h4>
                             <select value="서울" disabled>
                                 <option value="서울">서울</option>
                             </select>
                         </div>
                         <button type="button">⇔</button>
                         <div>
-                            <h4>도착</h4>
+                            <h4>도착지</h4>
                             <select onChange={handleSelect} value={selected}>
                                 <option value="선택" disabled>
                                     선택
@@ -200,10 +210,11 @@ function RoutePage() {
 
                     {/* 다음 페이지 이동 */}
                     <div>
-                        <button type="submit" onClick={navigateGoToSeat}>
+                        {/* <button type="submit" onClick={navigateGoToSeat}> */}
+                        <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
                             좌석 선택
                         </button>
-                        <button type="submit" onClick={navigateGoToTicket}>
+                        <button type="submit" onClick={() => handleNextPage(navigateGoToTicket)}>
                             바로 예매
                         </button>
                     </div>
