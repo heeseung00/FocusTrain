@@ -219,3 +219,9 @@ button[aria-checked="false"] {
 .toggle--on .toggle__button {
   transform: translateX(18px);
 }
+
+/* 타이머 버튼 관리 */
+.TimerBtn {
+  border: 1px solid #333;
+  cursor: pointer;
+}
