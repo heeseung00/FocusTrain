@@ -192,3 +192,30 @@ button[aria-checked="true"] {
 button[aria-checked="false"] {
   background: var(--social-bg);
 }
+
+/* 토글 버튼 */
+.toggle {
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: #d9d9d9;
+  padding: 2px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggle--on {
+  background: #4caf50;
+}
+
+.toggle__button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.3s;
+}
+
+.toggle--on .toggle__button {
+  transform: translateX(18px);
+}
