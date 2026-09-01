@@ -24,7 +24,19 @@ export function formatTime(minutes) {
 // 열차, 출발역, 도착역, 시간 선택
 function RoutePage() {
     // ---- 선택 상태 ----
-    const { train, setTrain, selected, setSelected, isToggleOn, setIsToggleOn, focusTime, setFocusTime } = useTrip();
+    const {
+        train,
+        setTrain,
+        selected,
+        setSelected,
+        isToggleOn,
+        setIsToggleOn,
+        focusTime,
+        setFocusTime,
+        seats,
+        setActiveCoach,
+        setSelectedSeat,
+    } = useTrip();
 
     //  ---- 선택에서 파생되는 값들 ----
     // 선택한 역에 따라 '출발, 도착'선택 조건부 랜더링
@@ -74,6 +86,47 @@ function RoutePage() {
 
         navigate();
     };
+
+    // 랜덤 좌석 배치
+    function handleRandomSeat() {
+        const coachIds = Object.keys(seats);
+        const randomSeat = coachIds[Math.floor(Math.random() * coachIds.length)];
+
+        const rows = Object.entries(seats[randomSeat]);
+        const randomIndex = Math.floor(Math.random() * rows.length);
+
+        const [row] = rows[randomIndex];
+
+        // 좌석 위치 중 랜덤
+        const seatTypes = ['LeftSeat1', 'LeftSeat2', 'RightSeat1', 'RightSeat2'];
+
+        const randomSeatType = seatTypes[Math.floor(Math.random() * seatTypes.length)];
+
+        // SeatGrid에서 쓰는 좌석 번호 계산
+        // const rowIndex = rows.indexOf(row);
+        const seatNumber = rows.length - randomIndex;
+
+        const seatLetters = {
+            LeftSeat1: 'A',
+            LeftSeat2: 'B',
+            RightSeat1: 'C',
+            RightSeat2: 'D',
+        };
+
+        const seatName = `${seatNumber}${seatLetters[randomSeatType]}`;
+
+        // 기존에 사용하던 선택 함수 그대로 사용
+        setActiveCoach(Number(randomSeat));
+
+        // handleSeatClick(row, randomSeatType, seatName);
+        setSelectedSeat({
+            row,
+            seatType: randomSeatType,
+            seatNumber: seatName,
+        });
+
+        navigate('/ticket');
+    }
 
     //  ---- 기타 효과 ----
     useEffect(() => {
@@ -210,7 +263,7 @@ function RoutePage() {
                         <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
                             좌석 선택
                         </button>
-                        <button type="submit" onClick={() => handleNextPage(navigateGoToTicket)}>
+                        <button type="submit" onClick={() => handleNextPage(handleRandomSeat)}>
                             바로 예매
                         </button>
                     </div>
