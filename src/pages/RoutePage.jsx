@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { stationList } from '../utils/stationList.js';
+import { useTrip } from '../context/TripContext.jsx';
 // import styled from 'styled-components';
 
 // 전역 사용을 위해 위치 조정
