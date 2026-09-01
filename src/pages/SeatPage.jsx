@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTrip } from '../context/TripContext.jsx';
 import '../styles/SeatPage.css';
 import SeatGrid from '../components/SeatGrid.jsx';
 
@@ -7,28 +8,7 @@ import SeatGrid from '../components/SeatGrid.jsx';
 
 // eslint-disable-next-line
 const SeatPage = () => {
-    // 세로 한줄 최대 갯수 5개(row <= 5).
-    const createCoachSeats = () => {
-        const rows = {};
-
-        for (let row = 0; row <= 5; row++) {
-            rows[row] = { LeftSeat1: null, LeftSeat2: null, RightSeat1: null, RightSeat2: null };
-        }
-        return rows;
-    };
-
-    // 호차별 좌석 데이터
-    const [seats, setSeats] = useState({
-        1: createCoachSeats(),
-        2: createCoachSeats(),
-        3: createCoachSeats(),
-        4: createCoachSeats(),
-        5: createCoachSeats(),
-    });
-    // 현재 선택된 호차
-    const [activeCoach, setActiveCoach] = useState(1);
-    // 현재 선택된 좌석
-    const [selectedSeat, setSelectedSeat] = useState(null);
+    const { seats, setSeats, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
 
     // 기차 호차 선택
     const handleCoachClick = (coachId) => {
@@ -40,14 +20,14 @@ const SeatPage = () => {
     };
 
     // 기차 좌석 선택
-    const handleSeatClick = (row, seatType) => {
-        console.log('클릭:', row, seatType);
+    const handleSeatClick = (row, seatType, seatNumber) => {
+        console.log('클릭:', row, seatType, seatNumber);
 
         if (selectedSeat?.row === row && selectedSeat?.seatType === seatType) {
             setSelectedSeat(null);
             return;
         }
-        setSelectedSeat({ row, seatType });
+        setSelectedSeat({ row, seatType, seatNumber });
     };
 
     // 다음 페이지 이동
@@ -103,15 +83,15 @@ const SeatPage = () => {
     );
 };
 
-// 좌석 상태와 클릭 효과
-function Seat({ seatType, seat, selected, onClick }) {
-    const isBooked = Boolean(seat);
+// // 좌석 상태와 클릭 효과
+// function Seat({ seatType, seat, selected, onClick }) {
+//     const isBooked = Boolean(seat);
 
-    return (
-        <div className={`seat-box ${selected ? 'selected' : ''}`} onClick={onClick}>
-            {seatType}
-        </div>
-    );
-}
+//     return (
+//         <div className={`seat-box ${selected ? 'selected' : ''}`} onClick={onClick}>
+//             {seatType}
+//         </div>
+//     );
+// }
 
 export default SeatPage;

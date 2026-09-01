@@ -1,4 +1,5 @@
 import React from 'react';
+import { stationList } from '../utils/stationList.js';
 
 function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
@@ -20,14 +21,14 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                                 seatType={`${seatNumber}A`}
                                 seat={rowSeats.LeftSeat1}
                                 selected={selectedSeat?.row === row && selectedSeat?.seatType === 'LeftSeat1'}
-                                onClick={() => handleSeatClick(row, 'LeftSeat1')}
+                                onClick={() => handleSeatClick(row, 'LeftSeat1', `${seatNumber}A`)}
                             />
 
                             <Seat
                                 seatType={`${seatNumber}B`}
                                 seat={rowSeats.LeftSeat2}
                                 selected={selectedSeat?.row === row && selectedSeat?.seatType === 'LeftSeat2'}
-                                onClick={() => handleSeatClick(row, 'LeftSeat2')}
+                                onClick={() => handleSeatClick(row, 'LeftSeat2', `${seatNumber}B`)}
                             />
 
                             <div className="seat-aisle"></div>
@@ -36,14 +37,14 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                                 seatType={`${seatNumber}C`}
                                 seat={rowSeats.RightSeat1}
                                 selected={selectedSeat?.row === row && selectedSeat?.seatType === 'RightSeat1'}
-                                onClick={() => handleSeatClick(row, 'RightSeat1')}
+                                onClick={() => handleSeatClick(row, 'RightSeat1', `${seatNumber}C`)}
                             />
 
                             <Seat
                                 seatType={`${seatNumber}D`}
                                 seat={rowSeats.RightSeat2}
                                 selected={selectedSeat?.row === row && selectedSeat?.seatType === 'RightSeat2'}
-                                onClick={() => handleSeatClick(row, 'RightSeat2')}
+                                onClick={() => handleSeatClick(row, 'RightSeat2', `${seatNumber}D`)}
                             />
                         </div>
                     </div>

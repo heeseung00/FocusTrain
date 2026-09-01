@@ -6,7 +6,7 @@ import { useTrip } from '../context/TripContext.jsx';
 
 // 전역 사용을 위해 위치 조정
 // 이동시간의 숫자를 시간-분 형태로 출력
-function formatTime(minutes) {
+export function formatTime(minutes) {
     const hour = Math.floor(minutes / 60);
     const minute = minutes % 60;
 
@@ -23,16 +23,8 @@ function formatTime(minutes) {
 
 // 열차, 출발역, 도착역, 시간 선택
 function RoutePage() {
-    // //  ---- 선택 상태 ----
+    // ---- 선택 상태 ----
     const { train, setTrain, selected, setSelected, isToggleOn, setIsToggleOn, focusTime, setFocusTime } = useTrip();
-    // 다음 페이지 이동
-    const navigate = useNavigate();
-    const navigateGoToSeat = () => {
-        navigate('/seat');
-    };
-    const navigateGoToTicket = () => {
-        navigate('/ticket');
-    };
 
     //  ---- 선택에서 파생되는 값들 ----
     // 선택한 역에 따라 '출발, 도착'선택 조건부 랜더링
@@ -54,6 +46,15 @@ function RoutePage() {
     const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
     // 이동시간에 따른 휴식 횟수 (중간 정차역)
     const restCount = travelTime >= 20 ? Math.floor(travelTime / 20) : 0;
+
+    // 다음 페이지 이동
+    const navigate = useNavigate();
+    const navigateGoToSeat = () => {
+        navigate('/seat');
+    };
+    const navigateGoToTicket = () => {
+        navigate('/ticket');
+    };
 
     //  ---- 이벤트 핸들러 ----
     const handleTrainChange = (trainType) => {

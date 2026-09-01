@@ -1,4 +1,7 @@
 import '../styles/TicketPage.css';
+import { stationList } from '../utils/stationList.js';
+import { formatTime } from '../pages/RoutePage.jsx';
+import { useTrip } from '../context/TripContext.jsx';
 
 // 가져온 코드: https://codepen.io/cliffpyles/pen/xbEdVgd
 // 작동 참고: https://codepen.io/cbolson/pen/raxrRJm
@@ -18,7 +21,10 @@ import '../styles/TicketPage.css';
 // │ KTX-산천 255       02호차 12A석    │
 // └────────────────────────────────────┘
 
-function TicketPage() {
+function TicketPage(row, seatType) {
+    // ---- 선택 상태 ----
+    // const { train, setTrain, selected, setSelected, isToggleOn, setIsToggleOn, focusTime, setFocusTime } = useTrip();
+
     // 오늘 날짜 표시
     function TodayDate() {
         const today = new Date();
@@ -35,60 +41,77 @@ function TicketPage() {
             </div>
         );
     }
+
+    // 열차 선택값 받아오기
+    const { train, selected, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
+
+    const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
+
+    const selectedStation = stationList.find((item) => item.city === selected);
+
+    const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
+
+    // 열차 종류에 따라 기차 이름 다르게
+    const trainLabelS = {
+        KTX: 'KTX 001',
+        ITX: 'ITX-새마을',
+        무궁화: '무궁화호 1151',
+    };
+
+    const trainLabel = trainLabelS[train];
+
     return (
         <section id="center">
             <h1>기차표 뽑기</h1>
 
-            <div class="ticket-page">
-                <div class="ambient-light"></div>
+            <div className="ticket-page">
+                <div className="ambient-light"></div>
 
-                <div class="ticket-container" id="ticket">
-                    <article class="ticket-main">
-                        <div class="ticket-content">
-                            <header class="ticket-header">
-                                <span class="date">{TodayDate()}</span>
-                                <span class="type">KTX</span>
+                <div className="ticket-container" id="ticket">
+                    <article className="ticket-main">
+                        <div className="ticket-content">
+                            <header className="ticket-header">
+                                <span className="date">{TodayDate()}</span>
+                                <span className="type">{train}</span>
                             </header>
 
-                            <div class="ticket-body">
+                            <div className="ticket-body">
                                 <ul className="ticket-title">
                                     <li className="depart">
-                                        <h1 class="title">서울</h1>
-                                        <p class="time">15:08</p>
+                                        <h1 className="title">서울</h1>
+                                        <p className="time">15:08</p>
                                     </li>
                                     <li className="arrow">→</li>
                                     <li className="arrive">
-                                        <h1 class="title">대전</h1>
-                                        <p class="time">16:13</p>
+                                        <h1 className="title">{selected}</h1>
+                                        <p className="time">16:13</p>
                                     </li>
                                 </ul>
                                 <div className="Destination"></div>
-                                <p class="subtitle">1시간 05분</p>
+                                <p className="subtitle">{formatTime(travelTime)}</p>
                             </div>
 
-                            <footer class="ticket-footer">
-                                {/* <div class="info-block">
-                                    <span class="label">Date</span>
-                                    <span class="value">MAY 24</span>
-                                </div> */}
-                                <div class="info-block">
-                                    <span class="label">KTX-산천 255</span>
+                            <footer className="ticket-footer">
+                                <div className="info-block">
+                                    <span className="label">{trainLabel}</span>
                                 </div>
-                                <div class="info-block">
-                                    <span class="label">02호차 12A석</span>
+                                <div className="info-block">
+                                    <span className="label">
+                                        {activeCoach}호차 {selectedSeat?.seatNumber}석
+                                    </span>
                                 </div>
                             </footer>
                         </div>
 
-                        <div class="perforation-line"></div>
+                        <div className="perforation-line"></div>
                     </article>
 
-                    <aside class="ticket-stub">
-                        {/* <div class="foil-seal"></div> */}
+                    <aside className="ticket-stub">
+                        {/* <div className="foil-seal"></div> */}
                         <div className="barcode-wrap">
-                            <div class="barcode"></div>
+                            <div className="barcode"></div>
                         </div>
-                        <p class="stub-text">Focus Trip</p>
+                        <p className="stub-text">Focus Trip</p>
                     </aside>
                 </div>
             </div>
