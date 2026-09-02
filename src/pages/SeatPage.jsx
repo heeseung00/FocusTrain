@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import '../styles/SeatPage.css';
 import SeatGrid from '../components/SeatGrid.jsx';
 
-// https://github.com/Sanskar-Bhushankar/Trainbooking-React-DSA/blob/master/src/styles/TrainBooking.css
-
-// eslint-disable-next-line
 const SeatPage = () => {
-    const { seats, setSeats, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
+    const { seats, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
 
     // 기차 호차 선택
     const handleCoachClick = (coachId) => {
@@ -35,11 +32,6 @@ const SeatPage = () => {
     const navigateGoToTicket = () => {
         navigate('/ticket');
     };
-
-    // 다음 한 줄에 대해서 react-hooks/exhaustive-deps ESLint 경고를 무시.
-    useEffect(() => {
-        // // Initialize 필요한 상태를 초기화
-    }, []);
 
     return (
         <div className="train-booking">

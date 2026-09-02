@@ -2,28 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TicketPage.css';
 import { stationList } from '../utils/stationList.js';
-import { formatTime } from '../pages/RoutePage.jsx';
+import { getTrainInfo } from '../utils/getTrainInfo.js';
+import { formatTime } from '../utils/time.js';
 import { useTrip } from '../context/TripContext.jsx';
 
-// 가져온 코드: https://codepen.io/cliffpyles/pen/xbEdVgd
-// 작동 참고: https://codepen.io/cbolson/pen/raxrRJm
-
-// 기차표 이미지 참고: https://mir-s3-cdn-cf.behance.net/projects/404/a01ecb34381125.Y3JvcCwxNzExLDEzMzgsMzk0LDgw.jpg
-// 사실 바코드 말고 QR로 하고싶긴함
-
-// ┌────────────────────────────────────┐
-// │  2026년 08월 11일 (화)       KTX   │
-// ├────────────────────────────────────┤
-// │                                    │
-// │        서울       →       대전     │
-// │       15:08              16:13     │
-// │                                    │
-// │              1시간 05분             │
-// ├────────────────────────────────────┤
-// │ KTX-산천 255       02호차 12A석    │
-// └────────────────────────────────────┘
-
-function TicketPage(row, seatType) {
+function TicketPage() {
     const navigate = useNavigate();
     const [isOpened, setIsOpened] = useState(false);
 
@@ -87,14 +70,9 @@ function TicketPage(row, seatType) {
         }, 800);
     }
     // 열차 선택값 받아오기
-    const { train, selected, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat, focusTime, setFocusTime } =
-        useTrip();
+    const { train, selected, activeCoach, selectedSeat, focusTime } = useTrip();
 
-    const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
-
-    const selectedStation = stationList.find((item) => item.city === selected);
-
-    const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
+    const { trainKey, selectedStation, travelTime } = getTrainInfo(train, selected, stationList);
 
     // 열차 종류에 따라 기차 이름 다르게
     const trainLabelS = {
