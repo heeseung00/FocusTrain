@@ -115,134 +115,148 @@ function RoutePage() {
     }, [travelTime]);
 
     return (
-        <section id="center">
+        <>
             <form onSubmit={(e) => e.preventDefault()}>
                 <>
-                    <div>
-                        <h1>focus train</h1>
+                    <div className="container">
+                        <h1 className="title-text">FocusTrain</h1>
+                        <div className="page">메인</div>
                     </div>
 
-                    {/* 기차 종류 선택 */}
-                    <div>
-                        <ul>
-                            <li>
-                                <button
-                                    type="button"
-                                    className="counter"
-                                    role="radio"
-                                    aria-checked={train === 'KTX'}
-                                    onClick={() => handleTrainChange('KTX')}>
-                                    KTX
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    className="counter"
-                                    role="radio"
-                                    aria-checked={train === 'ITX'}
-                                    onClick={() => handleTrainChange('ITX')}>
-                                    ITX
-                                </button>
-                            </li>
-                            <li>
-                                <button
-                                    type="button"
-                                    className="counter"
-                                    role="radio"
-                                    aria-checked={train === '무궁화'}
-                                    onClick={() => handleTrainChange('무궁화')}>
-                                    무궁화
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <hr></hr>
-
-                    {/* 출발, 도착 선택 */}
-                    <div>
-                        <div>
-                            <h4>출발지</h4>
-                            <select value="departure" disabled>
-                                <option value="departure">{departure}</option>
-                            </select>
+                    <div className="content">
+                        {/* 기차 종류 선택 */}
+                        <div className="train-select">
+                            <ul>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="counter"
+                                        role="radio"
+                                        aria-checked={train === 'KTX'}
+                                        onClick={() => handleTrainChange('KTX')}>
+                                        KTX
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="counter"
+                                        role="radio"
+                                        aria-checked={train === 'ITX'}
+                                        onClick={() => handleTrainChange('ITX')}>
+                                        ITX
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        type="button"
+                                        className="counter"
+                                        role="radio"
+                                        aria-checked={train === '무궁화'}
+                                        onClick={() => handleTrainChange('무궁화')}>
+                                        무궁화
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
-                        <button type="button">⇔</button>
-                        <div>
-                            <h4>도착지</h4>
-                            <select onChange={handleSelect} value={selected}>
-                                <option value="선택" disabled>
-                                    선택
-                                </option>
-                                {filterStation.map((item) => {
-                                    return (
-                                        <option value={item.city} key={item.id}>
-                                            {item.city}
-                                        </option>
-                                    );
-                                })}
-                            </select>
-                        </div>
-                    </div>
 
-                    <hr></hr>
-
-                    {/* 소요시간에 따른 중간정차역 휴식 시간 지정*/}
-                    {/* 도착지까지 정보 표시 */}
-                    <div>
-                        <div>
-                            <h4>소요시간</h4>
-                            {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                            <div>{selectedStation ? formatTime(travelTime) : ''}</div>
-                        </div>
-                    </div>
-
-                    <hr></hr>
-
-                    {/* 중간정차역 체크 */}
-                    <div>
-                        <div className="bg-mint-500">
-                            <h4>중간 정차역(휴식)</h4>
-                            <div>
-                                <p>잠시 쉬어가며 집중력을 유지합니다.</p>
-                                <div className="toggleWrap">
-                                    <div
-                                        className={`toggle ${isToggleOn ? 'toggle--on' : ''}`}
-                                        onClick={() => {
-                                            console.log('토글 클릭 전:', isToggleOn);
-                                            setIsToggleOn(!isToggleOn);
-                                        }}>
-                                        <div className="toggle__button"></div>
+                        <ul className="card">
+                            <li className="item item-1">
+                                {/* 출발, 도착 선택 */}
+                                <div className="station">
+                                    <div className="title">
+                                        <h4>출발</h4>
+                                        <select value="departure" disabled>
+                                            <option value="departure">{departure}</option>
+                                        </select>
+                                    </div>
+                                    {/* <button type="button">⇔</button> */}
+                                    <div className="title">
+                                        <h4>도착</h4>
+                                        <select onChange={handleSelect} value={selected}>
+                                            <option value="선택" disabled>
+                                                선택
+                                            </option>
+                                            {filterStation.map((item) => {
+                                                return (
+                                                    <option value={item.city} key={item.id}>
+                                                        {item.city}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
                                     </div>
                                 </div>
 
-                                {/* 토글 ON일 때만 휴식 정보 표시 */}
-                                {isToggleOn && selectedStation && (
-                                    <ToggleShow travelTime={travelTime} restCount={restCount} />
-                                )}
-                            </div>
+                                <hr />
+                                {/* 소요시간에 따른 중간정차역 휴식 시간 지정*/}
+                                {/* 도착지까지 정보 표시 */}
+
+                                <div className="time-info">
+                                    <div className="info duration">
+                                        <h4>소요시간</h4>
+                                        {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
+                                        <div>{selectedStation ? formatTime(travelTime) : ''}</div>
+                                    </div>
+                                    <div className="info eta">
+                                        <h4>도착 예정</h4>
+                                        {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
+                                        <div>{selectedStation ? formatTime(travelTime) : ''}</div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            {/* 중간정차역 체크 */}
+                            <li className="item">
+                                <div className="stop">
+                                    <h4>중간 정차역(휴식)</h4>
+                                    <div>
+                                        <p>잠시 쉬어가며 집중력을 유지합니다.</p>
+                                        <div className="toggleWrap">
+                                            <div
+                                                className={`toggle ${isToggleOn ? 'toggle--on' : ''}`}
+                                                onClick={() => {
+                                                    console.log('토글 클릭 전:', isToggleOn);
+                                                    setIsToggleOn(!isToggleOn);
+                                                }}>
+                                                <div className="toggle__button"></div>
+                                            </div>
+                                        </div>
+
+                                        {/* 토글 ON일 때만 휴식 정보 표시 */}
+                                        {isToggleOn && selectedStation && (
+                                            <ToggleShow travelTime={travelTime} restCount={restCount} />
+                                        )}
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li className="item">
+                                {/* 시간 조정 */}
+                                <div>
+                                    <TimeControl
+                                        focusTime={focusTime}
+                                        setFocusTime={setFocusTime}
+                                        travelTime={travelTime}
+                                    />
+                                </div>
+                            </li>
+                        </ul>
+
+                        {/* 다음 페이지 이동 */}
+                        <div>
+                            {/* <button type="submit" onClick={navigateGoToSeat}> */}
+                            <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
+                                좌석 선택
+                            </button>
+                            <button type="submit" onClick={() => handleNextPage(handleRandomSeat)}>
+                                바로 예매
+                            </button>
                         </div>
-                    </div>
-
-                    {/* 시간 조정 */}
-                    <div>
-                        <TimeControl focusTime={focusTime} setFocusTime={setFocusTime} travelTime={travelTime} />
-                    </div>
-
-                    {/* 다음 페이지 이동 */}
-                    <div>
-                        {/* <button type="submit" onClick={navigateGoToSeat}> */}
-                        <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
-                            좌석 선택
-                        </button>
-                        <button type="submit" onClick={() => handleNextPage(handleRandomSeat)}>
-                            바로 예매
-                        </button>
                     </div>
                 </>
             </form>
-        </section>
+        </>
     );
 }
 

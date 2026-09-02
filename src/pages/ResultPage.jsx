@@ -44,26 +44,24 @@ function ResultPage() {
     };
 
     return (
-        <section id="center">
-            <>
-                <h1>도착 안내</h1>
+        <>
+            <h1>도착 안내</h1>
 
-                <div className="depart">{selectedStation?.city}</div>
+            <div className="depart">{selectedStation?.city}</div>
 
-                <p>
-                    {departure}에서 출발하여
-                    <br />
-                    {selectedStation?.city}에 도착했습니다.
-                </p>
+            <p>
+                {departure}에서 출발하여
+                <br />
+                {selectedStation?.city}에 도착했습니다.
+            </p>
 
-                <div className="focus">집중시간: {TimerformatTime(elapsed)}</div>
-                <div className="focus-percent">진행률: {resultPercent}%</div>
+            <div className="focus">집중시간: {TimerformatTime(elapsed)}</div>
+            <div className="focus-percent">진행률: {resultPercent}%</div>
 
-                <button className="go-to-frist" onClick={navigateGoToFirst}>
-                    새로운 여행 시작하기
-                </button>
-            </>
-        </section>
+            <button className="go-to-frist" onClick={navigateGoToFirst}>
+                새로운 여행 시작하기
+            </button>
+        </>
     );
 }
 

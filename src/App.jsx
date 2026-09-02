@@ -25,27 +25,22 @@ function App() {
 function AppRoutes() {
     const { train, selected, departure } = useTrip();
     return (
-        <>
-            {/* <Header /> */}
-            <section id="warpper">
-                <Routes>
-                    <Route path="/" element={<RoutePage />}></Route>
-                    <Route
-                        path="/seat"
-                        element={train && selected ? <SeatPage /> : <Navigate to="/" replace />}></Route>
-                    <Route
-                        path="/ticket"
-                        element={train && selected && departure ? <TicketPage /> : <Navigate to="/" replace />}></Route>
-                    <Route
-                        path="/timer"
-                        element={train && selected && departure ? <TimerPage /> : <Navigate to="/" replace />}></Route>
-                    <Route
-                        path="/result"
-                        element={train && selected && departure ? <ResultPage /> : <Navigate to="/" replace />}></Route>
-                    {/* <Route path="*" element={<Navigate to="/" />} /> */}
-                </Routes>
-            </section>
-        </>
+        <section id="wrapper">
+            <Routes>
+                <Route path="/" element={<RoutePage />}></Route>
+                <Route path="/seat" element={train && selected ? <SeatPage /> : <Navigate to="/" replace />}></Route>
+                <Route
+                    path="/ticket"
+                    element={train && selected && departure ? <TicketPage /> : <Navigate to="/" replace />}></Route>
+                <Route
+                    path="/timer"
+                    element={train && selected && departure ? <TimerPage /> : <Navigate to="/" replace />}></Route>
+                <Route
+                    path="/result"
+                    element={train && selected && departure ? <ResultPage /> : <Navigate to="/" replace />}></Route>
+                {/* <Route path="*" element={<Navigate to="/" />} /> */}
+            </Routes>
+        </section>
     );
 }
 

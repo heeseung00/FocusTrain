@@ -1,197 +1,158 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
+#wrapper {
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 32px 32px;
+  border-radius: var(--r-xl);
+  text-align: center;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
 
-  &:hover {
-    border-color: var(--accent-border);
-  }
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.title-text {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bl);
+  color: var(--text-h);
+}
+
+.page {
+  font-weight: var(--fw-b);
+  color: var(--sub-text);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+/* ===== 기차 선택 =====*/
+.train-select {
+  display: flex;
+  flex-direction: column;
+}
+
+.train-select .title {
+  font-size: var(--fs-xs);
+  color: var(--sub-text);
+}
+
+.train-select ul {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.train-select li {
+  width: 100%;
+}
+
+.train-select button {
+  width: 100%;
+  flex: 1;
+  text-align: center;
+  padding: 12px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--sub-text);
+
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
-  }
-}
-
-#warpper {
-  display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
-}
-
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
-}
-
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
-}
-
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
-}
-
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
-}
-
+/* ===== 버튼 =====*/
 button {
+  color: var(--sub-text);
   cursor: pointer;
 }
 
 button[aria-checked="true"] {
-  background: rgb(206, 173, 234);
+  border-color: var(--accent);
+  background: var(--accent-tint);
+  color: var(--accent-deep);
 }
 
-button[aria-checked="false"] {
-  background: var(--social-bg);
+/* button[aria-checked="false"] {
+} */
+
+/* ===== 카드 선택 ===== */
+.card {
+  display: grid;
+  grid: repeat(2, 1fr) / repeat(2, 1fr);
+  gap: var(--s4);
 }
+
+.item {
+  padding: 20px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--r-lg);
+}
+
+.item-1 {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item hr {
+  border: 1px solid var(--border-light);
+}
+
+/* ===== 여정 선택 =====*/
+.station {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 14px;
+  flex-direction: column;
+}
+
+h4 {
+  color: var(--sub-text);
+  font-weight: var(--fw-r);
+}
+
+.station .title {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: var(--s1);
+}
+
+.station select {
+  font-size: var(--fs-4xl);
+  font-weight: bold;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.time-info .info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ============================================ */
 
 /* 토글 버튼 */
 .toggle {
@@ -218,32 +179,4 @@ button[aria-checked="false"] {
 
 .toggle--on .toggle__button {
   transform: translateX(18px);
-}
-
-/* 타이머 버튼 관리 */
-.TimerBtn {
-  border: 1px solid #333;
-  cursor: pointer;
-}
-
-.pomodoroMain {
-  width: 70%;
-}
-
-/* 타이머 프로그래스 바 */
-/* .progress-bar {
-  display: flex;
-} */
-
-/* 프로그래스 바 %와 기차 이미지 연결 */
-.progress-track {
-  position: relative;
-}
-
-.train {
-  position: absolute;
-  left: 0;
-  top: -20px;
-  transform: translateX(-50%);
-  z-index: 2;
 }

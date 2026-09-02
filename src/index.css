@@ -5,13 +5,18 @@
 :root {
   /* 색상 */
   --bg: #f4f4f6;
+  --bg-gray: #f4f4f6;
   --surface: #fff;
-  --text: #6b6375;
-  --text-h: #08060d;
-  --border: #e7e7ec;
+
+  --text: #18181c;
+  --sub-text: #8a8a93;
+
+  --border: #a5a5a8;
+  --border-light: #e7e7ec;
   --code-bg: #f4f3ec;
 
-  --accent: #aa3bff;
+  --accent: #4b3fe0;
+  --accent-bg: #4b3fe0;
   --accent-deep: #241d74;
   --accent-tint: #ecebfc;
 
@@ -29,6 +34,22 @@
   /* --sans: system-ui, "Segoe UI", Roboto, sans-serif;
   --heading: system-ui, "Segoe UI", Roboto, sans-serif;
   */
+
+  /* 폰트 사이즈 */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 20px;
+  --fs-2xl: 24px;
+  --fs-3xl: 28px;
+  --fs-4xl: 30px;
+
+  /* 폰트 굵기 */
+  --fw-bl: 900;
+  --fw-b: 700;
+  --fw-m: 500;
+  --fw-r: 400;
 
   /* 간격 */
   --s1: 4px;
@@ -52,71 +73,16 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+  font-size: var(--fs-sm);
   font-family: var(--font-pretendard);
   -webkit-font-smoothing: antialiased;
-
-  /* font: 18px/145% var(--font-pretendard);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; */
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
+/* 
+- 모바일 (Mobile): 480px 이하 (소형 스마트폰은 375px~480px 구간 대응)
+- 태블릿 (Tablet): 481px ~ 1024px (세로 및 가로 방향 포함)
+- 데스크톱 (Desktop): 1025px 이상 (일반 PC 및 노트북) 
+*/
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
-  margin: 0;
-}
-
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
-}
+/* #root {
+} */

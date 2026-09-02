@@ -84,7 +84,7 @@ function TicketPage() {
     const trainLabel = trainLabelS[train];
 
     return (
-        <section id="center">
+        <>
             <h1>기차표 뽑기</h1>
 
             <div className="ticket-page">
@@ -138,7 +138,7 @@ function TicketPage() {
                     </aside>
                 </div>
             </div>
-        </section>
+        </>
     );
 }
 
