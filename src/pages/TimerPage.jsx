@@ -64,6 +64,7 @@ function TimerPage() {
         setIsToggleOn,
         focusTime,
         setFocusTime,
+        departure,
         seats,
         setActiveCoach,
         setSelectedSeat,
@@ -86,10 +87,11 @@ function TimerPage() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     return (
-        <section id="center">
+        <>
             <div className="pomodoroMainText">
                 <h1>FOCUS TRIP</h1>
-                {/*
+                <>
+                    {/*
                 // progress바 기존 위치 -  ProgressTimer안으로 위치변경
                 <ProgressTimer
                     totalTime={timerValue.focusetime * 60}
@@ -104,6 +106,7 @@ function TimerPage() {
                     //     }
                     // }}
                 /> */}
+                </>
             </div>
             <div className="pomodoroTimerSet">
                 <p>Timer Set</p>
@@ -116,8 +119,10 @@ function TimerPage() {
                 timerState={timerState}
                 setTimerState={setTimerState}
                 restCount={restCount}
+                departure={departure}
+                selectedStation={selectedStation}
             />
-        </section>
+        </>
     );
 
     // 타이머 세팅: PomodoroTimerSettings
@@ -173,7 +178,7 @@ function TimerPage() {
 }
 
 // 타이머가 보여지는 부분: PomodoroMain
-function PomodoroMain({ timerValue, timerState, setTimerState, restCount }) {
+function PomodoroMain({ timerValue, timerState, setTimerState, restCount, departure, selectedStation }) {
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusetime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [timerList, setTimerList] = useState('focus');
@@ -262,7 +267,12 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount }) {
 
     return (
         <div className="pomodoroMain">
-            <ProgressTimer totalTime={parseInt(timerValue.focusetime) * 60} remainingTime={totalSeconds} />
+            <ProgressTimer
+                totalTime={parseInt(timerValue.focusetime) * 60}
+                remainingTime={totalSeconds}
+                departure={departure}
+                selectedStation={selectedStation}
+            />
 
             <div className="pomodoroTimer">
                 <div className="pomodoroTimerText">
@@ -295,17 +305,24 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount }) {
 }
 
 // 소요시간과 progress연결
-function ProgressTimer({ totalTime, remainingTime }) {
+function ProgressTimer({ totalTime, remainingTime, departure, selectedStation }) {
     const progress = ((totalTime - remainingTime) / totalTime) * 100;
+    const percent = Math.min(Math.max(progress, 0), 100);
+    const percentResult = Math.floor(percent);
 
     return (
-        <ProgressBar
-            completed={Math.min(progress, 100)}
-            height="8px"
-            width="100%"
-            isLabelVisible={false}
-            animateOnRender={false}
-        />
+        <div className="progress-bar">
+            <div>{departure}</div>
+            <ProgressBar
+                completed={Math.min(progress, 100)}
+                height="8px"
+                width="100%"
+                isLabelVisible={false}
+                animateOnRender={false}
+            />
+            <div className="percent">{percentResult}%</div>
+            <div>{selectedStation?.city}</div>
+        </div>
     );
 }
 

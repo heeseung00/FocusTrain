@@ -13,6 +13,8 @@ export function TripProvider({ children }) {
     // 휴식시간 조절할 수 있게 (중간 정차역)
     const [focusTime, setFocusTime] = useState(0);
 
+    const [departure, setDeparture] = useState('서울');
+
     // ---- 좌석 선택 ----
     // 세로 한줄 최대 갯수 5개(row <= 5).
     const createCoachSeats = () => {
@@ -47,6 +49,8 @@ export function TripProvider({ children }) {
                 setIsToggleOn,
                 focusTime,
                 setFocusTime,
+                departure,
+                setDeparture,
                 seats,
                 setSeats,
                 activeCoach,
