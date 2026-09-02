@@ -108,7 +108,7 @@
     align-items: center;
 }
 
-.title {
+.ticket-title .title {
     /* font-family: "Cinzel", serif; */
     font-size: 2.4rem;
     line-height: 1;
