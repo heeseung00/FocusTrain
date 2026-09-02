@@ -87,7 +87,8 @@ function TicketPage(row, seatType) {
         }, 800);
     }
     // 열차 선택값 받아오기
-    const { train, selected, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
+    const { train, selected, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat, focusTime, setFocusTime } =
+        useTrip();
 
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
 
@@ -132,7 +133,7 @@ function TicketPage(row, seatType) {
                                     </li>
                                 </ul>
                                 <div className="Destination"></div>
-                                <p className="subtitle">{formatTime(travelTime)}</p>
+                                <p className="subtitle">{formatTime(focusTime)}</p>
                             </div>
 
                             <footer className="ticket-footer">
