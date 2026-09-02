@@ -69,6 +69,8 @@ function TimerPage() {
         seats,
         setActiveCoach,
         setSelectedSeat,
+        totalTime,
+        remainingTime,
     } = useTrip();
 
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
@@ -92,23 +94,6 @@ function TimerPage() {
         <>
             <div className="pomodoroMainText">
                 <h1>FOCUS TRIP</h1>
-                <>
-                    {/*
-                // progress바 기존 위치 -  ProgressTimer안으로 위치변경
-                <ProgressTimer
-                    totalTime={timerValue.focusTime * 60}
-                    remainingTime={totalSeconds}
-                    // onComplete={() => {
-                    //     if (swiperRef.current && swiperRef.current.activeIndex < reviews.length - 1) {
-                    //         // 5초 카운트 완료 후 다음 슬라이드 이동
-                    //         swiperRef.current.slideNext();
-                    //     } else {
-                    //         // 마지막 슬라이드
-                    //         navigate(-1);
-                    //     }
-                    // }}
-                /> */}
-                </>
             </div>
             <div className="pomodoroTimerSet">
                 <p>Timer Set</p>
@@ -125,6 +110,8 @@ function TimerPage() {
                 selectedStation={selectedStation}
                 focusTime={focusTime}
                 isToggleOn={isToggleOn}
+                // totalTime={totalTime}
+                // remainingTime={remainingTime}
             />
         </>
     );
@@ -139,7 +126,6 @@ function TimerPage() {
             setinitalTimer({
                 focusTime: Number(focusTimer),
                 shortbreak: Number(shortBreak),
-                // sections: Number(sectionsTerms),
             });
         };
         return (
@@ -178,16 +164,31 @@ function PomodoroMain({
     selectedStation,
     focusTime,
     isToggleOn,
+    // totalTime,
+    // remainingTime,
 }) {
+    // 전체 시간 표시
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
     const timeminute = parseInt(timerValue.focusTime);
     // const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
+    // const hours = Math.floor(totalSeconds / 3600);
 
-    const hours = Math.floor(totalSeconds / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+    // const minutes = Math.floor((totalSeconds % 3600) / 60);
+    // const seconds = totalSeconds % 60;
+
+    const totalSecondsTime = parseInt(timerValue.focusTime) * 60;
+
+    const TimerformatTime = (time) => {
+        const hours = Math.floor(time / 3600);
+        const minutes = Math.floor((time % 3600) / 60);
+        const seconds = time % 60;
+
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    };
+    // 타이머 경과시간 표시
+    const elapsed = totalSecondsTime - totalSeconds;
 
     const navigate = useNavigate();
     // // 임시 주석 - 소리재생: 타이머 시작할때 시작, 종료음을 위한 코드
@@ -205,7 +206,14 @@ function PomodoroMain({
 
     // 종료 버튼 클릭시 결과 화면으로 이동
     const handleTimerEnd = () => {
-        navigate('/result');
+        // 확인 창 띄우기
+        const result = confirm('여행을 종료할까요?');
+
+        if (result) {
+            navigate('/result');
+        } else {
+            return;
+        }
     };
 
     // 재생 - 일시정지 토글 버튼
@@ -268,9 +276,11 @@ function PomodoroMain({
             <div className="pomodoroTimer">
                 <div className="pomodoroTimerText">
                     <div className="pomodoroTimes">
+                        <div className="elapsed-timer">{TimerformatTime(elapsed)}</div>
                         <p>
-                            {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
-                            {seconds < 10 ? `0${seconds}` : seconds}
+                            {TimerformatTime(totalSeconds)}
+                            {/* {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
+                            {seconds < 10 ? `0${seconds}` : seconds} */}
                         </p>
                         <div>
                             {/* 임시 주석 - 타이머 시작, 멈춤, 리셋 이미지
