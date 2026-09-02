@@ -71,6 +71,8 @@ function TimerPage() {
         setSelectedSeat,
         totalTime,
         remainingTime,
+        elapsed,
+        setElapsed,
     } = useTrip();
 
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();
@@ -110,6 +112,8 @@ function TimerPage() {
                 selectedStation={selectedStation}
                 focusTime={focusTime}
                 isToggleOn={isToggleOn}
+                elapsed={elapsed}
+                setElapsed={setElapsed}
                 // totalTime={totalTime}
                 // remainingTime={remainingTime}
             />
@@ -164,6 +168,8 @@ function PomodoroMain({
     selectedStation,
     focusTime,
     isToggleOn,
+    elapsed,
+    setElapsed,
     // totalTime,
     // remainingTime,
 }) {
@@ -187,8 +193,10 @@ function PomodoroMain({
 
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     };
+
     // 타이머 경과시간 표시
-    const elapsed = totalSecondsTime - totalSeconds;
+    const currentElapsed = totalSecondsTime - totalSeconds;
+    setElapsed(currentElapsed);
 
     const navigate = useNavigate();
     // // 임시 주석 - 소리재생: 타이머 시작할때 시작, 종료음을 위한 코드
@@ -254,6 +262,7 @@ function PomodoroMain({
         return () => clearInterval(countdown);
     }, [timerState, timerValue]);
 
+    // 타이머 종류 후 결과 페이지로 이동
     useEffect(() => {
         if (totalSeconds === 0) {
             setTimerState(false);
@@ -301,9 +310,15 @@ function PomodoroMain({
 
 // 소요시간과 progress연결
 function ProgressTimer({ totalTime, remainingTime, departure, selectedStation }) {
+    const { setResultPercent } = useTrip();
+
     const progress = ((totalTime - remainingTime) / totalTime) * 100;
     const percent = Math.min(Math.max(progress, 0), 100);
     const percentResult = Math.floor(percent);
+
+    useEffect(() => {
+        setResultPercent(percentResult);
+    }, [percentResult, setResultPercent]);
 
     return (
         <div className="progress-bar">

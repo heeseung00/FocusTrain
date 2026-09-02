@@ -38,6 +38,12 @@ export function TripProvider({ children }) {
     // 현재 선택된 좌석
     const [selectedSeat, setSelectedSeat] = useState(null);
 
+    // 타이머 경과시간 표시
+    const [elapsed, setElapsed] = useState(0);
+
+    // 타이머 퍼센트
+    const [resultPercent, setResultPercent] = useState(0);
+
     return (
         <TripContext.Provider
             value={{
@@ -57,6 +63,10 @@ export function TripProvider({ children }) {
                 setActiveCoach,
                 selectedSeat,
                 setSelectedSeat,
+                elapsed,
+                setElapsed,
+                resultPercent,
+                setResultPercent,
             }}>
             {children}
         </TripContext.Provider>
