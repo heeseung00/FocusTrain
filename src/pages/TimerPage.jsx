@@ -83,6 +83,7 @@ function TimerPage() {
     });
 
     const [isPaused, setIsPaused] = useState(false);
+    // 타이머가 지금 움직이는지 상태 확인
     const [timerState, setTimerState] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -181,7 +182,6 @@ function TimerPage() {
 function PomodoroMain({ timerValue, timerState, setTimerState, restCount, departure, selectedStation }) {
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusetime) * 60);
     const [timerReset, setTimerReset] = useState(false);
-    const [timerList, setTimerList] = useState('focus');
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
     const timeminute = parseInt(timerValue.focusetime);
     const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
@@ -202,21 +202,21 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
         setTimerReset(false);
         setTimerState(false);
     };
+
+    // 재생 - 일시정지 토글
+    const handleTimerToggle = () => {
+        if (timerState) {
+            handleTimerStop();
+        } else {
+            handleTimerStart();
+        }
+    };
     const handleTimerReset = () => {
         setTotalSeconds(parseInt(timerValue.focusetime) * 60);
-        // setTimerReset(true);
-        setTimerList('focus');
         setTimerState(false);
     };
     const handleTimerSet = (minutes) => {
         setTotalSeconds(parseInt(minutes) * 60);
-        // setMinutes(parseInt(minutes));
-        // setSeconds(parseInt(seconds));
-    };
-    const handleTimerList = (minutes, timerlist) => {
-        handleTimerSet(minutes);
-        handleTimerStop();
-        setTimerList(timerlist);
     };
 
     // 페이지가 로드 될 때 타이머 바로 start 실행
@@ -237,25 +237,6 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
             setTotalSeconds((prev) => {
                 if (prev <= 1) {
                     clearInterval(countdown);
-
-                    // 타이머 종료 처리
-                    if (timerList === 'focus') {
-                        if (pomodoroTerms < timerValue.sections) {
-                            setPomodoroTerms((prev) => prev + 1);
-
-                            setTermArray((prev) => {
-                                const newArray = [...prev];
-                                newArray[pomodoroTerms] = '●';
-                                return newArray;
-                            });
-                        }
-
-                        setTimerList('short');
-                        return parseInt(timerValue.shortbreak) * 60;
-                    } else {
-                        setTimerList('focus');
-                        return parseInt(timerValue.focusetime) * 60;
-                    }
                 }
 
                 return prev - 1;
@@ -263,7 +244,7 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
         }, 1000);
 
         return () => clearInterval(countdown);
-    }, [timerState, timerList, timerValue, pomodoroTerms]);
+    }, [timerState, timerValue, pomodoroTerms]);
 
     return (
         <div className="pomodoroMain">
@@ -286,10 +267,8 @@ function PomodoroMain({ timerValue, timerState, setTimerState, restCount, depart
                                 <img src={playIcon} alt="play" width={20} height={20} onClick={handleTimerStart}></img>
                                 <img src={pauseIcon} width={20} height={20} onClick={handleTimerStop}></img>
                                 <img src={resetIcon} width={20} height={20} onClick={handleTimerReset}></img> */}
-                            <button onClick={handleTimerStart}>▶재생 </button>
-                            <button onClick={handleTimerStop}>❚❚정지 </button>
+                            <button onClick={handleTimerToggle}>{timerState ? '❚❚일시정지' : '▶재생'}</button>
                             <button onClick={handleTimerReset}>⭮다시 </button>
-                            {/* <button onClick={handleTimerReset}>종료</button> */}
                         </div>
                     </div>
                     <div className="pomodoroStation">정차역{restCount}개</div>
