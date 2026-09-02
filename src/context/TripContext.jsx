@@ -44,6 +44,29 @@ export function TripProvider({ children }) {
     // 타이머 퍼센트
     const [resultPercent, setResultPercent] = useState(0);
 
+    // 공통 context 초기화
+    const resetTrip = () => {
+        setTrain('KTX');
+        setSelected('선택');
+        setIsToggleOn('true');
+        setFocusTime('0');
+
+        setDeparture('서울');
+        setSeats({
+            1: createCoachSeats(),
+            2: createCoachSeats(),
+            3: createCoachSeats(),
+            4: createCoachSeats(),
+            5: createCoachSeats(),
+        });
+        setActiveCoach(1);
+        setSelectedSeat(null);
+        setElapsed(0);
+        setResultPercent(0);
+
+        console.log('reset 실행 - activeCoach = 1');
+    };
+
     return (
         <TripContext.Provider
             value={{
@@ -67,6 +90,9 @@ export function TripProvider({ children }) {
                 setElapsed,
                 resultPercent,
                 setResultPercent,
+
+                // 공통 context 초기화
+                resetTrip,
             }}>
             {children}
         </TripContext.Provider>
