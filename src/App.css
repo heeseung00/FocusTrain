@@ -226,7 +226,24 @@ button[aria-checked="false"] {
   cursor: pointer;
 }
 
+.pomodoroMain {
+  width: 70%;
+}
+
 /* 타이머 프로그래스 바 */
 /* .progress-bar {
   display: flex;
 } */
+
+/* 프로그래스 바 %와 기차 이미지 연결 */
+.progress-track {
+  position: relative;
+}
+
+.train {
+  position: absolute;
+  left: 0;
+  top: -20px;
+  transform: translateX(-50%);
+  z-index: 2;
+}
