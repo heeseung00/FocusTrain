@@ -202,7 +202,7 @@ function RoutePage() {
 
                     {/* 중간정차역 체크 */}
                     <div>
-                        <div>
+                        <div className="bg-mint-500">
                             <h4>중간 정차역(휴식)</h4>
                             <div>
                                 <p>잠시 쉬어가며 집중력을 유지합니다.</p>
