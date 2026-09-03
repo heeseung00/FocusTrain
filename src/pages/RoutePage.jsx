@@ -196,12 +196,12 @@ function RoutePage() {
                                     <div className="info duration">
                                         <h4>소요시간</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <div>{selectedStation ? formatTime(travelTime) : ''}</div>
+                                        <h3>{selectedStation ? formatTime(travelTime) : ''}</h3>
                                     </div>
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <div>{selectedStation ? formatTime(travelTime) : ''}</div>
+                                        <h3 class="accent">{selectedStation ? formatTime(travelTime) : ''}</h3>
                                     </div>
                                 </div>
                             </li>
@@ -209,47 +209,47 @@ function RoutePage() {
                             {/* 중간정차역 체크 */}
                             <li className="item">
                                 <div className="stop">
-                                    <h4>중간 정차역(휴식)</h4>
-                                    <div>
+                                    <div className="stop-text">
+                                        <h3>중간 정차역(휴식)</h3>
                                         <p>잠시 쉬어가며 집중력을 유지합니다.</p>
-                                        <div className="toggleWrap">
-                                            <div
-                                                className={`toggle ${isToggleOn ? 'toggle--on' : ''}`}
-                                                onClick={() => {
-                                                    console.log('토글 클릭 전:', isToggleOn);
-                                                    setIsToggleOn(!isToggleOn);
-                                                }}>
-                                                <div className="toggle__button"></div>
-                                            </div>
+                                    </div>
+                                    <div className="toggle-wrap">
+                                        <div
+                                            className={`toggle ${isToggleOn ? 'toggle-on' : ''}`}
+                                            onClick={() => {
+                                                console.log('토글 클릭 전:', isToggleOn);
+                                                setIsToggleOn(!isToggleOn);
+                                            }}>
+                                            <div className="toggle-button"></div>
                                         </div>
-
-                                        {/* 토글 ON일 때만 휴식 정보 표시 */}
-                                        {isToggleOn && selectedStation && (
-                                            <ToggleShow travelTime={travelTime} restCount={restCount} />
-                                        )}
                                     </div>
                                 </div>
+
+                                {/* 토글 ON일 때만 휴식 정보 표시 */}
+                                <ToggleShow
+                                    isToggleOn={isToggleOn}
+                                    selectedStation={selectedStation}
+                                    restCount={restCount}
+                                />
                             </li>
 
                             <li className="item">
                                 {/* 시간 조정 */}
-                                <div>
-                                    <TimeControl
-                                        focusTime={focusTime}
-                                        setFocusTime={setFocusTime}
-                                        travelTime={travelTime}
-                                    />
-                                </div>
+                                <TimeControl
+                                    focusTime={focusTime}
+                                    setFocusTime={setFocusTime}
+                                    travelTime={travelTime}
+                                />
                             </li>
                         </ul>
 
                         {/* 다음 페이지 이동 */}
-                        <div>
+                        <div className="button-group">
                             {/* <button type="submit" onClick={navigateGoToSeat}> */}
                             <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
                                 좌석 선택
                             </button>
-                            <button type="submit" onClick={() => handleNextPage(handleRandomSeat)}>
+                            <button className="accent" type="submit" onClick={() => handleNextPage(handleRandomSeat)}>
                                 바로 예매
                             </button>
                         </div>
@@ -261,11 +261,25 @@ function RoutePage() {
 }
 
 // 토글시 보여줄 내용
-function ToggleShow({ restCount }) {
+function ToggleShow({ isToggleOn, selectedStation, restCount }) {
+    if (!isToggleOn) {
+        return (
+            <div className="toggle-show">
+                <p>중간 정차 없이 이동해요</p>
+            </div>
+        );
+    }
+
+    if (!selectedStation) {
+        return (
+            <div className="toggle-show">
+                <p>도착지를 선택하면 표시돼요</p>
+            </div>
+        );
+    }
     return (
-        <div>
-            <h5>예상정차</h5>
-            <p>총 {restCount}번의 휴식이 있습니다.</p>
+        <div className="toggle-show">
+            <p>예상정차 {restCount}회 · 회당 10분</p>
         </div>
     );
 }
@@ -273,7 +287,7 @@ function ToggleShow({ restCount }) {
 // 시간 조정
 function TimeControl({ focusTime, setFocusTime, travelTime }) {
     const increase = () => {
-        // 숫자가 아닌 문자열로 더해지는 오류 방지(ex) '90+5 = 95'가 아니라 '90+5 = 905' 이렇게 오류남)
+        // 숫자가 아닌 문자열로 더해지는 오류 방지(ex) '90+5 = 905'이런 덧셈 오류를 '90+5 = 95'가 되도록)
         setFocusTime((prev) => prev + 5);
     };
 
@@ -285,14 +299,14 @@ function TimeControl({ focusTime, setFocusTime, travelTime }) {
         setFocusTime((prev) => prev - 5);
     };
     return (
-        <>
-            <h5>목표 시간</h5>
-            <>
+        <div className="time-control">
+            <h4>목표 시간</h4>
+            <div className="time-adjust">
                 <button onClick={decrease}>-</button>
-                <p>{formatTime(focusTime)}</p>
+                <h3>{formatTime(focusTime)}</h3>
                 <button onClick={increase}>+</button>
-            </>
-        </>
+            </div>
+        </div>
     );
 }
 

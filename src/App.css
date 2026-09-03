@@ -29,15 +29,14 @@
   color: var(--sub-text);
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
+/* .content {
+} */
+
 /* ===== 기차 선택 =====*/
 .train-select {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .train-select .title {
@@ -91,8 +90,10 @@ button[aria-checked="true"] {
 /* ===== 카드 선택 ===== */
 .card {
   display: grid;
-  grid: repeat(2, 1fr) / repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
   gap: var(--s4);
+  margin-bottom: 16px;
 }
 
 .item {
@@ -152,6 +153,86 @@ h4 {
   gap: 4px;
 }
 
+h3 {
+  font-size: var(--fs-lg);
+  font-weight: bold;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+.stop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.stop-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.stop-text p {
+  color: var(--sub-text);
+}
+
+.toggle-show {
+  text-align: left;
+  color: var(--accent-deep);
+  font-weight: 600;
+}
+
+.time-control {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.time-adjust {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.time-adjust button {
+  width: 36px;
+  height: 36px;
+  font-size: var(--fs-lg);
+  font-weight: bold;
+  color: var(--text);
+  border: none;
+  border-radius: 50%;
+}
+
+/* 버튼 공통 적용 */
+.button-group {
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  gap: var(--s4);
+}
+
+.button-group button {
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--r-md);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border-light);
+}
+
+.button-group button.accent {
+  background-color: var(--accent-bg);
+  color: var(--surface);
+  border-color: var(--accent);
+}
+
 /* ============================================ */
 
 /* 토글 버튼 */
@@ -165,11 +246,11 @@ h4 {
   transition: 0.3s;
 }
 
-.toggle--on {
+.toggle-on {
   background: #4caf50;
 }
 
-.toggle__button {
+.toggle-button {
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -177,6 +258,6 @@ h4 {
   transition: transform 0.3s;
 }
 
-.toggle--on .toggle__button {
+.toggle-on .toggle-button {
   transform: translateX(18px);
 }
