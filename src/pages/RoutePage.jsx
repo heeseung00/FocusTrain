@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { stationList } from '../utils/stationList.js';
-import { formatTime } from '../utils/time.js';
+import { formatTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { useTrip } from '../context/TripContext.jsx';
 // import styled from 'styled-components';
@@ -196,12 +196,12 @@ function RoutePage() {
                                     <div className="info duration">
                                         <h4>소요시간</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <h3>{selectedStation ? formatTime(travelTime) : ''}</h3>
+                                        <h3>{selectedStation ? formatTime(focusTime) : ''}</h3>
                                     </div>
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <h3 class="accent">{selectedStation ? formatTime(travelTime) : ''}</h3>
+                                        <h3 class="accent">{selectedStation ? getArriveTime(focusTime) : ''}</h3>
                                     </div>
                                 </div>
                             </li>
