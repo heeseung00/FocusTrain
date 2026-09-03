@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/TicketPage.css';
 import { stationList } from '../utils/stationList.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import { formatTime } from '../utils/time.js';
+import { formatTime, getArriveTime } from '../utils/time.js';
 import { useTrip } from '../context/TripContext.jsx';
 
 function TicketPage() {
@@ -45,21 +45,6 @@ function TicketPage() {
                 {String(today.hours).padStart(2, '0')}:{String(today.min).padStart(2, '0')}
             </>
         );
-    }
-
-    // 시간 계산 - 출발지 시간 + 소요시간 = 도착지 시간
-    function tripTime() {
-        function getArriveTime() {
-            // 시간을 분단위로 바꾼다 - ex) 16시간 = 60분 = 960분
-            const total = today.hours * 60 + today.min + travelTime;
-            // Math.floor로 소수점을 버리고 그 숫자에 24를 나누어 24시간이 넘어가면 다시 0부터 시작하도록 한다.
-            const hours = String(Math.floor(total / 60) % 24).padStart(2, '0');
-            const min = String(total % 60).padStart(2, '0');
-
-            return `${hours}:${min}`;
-        }
-
-        return getArriveTime();
     }
 
     function handleTicketClick() {
@@ -107,7 +92,7 @@ function TicketPage() {
                                     <li className="arrow">→</li>
                                     <li className="arrive">
                                         <h1 className="title">{selected}</h1>
-                                        <p className="time">{tripTime()}</p>
+                                        <p className="time">{getArriveTime(focusTime)}</p>
                                     </li>
                                 </ul>
                                 <div className="Destination"></div>
