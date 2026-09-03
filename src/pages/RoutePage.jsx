@@ -211,7 +211,7 @@ function RoutePage() {
                                 <div className="stop">
                                     <div className="stop-text">
                                         <h3>중간 정차역(휴식)</h3>
-                                        <p>잠시 쉬어가며 집중력을 유지합니다.</p>
+                                        <p>잠시 쉬어가며 집중력을 유지해요.</p>
                                     </div>
                                     <div className="toggle-wrap">
                                         <div
