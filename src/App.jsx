@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { TripProvider, useTrip } from './context/TripContext.jsx';
 
 import './App.css';
-// import { stationList } from './utils/stationList.js';
+import './styles/button.css';
 import RoutePage from './pages/RoutePage.jsx';
 import SeatPage from './pages/SeatPage.jsx';
 import TicketPage from './pages/TicketPage.jsx';
@@ -24,8 +24,22 @@ function App() {
 
 function AppRoutes() {
     const { train, selected, departure } = useTrip();
+    const { pathname } = useLocation();
+
+    const pageTitle = {
+        '/': '메인',
+        '/seat': '좌석 선택',
+        '/ticket': '티켓 발권',
+        '/timer': '타이머',
+        '/result': '도착 안내',
+    }[pathname];
     return (
         <section id="wrapper">
+            <div className="container">
+                <h1 className="title-text">FocusTrain</h1>
+                <div className="page">{pageTitle}</div>
+            </div>
+
             <Routes>
                 <Route path="/" element={<RoutePage />}></Route>
                 <Route path="/seat" element={train && selected ? <SeatPage /> : <Navigate to="/" replace />}></Route>
