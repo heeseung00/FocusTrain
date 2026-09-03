@@ -1,4 +1,7 @@
 .train-booking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 20px;
 }
 
@@ -7,14 +10,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px auto;
     position: relative;
-    width: 50%;
-    max-width: 600px;
+    width: 100%;
 }
 
 /* Train coaches display */
 .train-display {
+    width: 100%;
     display: flex;
     justify-content: center;
     gap: 5px;
@@ -22,11 +24,13 @@
     padding: 20px;
     position: relative;
     z-index: 2;
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    background: var(--surface);
 }
 
 .coach-button {
-    width: 70px;
-    height: 50px;
+    width: 100%;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -48,14 +52,64 @@
     z-index: 3;
 }
 
+.coach {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 380px;
+    padding: 24px;
+    background: var(--surface);
+    border-radius: 18px;
+}
+
+.coach-text {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.coach-notice {
+    display: flex;
+    gap: 16px;
+}
+
+.coach-notice li {
+    position: relative;
+}
+
+.coach-notice li h4 {
+    margin-left: 20px;
+}
+
+.coach-notice li h4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+}
+
+.coach-notice li h4.seleted::before {
+    background: var(--accent-bg);
+    border-color: var(--accent);
+}
+
 .seat-box {
-    width: 200px;
-    height: 100px;
-    border: 2px solid #3498db;
-    border-radius: 10px;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
     /* background: white; */
     transition: all 0.2s ease;
@@ -63,20 +117,16 @@
 }
 
 .seat-box:not(.booked):hover {
-    background: #87b1f1;
+    background: var(--accent-bg);
+    border-color: var(--accent);
     color: #fff;
-    transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.seat-box.booked {
-    background: #4caf50;
-    color: white;
-    border-color: #45a049;
-}
 /* 좌석 클릭했을때 효과 */
 .seat-box.selected {
-    background-color: #87b1f1;
+    background: var(--accent-bg);
+    border-color: var(--accent);
     color: #fff;
 }
 

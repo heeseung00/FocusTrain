@@ -118,17 +118,13 @@ function RoutePage() {
         <>
             <form onSubmit={(e) => e.preventDefault()}>
                 <>
-                    <div className="container">
-                        <h1 className="title-text">FocusTrain</h1>
-                        <div className="page">메인</div>
-                    </div>
-
                     <div className="content">
                         {/* 기차 종류 선택 */}
                         <div className="train-select">
                             <ul>
                                 <li>
                                     <button
+                                        className="option"
                                         type="button"
                                         className="counter"
                                         role="radio"
@@ -139,6 +135,7 @@ function RoutePage() {
                                 </li>
                                 <li>
                                     <button
+                                        className="option"
                                         type="button"
                                         className="counter"
                                         role="radio"
@@ -149,6 +146,7 @@ function RoutePage() {
                                 </li>
                                 <li>
                                     <button
+                                        className="option"
                                         type="button"
                                         className="counter"
                                         role="radio"
@@ -239,6 +237,7 @@ function RoutePage() {
                                     focusTime={focusTime}
                                     setFocusTime={setFocusTime}
                                     travelTime={travelTime}
+                                    selectedStation={selectedStation}
                                 />
                             </li>
                         </ul>
@@ -285,14 +284,19 @@ function ToggleShow({ isToggleOn, selectedStation, restCount }) {
 }
 
 // 시간 조정
-function TimeControl({ focusTime, setFocusTime, travelTime }) {
+function TimeControl({ focusTime, setFocusTime, travelTime, selectedStation }) {
     const increase = () => {
+        // 역 선택 전에는 미작동
+        if (!selectedStation) {
+            return;
+        }
         // 숫자가 아닌 문자열로 더해지는 오류 방지(ex) '90+5 = 905'이런 덧셈 오류를 '90+5 = 95'가 되도록)
         setFocusTime((prev) => prev + 5);
     };
 
     const decrease = () => {
-        if (focusTime <= 10) {
+        // 역 선택 전에는 미작동, 10분 이하로는 감소X
+        if (!selectedStation || focusTime <= 10) {
             return;
         }
 

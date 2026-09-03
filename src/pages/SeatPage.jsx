@@ -35,19 +35,17 @@ const SeatPage = () => {
 
     return (
         <div className="train-booking">
-            <h1>좌석 선택</h1>
-
             <div className="train-container">
                 {/* 기차 호차 선택 */}
                 <div className="train-display">
                     {Object.keys(seats).map((coachId) => (
-                        <div
+                        <button
                             key={coachId}
                             className={`coach-button ${activeCoach === Number(coachId) ? 'active' : ''}`}
                             onClick={() => handleCoachClick(coachId)}>
                             {coachId}호차
                             {/* <div className="coach-label">{coachId}호차</div> */}
-                        </div>
+                        </button>
                     ))}
                 </div>
             </div>
@@ -65,7 +63,7 @@ const SeatPage = () => {
             {/* 예매 버튼 - 좌석 선택시 버튼 활성화되어 다음 페이지로 이동가능 */}
             <div>
                 <button
-                    className={`reservation-btn ${selectedSeat ? 'active' : ''}`}
+                    className={`accent reservation-btn  ${selectedSeat ? 'active' : ''}`}
                     onClick={navigateGoToTicket}
                     disabled={!selectedSeat}>
                     예매하기

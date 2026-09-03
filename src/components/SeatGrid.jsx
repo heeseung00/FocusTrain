@@ -1,7 +1,17 @@
 function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
         <div className="coach">
-            <h2>Coach {activeCoach}</h2>
+            <div className="coach-text">
+                <h2>Coach {activeCoach}</h2>
+                <ul className="coach-notice">
+                    <li>
+                        <h4>선택가능</h4>
+                    </li>
+                    <li>
+                        <h4 className="seleted">선택됨</h4>
+                    </li>
+                </ul>
+            </div>
 
             {Object.entries(seats[activeCoach]).map(([row, rowSeats], index) => {
                 // 번호를 역순으로 표시
