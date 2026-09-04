@@ -19,6 +19,7 @@
 }
 
 .title-text {
+  padding: 16px 0;
   font-size: var(--fs-xl);
   font-weight: var(--fw-bl);
   color: var(--text-h);

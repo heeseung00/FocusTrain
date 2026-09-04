@@ -70,8 +70,6 @@ function TicketPage() {
 
     return (
         <>
-            <h1>기차표 뽑기</h1>
-
             <div className="ticket-page">
                 <div className="ambient-light"></div>
 
@@ -80,7 +78,6 @@ function TicketPage() {
                         <div className="ticket-content">
                             <header className="ticket-header">
                                 <span className="date">{TodayDate()}</span>
-                                <span className="type">{train}</span>
                             </header>
 
                             <div className="ticket-body">
@@ -89,21 +86,25 @@ function TicketPage() {
                                         <h1 className="title">서울</h1>
                                         <p className="time">{TodayTime()}</p>
                                     </li>
-                                    <li className="arrow">→</li>
+                                    <li className="arrow">
+                                        <div className="arrow-text">{formatTime(focusTime)}</div>
+                                    </li>
                                     <li className="arrive">
                                         <h1 className="title">{selected}</h1>
                                         <p className="time">{getArriveTime(focusTime)}</p>
                                     </li>
                                 </ul>
-                                <div className="Destination"></div>
-                                <p className="subtitle">{formatTime(focusTime)}</p>
+                                {/* <div className="Destination"></div>
+                                <p className="subtitle">{formatTime(focusTime)}</p> */}
                             </div>
 
                             <footer className="ticket-footer">
                                 <div className="info-block">
+                                    <h4>열차정보</h4>
                                     <span className="label">{trainLabel}</span>
                                 </div>
                                 <div className="info-block">
+                                    <h4>좌석번호</h4>
                                     <span className="label">
                                         {activeCoach}호차 {selectedSeat?.seatNumber}석
                                     </span>
@@ -119,9 +120,11 @@ function TicketPage() {
                         <div className="barcode-wrap">
                             <div className="barcode"></div>
                         </div>
-                        <p className="stub-text">Focus Trip</p>
+                        <p className="stub-text">Focus Train</p>
                     </aside>
                 </div>
+
+                <p className="ticket-guide">티켓을 눌러 여정을 시작하세요</p>
             </div>
         </>
     );

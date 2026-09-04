@@ -35,7 +35,7 @@ export function TripProvider({ children }) {
     // 현재 선택된 호차
     const [activeCoach, setActiveCoach] = useState(1);
     // 현재 선택된 좌석
-    const [selectedSeat, setSelectedSeat] = useState(null);
+    const [selectedSeat, setSelectedSeat] = useState(false);
 
     // 타이머 경과시간 표시
     const [elapsed, setElapsed] = useState(0);
@@ -59,7 +59,7 @@ export function TripProvider({ children }) {
             5: createCoachSeats(),
         });
         setActiveCoach(1);
-        setSelectedSeat(null);
+        setSelectedSeat(false);
         setElapsed(0);
         setResultPercent(0);
     };
