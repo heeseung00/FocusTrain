@@ -23,6 +23,10 @@
   --signal: #ef3b4e;
   --signal-tint: #fdeaec;
 
+  /* Disabled */
+  --disabled-bg: #f1f1f3;
+  --disabled-border: #d9d9de;
+
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
   /* 폰트 */

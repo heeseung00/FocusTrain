@@ -64,7 +64,7 @@ const SeatPage = () => {
                 {/* 예매 버튼 - 좌석 선택시 버튼 활성화되어 다음 페이지로 이동가능 */}
                 <div className="button-group">
                     <button
-                        className={`accent reservation-btn  ${selectedSeat ? 'active' : ''}`}
+                        className={`reservation-btn ${selectedSeat ? 'accent' : 'disable '}`}
                         onClick={navigateGoToTicket}
                         disabled={!selectedSeat}>
                         예매하기

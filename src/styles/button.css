@@ -25,6 +25,7 @@ button.accent {
     background-color: var(--accent-bg);
     color: var(--surface);
     border-color: var(--accent);
+    pointer-events: auto;
 }
 
 /* 선택 버튼 */
@@ -40,6 +41,12 @@ button.option {
         outline: 2px solid var(--accent);
         outline-offset: 2px;
     }
+}
+
+button.disable {
+    border-color: var(--disabled-border);
+    background-color: var(--disabled-bg);
+    color: var(--sub-text);
 }
 
 /* 선택된 버튼 */

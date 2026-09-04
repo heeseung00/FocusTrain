@@ -19,10 +19,6 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
 
                 return (
                     <div key={row} className="seat-row">
-                        {/* <h3>
-                                    {activeCoach} ({row})
-                                </h3> */}
-
                         <div className="seat-list">
                             <Seat
                                 seatType={`${seatNumber}A`}

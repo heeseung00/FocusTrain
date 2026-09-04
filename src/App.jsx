@@ -36,7 +36,7 @@ function AppRoutes() {
     return (
         <section id="wrapper">
             <div className="container">
-                <h1 className="title-text">FocusTrain</h1>
+                <h1 className="title-text">Focus Train</h1>
                 <div className="page">{pageTitle}</div>
             </div>
 

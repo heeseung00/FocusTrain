@@ -55,6 +55,9 @@
 }
 
 .coach-select {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     max-width: 380px;
     width: 100%;
 }
@@ -191,9 +194,4 @@
     border-radius: 14px;
     background: #b1b1b1;
     pointer-events: none;
-}
-
-.reservation-btn.active {
-    /* background-color: #2980b9; */
-    pointer-events: auto;
 }
