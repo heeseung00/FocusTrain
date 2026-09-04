@@ -2,7 +2,7 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
         <div className="coach">
             <div className="coach-text">
-                <h2>Coach {activeCoach}</h2>
+                <h2>{activeCoach}호차</h2>
                 <ul className="coach-notice">
                     <li>
                         <h4>선택가능</h4>
@@ -38,7 +38,9 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                                 onClick={() => handleSeatClick(row, 'LeftSeat2', `${seatNumber}B`)}
                             />
 
-                            <div className="seat-aisle"></div>
+                            <div className="seat-aisle">
+                                <img src="" alt="" />
+                            </div>
 
                             <Seat
                                 seatType={`${seatNumber}C`}

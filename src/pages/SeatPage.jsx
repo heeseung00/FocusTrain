@@ -50,24 +50,26 @@ const SeatPage = () => {
                 </div>
             </div>
 
-            {/* 기차 좌석 선택 */}
-            {activeCoach && (
-                <SeatGrid
-                    seats={seats}
-                    activeCoach={activeCoach}
-                    selectedSeat={selectedSeat}
-                    handleSeatClick={handleSeatClick}
-                />
-            )}
+            <div className="coach-select">
+                {/* 기차 좌석 선택 */}
+                {activeCoach && (
+                    <SeatGrid
+                        seats={seats}
+                        activeCoach={activeCoach}
+                        selectedSeat={selectedSeat}
+                        handleSeatClick={handleSeatClick}
+                    />
+                )}
 
-            {/* 예매 버튼 - 좌석 선택시 버튼 활성화되어 다음 페이지로 이동가능 */}
-            <div>
-                <button
-                    className={`accent reservation-btn  ${selectedSeat ? 'active' : ''}`}
-                    onClick={navigateGoToTicket}
-                    disabled={!selectedSeat}>
-                    예매하기
-                </button>
+                {/* 예매 버튼 - 좌석 선택시 버튼 활성화되어 다음 페이지로 이동가능 */}
+                <div className="button-group">
+                    <button
+                        className={`accent reservation-btn  ${selectedSeat ? 'active' : ''}`}
+                        onClick={navigateGoToTicket}
+                        disabled={!selectedSeat}>
+                        예매하기
+                    </button>
+                </div>
             </div>
         </div>
     );
