@@ -57,16 +57,16 @@ function TicketPage() {
     // 열차 선택값 받아오기
     const { train, selected, activeCoach, selectedSeat, focusTime } = useTrip();
 
-    const { trainKey, selectedStation, travelTime } = getTrainInfo(train, selected, stationList);
+    const { trainKey, selectedStation, travelTime, trainLabel } = getTrainInfo(train, selected, stationList);
 
-    // 열차 종류에 따라 기차 이름 다르게
-    const trainLabelS = {
-        KTX: 'KTX 001',
-        ITX: 'ITX-새마을',
-        무궁화: '무궁화호 1151',
-    };
+    // // 열차 종류에 따라 기차 이름 다르게
+    // const trainLabelS = {
+    //     KTX: 'KTX 001',
+    //     ITX: 'ITX-새마을',
+    //     무궁화: '무궁화호 1151',
+    // };
 
-    const trainLabel = trainLabelS[train];
+    // const trainLabel = trainLabelS[train];
 
     return (
         <>

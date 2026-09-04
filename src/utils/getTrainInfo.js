@@ -14,10 +14,20 @@ export function getTrainInfo() {
     // 이동시간에 따른 휴식 횟수 (중간 정차역)
     const restCount = focusTime >= 20 ? Math.floor(focusTime / 20) : 0;
 
+    // 열차 종류에 따라 기차 이름 다르게
+    const trainLabelS = {
+        KTX: 'KTX 001',
+        ITX: 'ITX-새마을',
+        무궁화: '무궁화호 1151',
+    };
+
+    const trainLabel = trainLabelS[train];
+
     return {
         trainKey,
         selectedStation,
         travelTime,
         restCount,
+        trainLabel,
     };
 }
