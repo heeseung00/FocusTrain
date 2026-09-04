@@ -27,9 +27,10 @@ function TimerPage() {
         totalTime,
         elapsed,
         setElapsed,
+        resultPercent,
     } = useTrip();
 
-    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
+    const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 
     const [initialtimer, setinitalTimer] = useState({
         focusTime: travelTime,
@@ -43,12 +44,13 @@ function TimerPage() {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     return (
-        <>
+        <div className="pomodoro">
             <div className="pomodoroMainText">
-                <h1>FOCUS TRIP</h1>
-            </div>
-            <div className="pomodoroTimerSet">
-                <p>Timer Set</p>
+                <p>
+                    {departure} → {selectedStation?.city} · {trainLabel}
+                </p>
+
+                <p className="percent">{resultPercent}%</p>
             </div>
             <PomodoroMain
                 timerValue={initialtimer}
@@ -62,7 +64,7 @@ function TimerPage() {
                 elapsed={elapsed}
                 setElapsed={setElapsed}
             />
-        </>
+        </div>
     );
 }
 
@@ -78,19 +80,12 @@ function PomodoroMain({
     isToggleOn,
     elapsed,
     setElapsed,
-    // totalTime,
-    // remainingTime,
 }) {
     // 전체 시간 표시
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
     const timeminute = parseInt(timerValue.focusTime);
-    // const [termArray, setTermArray] = useState(new Array(timerValue.sections).fill('○'));
-    // const hours = Math.floor(totalSeconds / 3600);
-
-    // const minutes = Math.floor((totalSeconds % 3600) / 60);
-    // const seconds = totalSeconds % 60;
 
     const totalSecondsTime = parseInt(timerValue.focusTime) * 60;
 
@@ -185,13 +180,6 @@ function PomodoroMain({
 
     return (
         <div className="pomodoroMain">
-            <ProgressTimer
-                totalTime={parseInt(timerValue.focusTime) * 60}
-                remainingTime={totalSeconds}
-                departure={departure}
-                selectedStation={selectedStation}
-            />
-
             <div className="pomodoroTimer">
                 <div className="pomodoroTimerText">
                     <div className="pomodoroTimes">
@@ -201,6 +189,13 @@ function PomodoroMain({
                             {/* {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
                             {seconds < 10 ? `0${seconds}` : seconds} */}
                         </p>
+
+                        <ProgressTimer
+                            totalTime={parseInt(timerValue.focusTime) * 60}
+                            remainingTime={totalSeconds}
+                            departure={departure}
+                            selectedStation={selectedStation}
+                        />
                         <div>
                             {/* 임시 주석 - 타이머 시작, 멈춤, 리셋 이미지
                                 <img src={playIcon} alt="play" width={20} height={20} onClick={handleTimerStart}></img>
@@ -232,7 +227,10 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
 
     return (
         <div className="progress-bar">
-            <div>{departure}</div>
+            <div className="station-wrap">
+                <div>{departure}</div>
+                <div>{selectedStation?.city}</div>
+            </div>
             <div className="progress-track">
                 <div className="train" style={{ left: `${percent}%`, transition: 'left 1s linear' }}>
                     🚂
@@ -248,8 +246,6 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
                 transitionDuration="1s"
                 transitionTimingFunction="linear"
             />
-            <div className="percent">{percentResult}%</div>
-            <div>{selectedStation?.city}</div>
         </div>
     );
 }

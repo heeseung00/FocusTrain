@@ -207,3 +207,15 @@ h3 {
 .toggle-on .toggle-button {
   transform: translateX(18px);
 }
+
+/* TimerPage.jsx */
+.pomodoroMainText {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.station-wrap {
+  display: flex;
+  justify-content: space-between;
+}

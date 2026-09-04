@@ -199,7 +199,7 @@ function RoutePage() {
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <h3 class="accent">{selectedStation ? getArriveTime(focusTime) : ''}</h3>
+                                        <h3 className="accent">{selectedStation ? getArriveTime(focusTime) : ''}</h3>
                                     </div>
                                 </div>
                             </li>
