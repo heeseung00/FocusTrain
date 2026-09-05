@@ -43,6 +43,11 @@ export function TripProvider({ children }) {
     // 타이머 퍼센트
     const [resultPercent, setResultPercent] = useState(0);
 
+    // 타이머가 지금 움직이는지 상태 확인
+    const [timerState, setTimerState] = useState(false);
+    // 모달 열기
+    const [modal, setModal] = useState(false);
+
     // 공통 context 초기화
     const resetTrip = () => {
         setTrain('KTX');
@@ -62,6 +67,8 @@ export function TripProvider({ children }) {
         setSelectedSeat(false);
         setElapsed(0);
         setResultPercent(0);
+        setTimerState(false);
+        setModal(false);
     };
 
     return (
@@ -87,6 +94,10 @@ export function TripProvider({ children }) {
                 setElapsed,
                 resultPercent,
                 setResultPercent,
+                timerState,
+                setTimerState,
+                modal,
+                setModal,
 
                 // 공통 context 초기화
                 resetTrip,

@@ -209,13 +209,107 @@ h3 {
 }
 
 /* TimerPage.jsx */
+.pomodoroMain {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .pomodoroMainText {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: bold;
+  color: var(--sub-text);
+}
+
+.pomodoroMainText .percent {
+  color: var(--accent);
+}
+
+.pomodoroTimes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.pomodoroTimes {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.remaining {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.remaining-time {
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .station-wrap {
   display: flex;
   justify-content: space-between;
+}
+
+/* 타이머 */
+.elapsed-timer {
+  font-size: 72px;
+  font-weight: bold;
+}
+.pomodoroTimes .arrive {
+  font-size: var(--fs-md);
+}
+
+/* 모달 */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.modal-content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 400px;
+}
+
+.modal-content h2 {
+  font-size: var(--fs-xl);
+  font-weight: 600;
+}
+
+.now h4 {
+  margin-bottom: 4px;
+}
+
+.now h1 {
+  font-size: var(--fs-5xl);
+  font-weight: 700;
+}
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
