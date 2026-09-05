@@ -73,6 +73,11 @@ function TimerPage() {
                 resultPercent={resultPercent}
                 trainLabel={trainLabel}
                 stationList={stationList}
+                isResting={isResting}
+                setIsResting={setIsResting}
+                currentIndex={currentIndex}
+                setCurrentIndex={setCurrentIndex}
+                setRestSeconds={setRestSeconds}
             />
 
             <StationList restCount={restCount} currentIndex={currentIndex} />
@@ -219,14 +224,15 @@ function PomodoroMain({
                 const elapsed = totalSecondsTime - next;
                 // ======================
                 // 집중 시간(테스트용)
-                const totalTime = 5;
+                const isStopTime = elapsed > 0 && elapsed % 5 === 0;
                 // ======================
-                const isStopTime = elapsed > 0 && elapsed % (20 * 60) === 0;
+                // const isStopTime = elapsed > 0 && elapsed % (20 * 60) === 0;
 
                 if (isToggleOn && isStopTime && currentIndex < restCount) {
                     setTimerState(false);
                     setIsResting(true);
                     setRestSeconds(20 * 60);
+                    setModal('rest');
                 }
 
                 return next;
