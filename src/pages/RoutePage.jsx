@@ -23,6 +23,7 @@ function RoutePage() {
         seats,
         setActiveCoach,
         setSelectedSeat,
+        currentIndex,
     } = useTrip();
 
     //  ---- 선택에서 파생되는 값들 ----

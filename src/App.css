@@ -208,6 +208,7 @@ h3 {
   transform: translateX(18px);
 }
 
+/* ============================================ */
 /* TimerPage.jsx */
 .pomodoroMain {
   display: flex;
@@ -255,6 +256,8 @@ h3 {
 .station-wrap {
   display: flex;
   justify-content: space-between;
+  font-size: var(--fs-md);
+  font-weight: 700;
 }
 
 /* 타이머 */
@@ -266,6 +269,18 @@ h3 {
   font-size: var(--fs-md);
 }
 
+/* 프로그래스 바 */
+.progress-track {
+  position: relative;
+}
+
+.train {
+  position: absolute;
+  top: -16px;
+  transform: translate(-50%, -0%);
+}
+
+/* ============================================ */
 /* 모달 */
 .modal {
   display: flex;
