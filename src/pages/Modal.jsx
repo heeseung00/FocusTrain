@@ -7,22 +7,7 @@ import { getTrainInfo } from '../utils/getTrainInfo.js';
 
 function Modal() {
     // ---- 선택 상태 ----
-    const {
-        train,
-        selected,
-        isToggleOn,
-        focusTime,
-        departure,
-        setActiveCoach,
-        setSelectedSeat,
-        totalTime,
-        elapsed,
-        setElapsed,
-        resultPercent,
-        modal,
-        setModal,
-        setTimerState,
-    } = useTrip();
+    const { modal, setModal, elapsed, setTimerState } = useTrip();
 
     const navigate = useNavigate();
 
@@ -36,42 +21,84 @@ function Modal() {
 
     if (!modal) return null;
 
-    const handleBack = () => {
-        setModal(false);
-        setTimerState(true);
+    const modalContent = {
+        departure: {
+            title: '출발지를 선택해주세요.',
+            confirmText: '확인',
+        },
+
+        arrival: {
+            title: '도착지를 선택해주세요.',
+            confirmText: '확인',
+        },
+
+        rest: {
+            title: '정차역에 도착했습니다.',
+            description: '20분간 정차합니다.',
+            confirmText: '확인',
+        },
+
+        end: {
+            title: '여행을 종료할까요?',
+            confirmText: '종료하기',
+            cancelText: '돌아가기',
+        },
     };
 
-    const handleEnd = () => {
+    const content = modalContent[modal];
+
+    const handleConfirm = () => {
+        if (modal === 'end') {
+            setModal(false);
+            setTimerState(false);
+            navigate('/result');
+            return;
+        }
+
+        if (modal === 'rest') {
+            setModal(false);
+            setTimerState(true);
+            return;
+        }
+
+        // 출발지/도착지 미선택
         setModal(false);
-        setTimerState(false);
-        navigate('/result');
+    };
+
+    const handleCancel = () => {
+        setModal(false);
+        setTimerState(true);
+        // navigate('/result');
     };
 
     return (
-        <>
-            {modal && (
-                <div className="modal">
-                    <div className="modal-content item">
-                        <h2>여행을 종료할까요?</h2>
+        <div className="modal">
+            <div className="modal-content item">
+                {/* <h2>여행을 종료할까요?</h2> */}
+                <h2>{content.title}</h2>
 
-                        <div className="now">
-                            <h4>현재 집중 시간</h4>
-                            <h1>{TimerformatTime(elapsed)}</h1>
-                        </div>
-
-                        <div className="button-group">
-                            <button className="" onClick={handleBack}>
-                                돌아가기
-                            </button>
-                            <button className="end" onClick={handleEnd}>
-                                종료하기
-                            </button>
-                        </div>
+                {content.description && <p>{content.description}</p>}
+                {modal === 'end' && (
+                    <div className="now">
+                        <h4>현재 집중 시간</h4>
+                        <h1>{TimerformatTime(elapsed)}</h1>
                     </div>
-                    <div className="modal-background"></div>
+                )}
+
+                <div className="button-group">
+                    {content.cancelText && (
+                        <button type="button" onClick={handleCancel}>
+                            {content.cancelText}
+                        </button>
+                    )}
+
+                    <button type="button" className={modal === 'end' ? 'end' : ''} onClick={handleConfirm}>
+                        {content.confirmText}
+                    </button>
                 </div>
-            )}
-        </>
+            </div>
+            <div className="modal-background"></div>
+        </div>
     );
 }
 

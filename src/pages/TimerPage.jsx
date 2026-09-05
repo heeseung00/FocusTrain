@@ -32,6 +32,8 @@ function TimerPage() {
         resultPercent,
         timerState,
         setTimerState,
+        modal,
+        setModal,
     } = useTrip();
 
     const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
@@ -45,6 +47,15 @@ function TimerPage() {
     const [isPaused, setIsPaused] = useState(false);
 
     const [currentSlide, setCurrentSlide] = useState(0);
+
+    // 중간 정차 시간 관리
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isResting, setIsResting] = useState(false);
+    const [restSeconds, setRestSeconds] = useState(20 * 60);
+
+    const handleEndClick = () => {
+        setModal('end');
+    };
 
     return (
         <div className="pomodoro">
@@ -64,6 +75,7 @@ function TimerPage() {
                 stationList={stationList}
             />
 
+            <StationList restCount={restCount} currentIndex={currentIndex} />
             <Modal />
         </div>
     );
@@ -84,18 +96,25 @@ function PomodoroMain({
     resultPercent,
     trainLabel,
     stationList,
+
+    isResting,
+    setIsResting,
+    currentIndex,
+    setCurrentIndex,
+    setRestSeconds,
 }) {
     // 모달 열기
     const { setModal } = useTrip();
     const handleModalOpen = () => {
         setTimerState(false);
-        setModal(true);
+        setModal('end');
     };
 
     // 전체 시간 표시
     const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
+
     const timeminute = parseInt(timerValue.focusTime);
 
     const totalSecondsTime = parseInt(timerValue.focusTime) * 60;
@@ -161,22 +180,22 @@ function PomodoroMain({
         handleTimerStart();
     }, []);
 
-    useEffect(() => {
-        if (!timerState) return;
+    // useEffect(() => {
+    //     if (!timerState) return;
 
-        const countdown = setInterval(() => {
-            // [1] 타이머 리셋 될 때
-            setTotalSeconds((prev) => {
-                if (prev <= 1) {
-                    clearInterval(countdown);
-                }
+    //     const countdown = setInterval(() => {
+    //         // [1] 타이머 리셋 될 때
+    //         setTotalSeconds((prev) => {
+    //             if (prev <= 1) {
+    //                 clearInterval(countdown);
+    //             }
 
-                return prev - 1;
-            });
-        }, 1000);
+    //             return prev - 1;
+    //         });
+    //     }, 1000);
 
-        return () => clearInterval(countdown);
-    }, [timerState, timerValue]);
+    //     return () => clearInterval(countdown);
+    // }, [timerState, timerValue]);
 
     // 타이머 종류 후 결과 페이지로 이동
     useEffect(() => {
@@ -188,6 +207,34 @@ function PomodoroMain({
             }, 1000);
         }
     }, [totalSeconds, navigate, setTimerState]);
+
+    useEffect(() => {
+        if (!timerState || isResting) return;
+
+        const countdown = setInterval(() => {
+            setTotalSeconds((prev) => {
+                const next = prev - 1;
+
+                // 20분마다 정차
+                const elapsed = totalSecondsTime - next;
+                // ======================
+                // 집중 시간(테스트용)
+                const totalTime = 5;
+                // ======================
+                const isStopTime = elapsed > 0 && elapsed % (20 * 60) === 0;
+
+                if (isToggleOn && isStopTime && currentIndex < restCount) {
+                    setTimerState(false);
+                    setIsResting(true);
+                    setRestSeconds(20 * 60);
+                }
+
+                return next;
+            });
+        }, 1000);
+
+        return () => clearInterval(countdown);
+    }, [timerState, isResting, currentIndex, restCount, totalSecondsTime]);
 
     return (
         <div className="pomodoroMain item">
@@ -276,6 +323,41 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
                 transitionDuration="1s"
                 transitionTimingFunction="linear"
             />
+        </div>
+    );
+}
+
+function StationList({ restCount, currentIndex }) {
+    return (
+        //정차역 갯수에 따라 list 갯수 나오도록
+        <div className="station-list">
+            <ul>
+                {Array.from({ length: restCount }).map((_, index) => {
+                    let status;
+
+                    if (index < currentIndex) {
+                        status = '완료 · 20분';
+                    } else if (index === currentIndex) {
+                        status = '진행중';
+                    } else {
+                        status = '예정';
+                    }
+
+                    return (
+                        <li key={index}>
+                            <span></span>
+                            <div>정차{index + 1}</div>
+
+                            <div
+                                className={
+                                    index < currentIndex ? 'passed' : index === currentIndex ? 'current' : 'coming'
+                                }>
+                                {status}
+                            </div>
+                        </li>
+                    );
+                })}
+            </ul>
         </div>
     );
 }
