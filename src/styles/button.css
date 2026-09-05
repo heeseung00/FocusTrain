@@ -49,6 +49,13 @@ button.disable {
     color: var(--sub-text);
 }
 
+button.end {
+    background-color: var(--surface);
+    color: var(--signal);
+    border-color: var(--signal);
+    pointer-events: auto;
+}
+
 /* 선택된 버튼 */
 button[aria-checked="true"] {
     border-color: var(--accent);
