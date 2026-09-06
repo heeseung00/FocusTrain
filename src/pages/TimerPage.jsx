@@ -81,7 +81,7 @@ function TimerPage() {
             />
 
             <StationList restCount={restCount} currentIndex={currentIndex} />
-            <Modal />
+            <Modal setIsResting={setIsResting} />
         </div>
     );
 }
@@ -108,6 +108,8 @@ function PomodoroMain({
     setCurrentIndex,
     setRestSeconds,
 }) {
+    const triggeredStopsRef = useRef(new Set()); // ← 추가로 선언 (컴포넌트 최상단에)
+
     // 모달 열기
     const { setModal } = useTrip();
     const handleModalOpen = () => {
@@ -145,6 +147,7 @@ function PomodoroMain({
 
     const handleTimerStart = () => {
         setTimerReset(false);
+        setIsResting(false);
         setTimerState(true);
     };
     const handleTimerStop = () => {
@@ -174,6 +177,7 @@ function PomodoroMain({
     };
     const handleTimerReset = () => {
         setTotalSeconds(parseInt(timerValue.focusTime) * 60);
+        setIsResting(false);
         setTimerState(false);
     };
     const handleTimerSet = (minutes) => {
@@ -217,30 +221,32 @@ function PomodoroMain({
         if (!timerState || isResting) return;
 
         const countdown = setInterval(() => {
-            setTotalSeconds((prev) => {
-                const next = prev - 1;
-
-                // 20분마다 정차
-                const elapsed = totalSecondsTime - next;
-                // ======================
-                // 집중 시간(테스트용)
-                const isStopTime = elapsed > 0 && elapsed % 5 === 0;
-                // ======================
-                // const isStopTime = elapsed > 0 && elapsed % (20 * 60) === 0;
-
-                if (isToggleOn && isStopTime && currentIndex < restCount) {
-                    setTimerState(false);
-                    setIsResting(true);
-                    setRestSeconds(20 * 60);
-                    setModal('rest');
-                }
-
-                return next;
-            });
+            setTotalSeconds((prev) => Math.max(prev - 1, 0));
         }, 1000);
 
         return () => clearInterval(countdown);
-    }, [timerState, isResting, currentIndex, restCount, totalSecondsTime]);
+    }, [timerState, isResting]);
+
+    useEffect(() => {
+        if (!timerState || isResting) return;
+
+        const currentElapsed = totalSecondsTime - totalSeconds;
+        const stopUnit = Math.floor(currentElapsed / 5);
+        const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0;
+        // const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
+        const alreadyTriggered = triggeredStopsRef.current.has(stopUnit);
+
+        if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
+            triggeredStopsRef.current.add(stopUnit);
+
+            setTimerState(false);
+            setIsResting(true);
+            // setRestSeconds(20 * 60);
+            setRestSeconds(5);
+            setModal('rest');
+            setCurrentIndex((prev) => prev + 1);
+        }
+    }, [totalSeconds, totalSecondsTime, timerState, isResting, isToggleOn, currentIndex, restCount]);
 
     return (
         <div className="pomodoroMain item">
