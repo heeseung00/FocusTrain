@@ -5,7 +5,7 @@ import { stationList } from '../utils/stationList.js';
 import { getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 
-function Modal() {
+function Modal({ setIsResting }) {
     // ---- 선택 상태 ----
     const { modal, setModal, elapsed, setTimerState } = useTrip();
 
@@ -34,6 +34,7 @@ function Modal() {
 
         rest: {
             title: '정차역에 도착했습니다.',
+            // timer: ,
             description: '20분간 정차합니다.',
             confirmText: '확인',
         },
@@ -56,13 +57,14 @@ function Modal() {
         }
 
         if (modal === 'rest') {
-            setModal(false);
+            setIsResting(false);
             setTimerState(true);
+            setModal(false);
             return;
         }
 
         // 출발지/도착지 미선택
-        setModal(false);
+        setModal(null);
     };
 
     const handleCancel = () => {
