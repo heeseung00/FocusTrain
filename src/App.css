@@ -390,3 +390,68 @@ h3 {
   justify-content: center;
   align-items: center;
 }
+
+/* ============================================ */
+/* 결과 페이지 */
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.result-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-title .info {
+  color: var(--sub-text);
+}
+
+h2.depart {
+  font-size: var(--fs-11xl);
+  font-weight: 700;
+}
+
+.result-metric {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric-text {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+img.icon {
+  width: 19px;
+  height: 19px;
+}
+
+.result-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 12px;
+  color: var(--accent-deep);
+  background-color: var(--accent-tint);
+}
+
+.notice-text {
+  font-weight: 600;
+}
