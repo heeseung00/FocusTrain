@@ -210,6 +210,12 @@ h3 {
 
 /* ============================================ */
 /* TimerPage.jsx */
+.pomodoro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 .pomodoroMain {
   display: flex;
   flex-direction: column;
@@ -278,6 +284,60 @@ h3 {
   position: absolute;
   top: -16px;
   transform: translate(-50%, -0%);
+}
+
+.station-list {
+  overflow-y: auto;
+}
+
+.station-list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.station-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  font-weight: 700;
+  color: var(--sub-text);
+  border-radius: 8px;
+}
+
+.station-list .passed h5 {
+  color: var(--accent);
+}
+.station-list .current {
+  background-color: var(--accent-tint);
+}
+.station-list .current h5 {
+  color: var(--accent);
+}
+.station-list .current p {
+  color: var(--accent);
+}
+
+.station-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.station-title h5 {
+  color: var(--sub-text);
+}
+
+.station-title p {
+  color: var(--sub-text);
+}
+
+.station-title span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--accent);
 }
 
 /* ============================================ */
