@@ -331,6 +331,8 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
                 height="8px"
                 width="100%"
                 isLabelVisible={false}
+                baseBgColor="#E7E7EC" // 배경색
+                bgColor="#4B3FE0" // 진행바 색상
                 animateOnRender={false}
                 transitionDuration="1s"
                 transitionTimingFunction="linear"
@@ -340,9 +342,14 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
 }
 
 function StationList({ restCount, currentIndex }) {
+    const containerHeight = document.querySelector('.container')?.offsetHeight ?? 0;
+    const pomodoroHeight = document.querySelector('.pomodoroMain')?.offsetHeight ?? 0;
+
+    const maxStationHeight = window.innerHeight - containerHeight - pomodoroHeight;
+
     return (
         //정차역 갯수에 따라 list 갯수 나오도록
-        <div className="station-list">
+        <div className="station-list item" style={{ maxHeight: maxStationHeight }}>
             <ul>
                 {Array.from({ length: restCount }).map((_, index) => {
                     let status;
@@ -356,16 +363,15 @@ function StationList({ restCount, currentIndex }) {
                     }
 
                     return (
-                        <li key={index}>
-                            <span></span>
-                            <div>정차{index + 1}</div>
-
-                            <div
-                                className={
-                                    index < currentIndex ? 'passed' : index === currentIndex ? 'current' : 'coming'
-                                }>
-                                {status}
+                        <li
+                            key={index}
+                            className={index < currentIndex ? 'passed' : index === currentIndex ? 'current' : 'coming'}>
+                            <div className="station-title">
+                                <span></span>
+                                <h5>정차{index + 1}</h5>
                             </div>
+
+                            <p>{status}</p>
                         </li>
                     );
                 })}
