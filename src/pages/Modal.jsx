@@ -5,11 +5,13 @@ import { stationList } from '../utils/stationList.js';
 import { getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 
-function Modal({ setIsResting }) {
+function Modal() {
     // ---- 선택 상태 ----
-    const { modal, setModal, elapsed, setTimerState } = useTrip();
+    const { modal, setModal, elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTrip();
 
     const navigate = useNavigate();
+
+    const restTimerRef = useRef(null);
 
     const TimerformatTime = (time) => {
         const hours = Math.floor(time / 3600);
@@ -18,8 +20,6 @@ function Modal({ setIsResting }) {
 
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
     };
-
-    if (!modal) return null;
 
     const modalContent = {
         departure: {
@@ -36,7 +36,7 @@ function Modal({ setIsResting }) {
             title: '정차역에 도착했습니다.',
             // timer: ,
             description: '20분간 정차합니다.',
-            confirmText: '확인',
+            confirmText: '휴식 종료하기',
         },
 
         end: {
@@ -45,6 +45,31 @@ function Modal({ setIsResting }) {
             cancelText: '돌아가기',
         },
     };
+
+    useEffect(() => {
+        if (modal !== 'rest' || !isResting) {
+            return;
+        }
+
+        const timer = setInterval(() => {
+            setRestSeconds((prev) => {
+                if (prev <= 1) {
+                    clearInterval(timer);
+                    setIsResting(false);
+                    setModal(false);
+                    setTimerState(true);
+
+                    return 0;
+                }
+
+                return prev - 1;
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [modal, isResting]);
+
+    if (!modal) return null;
 
     const content = modalContent[modal];
 
@@ -58,8 +83,9 @@ function Modal({ setIsResting }) {
 
         if (modal === 'rest') {
             setIsResting(false);
-            setTimerState(true);
             setModal(false);
+            setTimerState(true);
+
             return;
         }
 
@@ -84,6 +110,13 @@ function Modal({ setIsResting }) {
                     <div className="now">
                         <h4>현재 집중 시간</h4>
                         <h1>{TimerformatTime(elapsed)}</h1>
+                    </div>
+                )}
+
+                {modal === 'rest' && (
+                    <div className="timer">
+                        <h4>휴식 시간</h4>
+                        <h1>{TimerformatTime(restSeconds)}</h1>
                     </div>
                 )}
 
