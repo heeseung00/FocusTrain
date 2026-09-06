@@ -230,14 +230,6 @@ function PomodoroMain({
             setRestSeconds(5); // 휴식 시간 5초 설정
             setModal('rest'); // 모달 열기
             setCurrentIndex((prev) => prev + 1);
-
-            // // 5초 후 모달 닫힘
-            // setTimeout(() => {
-            //     setRestSeconds(0);
-            //     setIsResting(false);
-            //     setTimerState(true);
-            //     setModal(null);
-            // }, 5000);
         }
     }, [totalSeconds, totalSecondsTime, timerState, isResting, isToggleOn, currentIndex, restCount]);
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
+import noticeIcon from '../assets/notice-icon.svg';
 
 function ResultPage() {
     // ---- 선택 상태 ----
@@ -17,7 +18,7 @@ function ResultPage() {
         resetTrip,
     } = useTrip();
 
-    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
+    const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 
     const [initialtimer, setinitalTimer] = useState({
         focusTime: travelTime,
@@ -43,25 +44,55 @@ function ResultPage() {
         navigate('/');
     };
 
+    // 진행률에 따라 다른 결과 텍스트 출력
+    const parcentText = () => {
+        if (resultPercent === 100) {
+            return '목표 시간을 달성했습니다! 멋지게 해내셨네요👏';
+        }
+        if (resultPercent >= 70 && resultPercent <= 99) {
+            return '거의 다 왔어요! 조금만 더 힘내봐요🔥';
+        } else if (resultPercent >= 30 && resultPercent <= 69) {
+            return '차근차근 잘 가고 있어요. 지금처럼만 계속해봐요🌱';
+        } else {
+            return '첫 발을 내딛은 것만으로도 충분해요! 가볍게 시작해볼까요 ✨';
+        }
+    };
+
     return (
-        <>
-            <h1>도착 안내</h1>
+        <div className="result">
+            <div className="result-content item">
+                <div className="result-title">
+                    <h2 className="depart">{selectedStation?.city}</h2>
 
-            <div className="depart">{selectedStation?.city}</div>
+                    <p className="info">
+                        {departure} → {selectedStation?.city} · {trainLabel}
+                    </p>
+                </div>
 
-            <p>
-                {departure}에서 출발하여
-                <br />
-                {selectedStation?.city}에 도착했습니다.
-            </p>
+                <hr />
 
-            <div className="focus">집중시간: {TimerformatTime(elapsed)}</div>
-            <div className="focus-percent">진행률: {resultPercent}%</div>
+                <div className="result-metric">
+                    <div className="metric">
+                        <h4>집중시간</h4>
+                        <div className="metric-text focus">{TimerformatTime(elapsed)}</div>
+                    </div>
+                    <div className="metric">
+                        <h4>진행률</h4>
+                        <div className="metric-text percent">{resultPercent}%</div>
+                    </div>
+                </div>
+                <div className="result-notice">
+                    <img src={noticeIcon} alt="notice-img" className="icon"></img>
+                    <p className="notice-text">{parcentText()}</p>
+                </div>
+            </div>
 
-            <button className="go-to-frist" onClick={navigateGoToFirst}>
-                새로운 여행 시작하기
-            </button>
-        </>
+            <div className="button-group">
+                <button className="restart accent" onClick={navigateGoToFirst}>
+                    새로운 여정 시작하기
+                </button>
+            </div>
+        </div>
     );
 }
 
