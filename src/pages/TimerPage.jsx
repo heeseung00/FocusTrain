@@ -34,6 +34,10 @@ function TimerPage() {
         setTimerState,
         modal,
         setModal,
+        restSeconds,
+        setRestSeconds,
+        isResting,
+        setIsResting,
     } = useTrip();
 
     const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
@@ -50,8 +54,6 @@ function TimerPage() {
 
     // 중간 정차 시간 관리
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isResting, setIsResting] = useState(false);
-    const [restSeconds, setRestSeconds] = useState(20 * 60);
 
     const handleEndClick = () => {
         setModal('end');
@@ -81,7 +83,7 @@ function TimerPage() {
             />
 
             <StationList restCount={restCount} currentIndex={currentIndex} />
-            <Modal setIsResting={setIsResting} />
+            <Modal />
         </div>
     );
 }
@@ -189,23 +191,6 @@ function PomodoroMain({
         handleTimerStart();
     }, []);
 
-    // useEffect(() => {
-    //     if (!timerState) return;
-
-    //     const countdown = setInterval(() => {
-    //         // [1] 타이머 리셋 될 때
-    //         setTotalSeconds((prev) => {
-    //             if (prev <= 1) {
-    //                 clearInterval(countdown);
-    //             }
-
-    //             return prev - 1;
-    //         });
-    //     }, 1000);
-
-    //     return () => clearInterval(countdown);
-    // }, [timerState, timerValue]);
-
     // 타이머 종류 후 결과 페이지로 이동
     useEffect(() => {
         if (totalSeconds === 0) {
@@ -239,12 +224,20 @@ function PomodoroMain({
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
             triggeredStopsRef.current.add(stopUnit);
 
-            setTimerState(false);
-            setIsResting(true);
+            setTimerState(false); //타이머 정지
+            setIsResting(true); // 휴식 상태 진입
             // setRestSeconds(20 * 60);
-            setRestSeconds(5);
-            setModal('rest');
+            setRestSeconds(5); // 휴식 시간 5초 설정
+            setModal('rest'); // 모달 열기
             setCurrentIndex((prev) => prev + 1);
+
+            // // 5초 후 모달 닫힘
+            // setTimeout(() => {
+            //     setRestSeconds(0);
+            //     setIsResting(false);
+            //     setTimerState(true);
+            //     setModal(null);
+            // }, 5000);
         }
     }, [totalSeconds, totalSecondsTime, timerState, isResting, isToggleOn, currentIndex, restCount]);
 
@@ -342,6 +335,7 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
 }
 
 function StationList({ restCount, currentIndex }) {
+    // 남은 높이를 계산하여 .station-list 높이로 지정 (브라우저 전체 기준)
     const containerHeight = document.querySelector('.container')?.offsetHeight ?? 0;
     const pomodoroHeight = document.querySelector('.pomodoroMain')?.offsetHeight ?? 0;
 

@@ -47,6 +47,11 @@ export function TripProvider({ children }) {
     const [timerState, setTimerState] = useState(false);
     // 모달 열기
     const [modal, setModal] = useState(false);
+    // 휴식시간 카운트 관리
+
+    const [isResting, setIsResting] = useState(false);
+    // const [restSeconds, setRestSeconds] = useState(20 * 60);
+    const [restSeconds, setRestSeconds] = useState(5);
 
     // 공통 context 초기화
     const resetTrip = () => {
@@ -69,6 +74,9 @@ export function TripProvider({ children }) {
         setResultPercent(0);
         setTimerState(false);
         setModal(false);
+        // setRestSeconds(20 * 60);
+        setRestSeconds(5);
+        setIsResting(false);
     };
 
     return (
@@ -98,6 +106,10 @@ export function TripProvider({ children }) {
                 setTimerState,
                 modal,
                 setModal,
+                isResting,
+                setIsResting,
+                restSeconds,
+                setRestSeconds,
 
                 // 공통 context 초기화
                 resetTrip,

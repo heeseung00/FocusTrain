@@ -264,6 +264,7 @@ h3 {
   justify-content: space-between;
   font-size: var(--fs-md);
   font-weight: 700;
+  margin-bottom: 12px;
 }
 
 /* 타이머 */
@@ -305,6 +306,7 @@ h3 {
   border-radius: 8px;
 }
 
+/* 정차 상태에 따라 색상 변경 */
 .station-list .passed h5 {
   color: var(--accent);
 }
@@ -366,11 +368,11 @@ h3 {
   font-weight: 600;
 }
 
-.now h4 {
+.modal-content h4 {
   margin-bottom: 4px;
 }
 
-.now h1 {
+.modal-content h1 {
   font-size: var(--fs-5xl);
   font-weight: 700;
 }
