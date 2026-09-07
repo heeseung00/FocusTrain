@@ -4,6 +4,7 @@ import { stationList } from '../utils/stationList.js';
 import { formatTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { useTrip } from '../context/TripContext.jsx';
+import Modal from './Modal.jsx';
 // import styled from 'styled-components';
 
 // 열차, 출발역, 도착역, 시간 선택
@@ -24,6 +25,7 @@ function RoutePage() {
         setActiveCoach,
         setSelectedSeat,
         currentIndex,
+        setModal,
     } = useTrip();
 
     //  ---- 선택에서 파생되는 값들 ----
@@ -59,10 +61,16 @@ function RoutePage() {
         setSelected(e.target.value);
     };
 
+    // 모달 열기
+    const handleModalOpen = () => {
+        setModal('arrival');
+    };
+
     // 도착지(역)이 선택되지 않으면 다음 페이지로 이동할 수 없게 처리
     const handleNextPage = (navigate) => {
         if (!selectedStation) {
-            alert('도착지를 선택해주세요.');
+            handleModalOpen();
+            // alert('도착지를 선택해주세요.');
             return;
         }
 
@@ -256,6 +264,8 @@ function RoutePage() {
                     </div>
                 </>
             </form>
+
+            <Modal />
         </>
     );
 }
