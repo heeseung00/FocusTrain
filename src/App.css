@@ -179,6 +179,13 @@ h3 {
   background: var(--bg);
 }
 
+.time-adjust > button:hover {
+  background: var(--border-light);
+}
+.time-adjust > button:active {
+  background: var(--border);
+}
+
 /* ============================================ */
 
 /* 토글 버튼 */

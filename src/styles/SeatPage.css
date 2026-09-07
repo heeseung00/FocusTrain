@@ -126,18 +126,25 @@
     position: relative;
 }
 
-.seat-box:not(.booked):hover {
-    background: var(--accent-bg);
+/* 좌석 클릭했을때 효과 */
+.seat-box.selected {
+    background: var(--accent);
     border-color: var(--accent);
+    color: #fff;
+}
+
+.seat-box:not(.booked):hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
     color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* 좌석 클릭했을때 효과 */
-.seat-box.selected {
-    background: var(--accent-bg);
-    border-color: var(--accent);
+.seat-box:not(.booked):active {
+    background: var(--accent-active);
+    border-color: var(--accent-active);
     color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 /* New coach label styling */
