@@ -74,10 +74,9 @@ function Modal() {
     const content = modalContent[modal];
 
     const handleConfirm = () => {
-        if (modal === 'end') {
+        if (modal === 'arrival') {
             setModal(false);
-            setTimerState(false);
-            navigate('/result');
+
             return;
         }
 
@@ -86,6 +85,13 @@ function Modal() {
             setModal(false);
             setTimerState(true);
 
+            return;
+        }
+
+        if (modal === 'end') {
+            setModal(false);
+            setTimerState(false);
+            navigate('/result');
             return;
         }
 
