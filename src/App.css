@@ -217,7 +217,7 @@ h3 {
 
 /* ============================================ */
 /* TimerPage.jsx */
-.pomodoro {
+.pomodoro-wrap {
   display: flex;
   flex-direction: column;
   gap: 16px;
