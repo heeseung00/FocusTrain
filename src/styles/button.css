@@ -10,7 +10,7 @@
 
 button {
     width: 100%;
-    padding: 16px;
+    padding: 16px 8px;
     border-radius: var(--r-md);
     font-size: var(--fs-md);
     font-weight: 700;

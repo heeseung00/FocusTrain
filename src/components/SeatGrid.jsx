@@ -2,7 +2,7 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
     return (
         <div className="coach">
             <div className="coach-text">
-                <h2>{activeCoach}호차</h2>
+                <p>{activeCoach}호차</p>
                 <ul className="coach-notice">
                     <li>
                         <h4>선택가능</h4>
@@ -12,6 +12,8 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                     </li>
                 </ul>
             </div>
+
+            <hr />
 
             {Object.entries(seats[activeCoach]).map(([row, rowSeats], index) => {
                 // 번호를 역순으로 표시
@@ -34,9 +36,7 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                                 onClick={() => handleSeatClick(row, 'LeftSeat2', `${seatNumber}B`)}
                             />
 
-                            <div className="seat-aisle">
-                                <img />
-                            </div>
+                            <div className="seat-aisle">{index + 1}</div>
 
                             <Seat
                                 seatType={`${seatNumber}C`}

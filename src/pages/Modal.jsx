@@ -34,8 +34,7 @@ function Modal() {
 
         rest: {
             title: '정차역에 도착했습니다.',
-            // timer: ,
-            description: '20분간 정차합니다.',
+            // description: '10분간 정차합니다.',
             confirmText: '휴식 종료하기',
         },
 
@@ -133,7 +132,10 @@ function Modal() {
                         </button>
                     )}
 
-                    <button type="button" className={modal === 'end' ? 'end' : ''} onClick={handleConfirm}>
+                    <button
+                        type="button"
+                        className={modal === 'end' || modal === 'rest' ? 'end' : ''}
+                        onClick={handleConfirm}>
                         {content.confirmText}
                     </button>
                 </div>
