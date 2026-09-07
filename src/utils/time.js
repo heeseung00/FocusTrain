@@ -1,7 +1,7 @@
-// 이동시간의 숫자를 시간-분 형태로 출력
-export function formatTime(minutes) {
-    const hour = Math.floor(minutes / 60);
-    const minute = minutes % 60;
+// 시간을 분 단위로 출력
+export function formatTime(time) {
+    const hour = Math.floor(time / 60);
+    const minute = time % 60;
 
     if (hour === 0) {
         return `${minute}분`;
@@ -12,6 +12,19 @@ export function formatTime(minutes) {
     }
 
     return `${hour}시간 ${minute}분`;
+}
+
+// 시간을 초 단위로 출력
+export function formatElapsedTime(seconds) {
+    const hour = Math.floor(seconds / 60);
+    const minute = Math.floor(seconds / 60);
+    const second = seconds % 60;
+
+    if ((hour === 0, minute === 0)) {
+        return `${second}초`;
+    }
+
+    return `${formatTime(minute)} ${second}초`;
 }
 
 export function getArriveTime(minutes) {
