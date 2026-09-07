@@ -5,27 +5,33 @@
 :root {
   /* 색상 */
   --bg: #f4f4f6;
-  --bg-gray: #f4f4f6;
   --surface: #fff;
+  --code-bg: #f4f3ec;
 
   --text: #18181c;
   --sub-text: #8a8a93;
 
   --border: #a5a5a8;
   --border-light: #e7e7ec;
-  --code-bg: #f4f3ec;
 
   --accent: #4b3fe0;
-  --accent-bg: #4b3fe0;
+  --accent-hover: #4035c9;
+  --accent-active: #382db4;
   --accent-deep: #241d74;
   --accent-tint: #ecebfc;
 
   --signal: #ef3b4e;
   --signal-tint: #fdeaec;
+  --signal-tint-active: #fbdde0;
 
   /* Disabled */
   --disabled-bg: #f1f1f3;
   --disabled-border: #d9d9de;
+
+  /* Time Adjust */
+  --adjust-bg: #f1f1f3;
+  --adjust-hover: #e7e7ec;
+  --adjust-active: #d9d9de;
 
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 

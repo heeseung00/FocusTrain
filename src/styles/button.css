@@ -20,12 +20,26 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background: var(--bg);
+}
+button:active {
+    background: #ebebee;
+}
+
 /* 주요 버튼 */
 button.accent {
-    background-color: var(--accent-bg);
+    background-color: var(--accent);
     color: var(--surface);
     border-color: var(--accent);
     pointer-events: auto;
+}
+
+button.accent:hover {
+    background: var(--accent-hover);
+}
+button.accent:active {
+    background: var(--accent-active);
 }
 
 /* 선택 버튼 */
@@ -35,13 +49,11 @@ button.option {
     padding: 12px 6px;
     border-radius: var(--r-sm);
     color: var(--sub-text);
-
-    /* 키보드 접근성 */
-    &:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 2px;
-    }
 }
+
+/* button.option:hover {
+    background-color: ;
+} */
 
 button.disable {
     border-color: var(--disabled-border);
@@ -54,6 +66,12 @@ button.end {
     color: var(--signal);
     border-color: var(--signal);
     pointer-events: auto;
+}
+button.end:hover {
+    background-color: var(--signal-tint);
+}
+button.end:active {
+    background-color: var(--signal-tint-active);
 }
 
 /* 선택된 버튼 */

@@ -35,7 +35,7 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                             />
 
                             <div className="seat-aisle">
-                                <img src="" alt="" />
+                                <img />
                             </div>
 
                             <Seat
