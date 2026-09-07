@@ -84,8 +84,6 @@ function TimerPage() {
                 setShowStationList={setShowStationList}
             />
 
-            {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
-
             <Modal />
         </div>
     );
@@ -246,41 +244,57 @@ function PomodoroMain({
     }, [totalSeconds, totalSecondsTime, timerState, isResting, isToggleOn, currentIndex, restCount]);
 
     return (
-        <div className="pomodoroMain item">
-            <div className="pomodoroMainText">
-                <p>
-                    {departure} → {selectedStation?.city} · {trainLabel}
-                </p>
+        <div className="pomodoro-wrap">
+            <div className="pomodoroMain item">
+                <div className="pomodoroMainText">
+                    <p>
+                        {departure} → {selectedStation?.city} · {trainLabel}
+                    </p>
 
-                <p className="percent">{resultPercent}%</p>
-            </div>
+                    <p className="percent">{resultPercent}%</p>
+                </div>
 
-            <div className="pomodoroTimer">
-                <div className="pomodoroTimerText">
-                    <div className="pomodoroTimes">
-                        <div className="timer-main">
-                            <div className="elapsed-timer">{TimerformatTime(elapsed)}</div>
-                            <p className="arrive">도착 {getArriveTime(focusTime)}</p>
-                        </div>
+                <div className="pomodoroTimer">
+                    <div className="pomodoroTimerText">
+                        <div className="pomodoroTimes">
+                            <div className="timer-main">
+                                <div className="elapsed-timer">{TimerformatTime(elapsed)}</div>
+                                <p className="arrive">도착 {getArriveTime(focusTime)}</p>
+                            </div>
 
-                        <ProgressTimer
-                            totalTime={parseInt(timerValue.focusTime) * 60}
-                            remainingTime={totalSeconds}
-                            departure={departure}
-                            selectedStation={selectedStation}
-                        />
+                            <ProgressTimer
+                                totalTime={parseInt(timerValue.focusTime) * 60}
+                                remainingTime={totalSeconds}
+                                departure={departure}
+                                selectedStation={selectedStation}
+                            />
 
-                        <div className="remaining">
-                            <h4>남은시간</h4>
-                            <div className="remaining-time">
-                                {TimerformatTime(totalSeconds)}
-                                {/* {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
+                            <div className="remaining">
+                                <h4>남은시간</h4>
+                                <div className="remaining-time">
+                                    {TimerformatTime(totalSeconds)}
+                                    {/* {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
                             {seconds < 10 ? `0${seconds}` : seconds} */}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {isToggleOn && (
+                    <div className="pomodoroStation">
+                        <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
+                            <p>{isToggleOn ? `전체 여정 보기` : null}</p>
+                            <img
+                                src="src/assets/arrow.svg"
+                                className={showStationList ? 'arrow' : 'arrow-up'}
+                                alt="화살표 아이콘"
+                            />
+                        </div>
+                    </div>
+                )}
             </div>
+            {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
 
             <div className="button-group">
                 {/* 임시 주석 - 타이머 시작, 멈춤, 리셋 이미지
@@ -306,19 +320,6 @@ function PomodoroMain({
                     <span className="time-icon">■</span>종료
                 </button>
             </div>
-
-            {isToggleOn && (
-                <div className="pomodoroStation">
-                    <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
-                        <p>{isToggleOn ? `전체 여정 보기` : null}</p>
-                        <img
-                            src="src/assets/arrow.svg"
-                            className={showStationList ? 'arrow' : 'arrow-up'}
-                            alt="화살표 아이콘"
-                        />
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
