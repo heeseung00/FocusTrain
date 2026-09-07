@@ -50,10 +50,9 @@ function TimerPage() {
 
     const [isPaused, setIsPaused] = useState(false);
 
-    const [currentSlide, setCurrentSlide] = useState(0);
-
     // 중간 정차 시간 관리
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [showStationList, setShowStationList] = useState(false);
 
     const handleEndClick = () => {
         setModal('end');
@@ -80,9 +79,13 @@ function TimerPage() {
                 currentIndex={currentIndex}
                 setCurrentIndex={setCurrentIndex}
                 setRestSeconds={setRestSeconds}
+                // 중간 정차역 리스트 관리
+                showStationList={showStationList}
+                setShowStationList={setShowStationList}
             />
 
-            <StationList restCount={restCount} currentIndex={currentIndex} />
+            {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
+
             <Modal />
         </div>
     );
@@ -109,6 +112,9 @@ function PomodoroMain({
     currentIndex,
     setCurrentIndex,
     setRestSeconds,
+
+    showStationList,
+    setShowStationList,
 }) {
     const triggeredStopsRef = useRef(new Set()); // ← 추가로 선언 (컴포넌트 최상단에)
 
@@ -156,6 +162,19 @@ function PomodoroMain({
         setTimerReset(false);
         setTimerState(false);
     };
+    const handleTimerReset = () => {
+        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
+        setIsResting(false);
+        setTimerState(false);
+        // 중간정차 list 초기화
+        setCurrentIndex(0);
+        // 중간정차 모달 초기화
+        triggeredStopsRef.current.clear();
+        handleTimerStart();
+    };
+    const handleTimerSet = (minutes) => {
+        setTotalSeconds(parseInt(minutes) * 60);
+    };
 
     // 종료 버튼 클릭시 결과 화면으로 이동
     const handleTimerEnd = () => {
@@ -176,14 +195,6 @@ function PomodoroMain({
         } else {
             handleTimerStart();
         }
-    };
-    const handleTimerReset = () => {
-        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
-        setIsResting(false);
-        setTimerState(false);
-    };
-    const handleTimerSet = (minutes) => {
-        setTotalSeconds(parseInt(minutes) * 60);
     };
 
     // 페이지가 로드 될 때 타이머 바로 start 실행
@@ -217,8 +228,9 @@ function PomodoroMain({
 
         const currentElapsed = totalSecondsTime - totalSeconds;
         const stopUnit = Math.floor(currentElapsed / 5);
+        // 집중 구간 시간 설정: 10분 설정시 10분 후 중간정차모달 열림
         const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0;
-        // const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
+        // const isStopTime = currentElapsed > 0 && currentElapsed % (1 * 60) === 0;
         const alreadyTriggered = triggeredStopsRef.current.has(stopUnit);
 
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
@@ -226,8 +238,8 @@ function PomodoroMain({
 
             setTimerState(false); //타이머 정지
             setIsResting(true); // 휴식 상태 진입
-            // setRestSeconds(20 * 60);
-            setRestSeconds(5); // 휴식 시간 5초 설정
+            setRestSeconds(10 * 60); // 휴식 시간 설정
+            // setRestSeconds(5); // 휴식 시간 5초 설정
             setModal('rest'); // 모달 열기
             setCurrentIndex((prev) => prev + 1);
         }
@@ -267,8 +279,6 @@ function PomodoroMain({
                             </div>
                         </div>
                     </div>
-
-                    <div className="pomodoroStation">{isToggleOn ? `정차역${restCount}개` : null}</div>
                 </div>
             </div>
 
@@ -277,12 +287,38 @@ function PomodoroMain({
                                 <img src={playIcon} alt="play" width={20} height={20} onClick={handleTimerStart}></img>
                                 <img src={pauseIcon} width={20} height={20} onClick={handleTimerStop}></img>
                                 <img src={resetIcon} width={20} height={20} onClick={handleTimerReset}></img> */}
-                <button onClick={handleTimerToggle}>{timerState ? '❚❚일시정지' : '▶재생'}</button>
-                <button onClick={handleTimerReset}>⭮다시 </button>
+                <button onClick={handleTimerToggle}>
+                    {timerState ? (
+                        <>
+                            <span className="time-icon">❚❚</span>일시정지
+                        </>
+                    ) : (
+                        <>
+                            <span className="time-icon">▶</span>재생
+                        </>
+                    )}
+                </button>
+
+                <button onClick={handleTimerReset}>
+                    <span className="time-icon">⭮</span>다시
+                </button>
                 <button className="end" onClick={handleModalOpen}>
-                    ■종료
+                    <span className="time-icon">■</span>종료
                 </button>
             </div>
+
+            {isToggleOn && (
+                <div className="pomodoroStation">
+                    <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
+                        <p>{isToggleOn ? `전체 여정 보기` : null}</p>
+                        <img
+                            src="src/assets/arrow.svg"
+                            className={showStationList ? 'arrow' : 'arrow-up'}
+                            alt="화살표 아이콘"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
@@ -334,35 +370,39 @@ function StationList({ restCount, currentIndex }) {
     const maxStationHeight = window.innerHeight - containerHeight - pomodoroHeight;
 
     return (
-        //정차역 갯수에 따라 list 갯수 나오도록
-        <div className="station-list item" style={{ maxHeight: maxStationHeight }}>
-            <ul>
-                {Array.from({ length: restCount }).map((_, index) => {
-                    let status;
+        <>
+            {/* 정차역 갯수에 따라 list 갯수 나오도록 */}
+            <div className="station-list item" style={{ maxHeight: maxStationHeight }}>
+                <ul>
+                    {Array.from({ length: restCount }).map((_, index) => {
+                        let status;
 
-                    if (index < currentIndex) {
-                        status = '완료 · 20분';
-                    } else if (index === currentIndex) {
-                        status = '진행중';
-                    } else {
-                        status = '예정';
-                    }
+                        if (index < currentIndex) {
+                            status = '완료 · 20분';
+                        } else if (index === currentIndex) {
+                            status = '진행중';
+                        } else {
+                            status = '예정';
+                        }
 
-                    return (
-                        <li
-                            key={index}
-                            className={index < currentIndex ? 'passed' : index === currentIndex ? 'current' : 'coming'}>
-                            <div className="station-title">
-                                <span></span>
-                                <h5>정차{index + 1}</h5>
-                            </div>
+                        return (
+                            <li
+                                key={index}
+                                className={
+                                    index < currentIndex ? 'passed' : index === currentIndex ? 'current' : 'coming'
+                                }>
+                                <div className="station-title">
+                                    <span></span>
+                                    <h5>정차{index + 1}</h5>
+                                </div>
 
-                            <p>{status}</p>
-                        </li>
-                    );
-                })}
-            </ul>
-        </div>
+                                <p>{status}</p>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </>
     );
 }
 

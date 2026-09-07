@@ -37,20 +37,19 @@
     position: relative;
     color: var(--sub-text);
     border: 1px solid var(--border-light);
+    border-radius: 10px;
     padding: 8px 0;
     background: none;
 }
 
 .coach-button:hover {
     background: #f0f0f0;
-    transform: translateY(-2px);
 }
 
 .coach-button.active {
     background: var(--accent-tint);
     color: var(--accent-deep);
     border-color: var(--accent);
-    transform: translateY(-5px);
     z-index: 3;
 }
 
@@ -77,7 +76,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    color: var(--sub-text);
+}
+.coach-text p {
+    font-weight: 600;
 }
 
 .coach-notice {
@@ -107,8 +109,13 @@
 }
 
 .coach-notice li h4.seleted::before {
-    background: var(--accent-bg);
+    background: var(--accent);
     border-color: var(--accent);
+}
+
+.coach hr {
+    margin: 20px 0;
+    border: 1px solid var(--border-light);
 }
 
 .seat-box {
@@ -186,19 +193,16 @@
 }
 
 .seat-aisle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-}
-
-.seat-aisle img {
-    width: 44px;
-    height: 44px;
-    border: none;
+    font-weight: 700;
+    color: var(--light-text);
 }
 
 .reservation-btn {
     border: 1px solid #333;
-    padding: 10px;
-    border-radius: 14px;
     background: #b1b1b1;
     pointer-events: none;
 }

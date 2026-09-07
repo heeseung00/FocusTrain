@@ -253,6 +253,9 @@ h3 {
   flex-direction: column;
   gap: 24px;
 }
+.time-icon {
+  margin-right: 4px;
+}
 
 .remaining {
   display: flex;
@@ -281,6 +284,36 @@ h3 {
 }
 .pomodoroTimes .arrive {
   font-size: var(--fs-md);
+}
+
+.pomodoroStation {
+  display: flex;
+  justify-content: center;
+}
+
+.station-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  color: var(--sub-text);
+  cursor: pointer;
+}
+
+.pomodoroStation img {
+  width: 16px;
+  height: 10px;
+  margin-bottom: 0;
+  background-image: none;
+  /* transition: transform 0.2s ease; */
+}
+
+.pomodoroStation .arrow {
+  transform: rotate(0deg);
+}
+.pomodoroStation .arrow-up {
+  transform: rotate(180deg);
 }
 
 /* 프로그래스 바 */

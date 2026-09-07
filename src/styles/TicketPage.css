@@ -142,7 +142,7 @@
     gap: 40px;
     justify-content: space-between;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 16px;
+    padding-top: 20px;
 }
 
 .info-block {
@@ -263,5 +263,6 @@
 }
 
 .ticket-guide {
+    font-size: var(--fs-md);
     color: var(--sub-text);
 }
