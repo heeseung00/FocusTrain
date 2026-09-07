@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
+import { formatTime, formatElapsedTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import noticeIcon from '../assets/notice-icon.svg';
 
@@ -27,14 +28,6 @@ function ResultPage() {
 
     // // 집중시간
     // const totalSecondsTime = parseInt(initialtimer.focusTime) * 60;
-
-    const TimerformatTime = (time) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = time % 60;
-
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
 
     const navigate = useNavigate();
     // 처음으로 돌아가기 버튼
@@ -74,7 +67,7 @@ function ResultPage() {
                 <div className="result-metric">
                     <div className="metric">
                         <h4>집중시간</h4>
-                        <div className="metric-text focus">{TimerformatTime(elapsed)}</div>
+                        <div className="metric-text focus">{formatElapsedTime(elapsed)}</div>
                     </div>
                     <div className="metric">
                         <h4>진행률</h4>
