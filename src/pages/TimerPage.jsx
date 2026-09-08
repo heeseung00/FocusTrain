@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
-import { getArriveTime } from '../utils/time.js';
+import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import Modal from './Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
@@ -52,6 +52,7 @@ function TimerPage() {
 
     // 중간 정차 시간 관리
     const [currentIndex, setCurrentIndex] = useState(0);
+    // 중간 정차역 리스트 관리
     const [showStationList, setShowStationList] = useState(false);
 
     const handleEndClick = () => {
@@ -61,7 +62,6 @@ function TimerPage() {
     return (
         <div className="pomodoro">
             <PomodoroMain
-                timerValue={initialtimer}
                 timerState={timerState}
                 setTimerState={setTimerState}
                 restCount={restCount}
@@ -91,7 +91,6 @@ function TimerPage() {
 
 // 타이머가 보여지는 부분: PomodoroMain
 function PomodoroMain({
-    timerValue,
     timerState,
     setTimerState,
     restCount,
@@ -114,7 +113,7 @@ function PomodoroMain({
     showStationList,
     setShowStationList,
 }) {
-    const triggeredStopsRef = useRef(new Set()); // ← 추가로 선언 (컴포넌트 최상단에)
+    const triggeredStopsRef = useRef(new Set()); //추가로 선언 (컴포넌트 최상단에)
 
     // 모달 열기
     const { setModal } = useTrip();
@@ -124,21 +123,13 @@ function PomodoroMain({
     };
 
     // 전체 시간 표시
-    const [totalSeconds, setTotalSeconds] = useState(parseInt(timerValue.focusTime) * 60);
+    const [totalSeconds, setTotalSeconds] = useState(parseInt(focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
     const [pomodoroTerms, setPomodoroTerms] = useState(0);
 
-    const timeminute = parseInt(timerValue.focusTime);
+    const timeminute = parseInt(focusTime);
 
-    const totalSecondsTime = parseInt(timerValue.focusTime) * 60;
-
-    const TimerformatTime = (time) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = time % 60;
-
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
+    const totalSecondsTime = parseInt(focusTime) * 60;
 
     // 타이머 경과시간 표시
     const currentElapsed = totalSecondsTime - totalSeconds;
@@ -161,7 +152,7 @@ function PomodoroMain({
         setTimerState(false);
     };
     const handleTimerReset = () => {
-        setTotalSeconds(parseInt(timerValue.focusTime) * 60);
+        setTotalSeconds(parseInt(focusTime) * 60);
         setIsResting(false);
         setTimerState(false);
         // 중간정차 list 초기화
@@ -170,22 +161,6 @@ function PomodoroMain({
         triggeredStopsRef.current.clear();
         handleTimerStart();
     };
-    const handleTimerSet = (minutes) => {
-        setTotalSeconds(parseInt(minutes) * 60);
-    };
-
-    // 종료 버튼 클릭시 결과 화면으로 이동
-    const handleTimerEnd = () => {
-        // 확인 창 띄우기
-        const result = confirm('여행을 종료할까요?');
-
-        if (result) {
-            navigate('/result');
-        } else {
-            return;
-        }
-    };
-
     // 재생 - 일시정지 토글 버튼
     const handleTimerToggle = () => {
         if (timerState) {
@@ -227,8 +202,8 @@ function PomodoroMain({
         const currentElapsed = totalSecondsTime - totalSeconds;
         const stopUnit = Math.floor(currentElapsed / 5);
         // 집중 구간 시간 설정: 10분 설정시 10분 후 중간정차모달 열림
-        const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0;
-        // const isStopTime = currentElapsed > 0 && currentElapsed % (1 * 60) === 0;
+        const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
+        // const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0; //테스트용
         const alreadyTriggered = triggeredStopsRef.current.has(stopUnit);
 
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
@@ -237,7 +212,7 @@ function PomodoroMain({
             setTimerState(false); //타이머 정지
             setIsResting(true); // 휴식 상태 진입
             setRestSeconds(10 * 60); // 휴식 시간 설정
-            // setRestSeconds(5); // 휴식 시간 5초 설정
+            // setRestSeconds(5); // 휴식 시간 5초 설정 - 테스트용
             setModal('rest'); // 모달 열기
             setCurrentIndex((prev) => prev + 1);
         }
@@ -258,12 +233,12 @@ function PomodoroMain({
                     <div className="pomodoroTimerText">
                         <div className="pomodoroTimes">
                             <div className="timer-main">
-                                <div className="elapsed-timer">{TimerformatTime(elapsed)}</div>
+                                <div className="elapsed-timer">{formatDurationTime(elapsed)}</div>
                                 <p className="arrive">도착 {getArriveTime(focusTime)}</p>
                             </div>
 
                             <ProgressTimer
-                                totalTime={parseInt(timerValue.focusTime) * 60}
+                                totalTime={parseInt(focusTime) * 60}
                                 remainingTime={totalSeconds}
                                 departure={departure}
                                 selectedStation={selectedStation}
@@ -271,17 +246,13 @@ function PomodoroMain({
 
                             <div className="remaining">
                                 <h4>남은시간</h4>
-                                <div className="remaining-time">
-                                    {TimerformatTime(totalSeconds)}
-                                    {/* {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:
-                            {seconds < 10 ? `0${seconds}` : seconds} */}
-                                </div>
+                                <div className="remaining-time">{formatDurationTime(totalSeconds)}</div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {isToggleOn && (
+                {isToggleOn && restCount > 0 && (
                     <div className="pomodoroStation">
                         <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
                             <p>{isToggleOn ? `전체 여정 보기` : null}</p>
@@ -345,7 +316,6 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
             <div className="progress-track">
                 <div className="train" style={{ left: `${percent}%`, transition: 'left 1s linear' }}>
                     🚂
-                    {/* <img src={trainImage} alt="train" /> */}
                 </div>
             </div>
             <ProgressBar

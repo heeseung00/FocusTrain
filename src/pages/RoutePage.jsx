@@ -43,6 +43,21 @@ function RoutePage() {
         }
     });
 
+    // selectedStation되어있을때 selectedStation에 따라서 그 stationList의 times에서 restcount를 나누어 휴식시간을 지정...
+    // 그리고 그 값을 isStopTime에 넣는다.. 그리면 isStopTime(예를 들면 10분)이 지난 후에 restcount만큼 중간 팝업창이 열린다.
+    // setRestSeconds는 10분 동안 쉰다..
+    const runningTime = stationList.filter((item) => {
+        if (train === 'KTX') {
+            return item.times.ktx !== null;
+        }
+        if (train === 'ITX') {
+            return item.times.itx !== null;
+        }
+        if (train === '무궁화') {
+            return item.times.mugunghwa !== null;
+        }
+    });
+
     // 다음 페이지 이동
     const navigate = useNavigate();
     const navigateGoToSeat = () => {
@@ -207,7 +222,6 @@ function RoutePage() {
                                     </div>
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
-                                        {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
                                         <h3 className="accent">{selectedStation ? getArriveTime(focusTime) : ''}</h3>
                                     </div>
                                 </div>
@@ -253,7 +267,6 @@ function RoutePage() {
 
                         {/* 다음 페이지 이동 */}
                         <div className="button-group">
-                            {/* <button type="submit" onClick={navigateGoToSeat}> */}
                             <button type="submit" onClick={() => handleNextPage(navigateGoToSeat)}>
                                 좌석 선택
                             </button>

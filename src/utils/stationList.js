@@ -5,9 +5,9 @@ export const stationList = [
         line: '경부선',
         times: {
             // 분단위로 입력 후 나중에 ${hour}시간 ${minute}분`으로 출력
-            ktx: 25,
-            itx: 30,
-            mugunghwa: 35,
+            ktx: 30,
+            itx: 35,
+            mugunghwa: 40,
         },
         distance: '41km',
     },
@@ -71,7 +71,7 @@ export const stationList = [
         city: '목포',
         line: '호남선',
         times: {
-            ktx: '140',
+            ktx: 140,
             itx: null,
             mugunghwa: null,
         },
@@ -165,7 +165,7 @@ export const stationList = [
         },
         distance: '400km',
     },
-     {
+    {
         id: 16,
         city: '임시데이터',
         line: '경부선',

@@ -12,6 +12,7 @@ export function getTrainInfo() {
     // 선택한 역의 이동시간
     const travelTime = selectedStation ? selectedStation.times[trainKey] : 0;
     // 이동시간에 따른 휴식 횟수 (중간 정차역)
+    // 이동시간이 20분 이하 일 때는 휴식 x
     const restCount = focusTime > 20 ? Math.floor((focusTime - 1) / 20) : 0;
 
     // 열차 종류에 따라 기차 이름 다르게
