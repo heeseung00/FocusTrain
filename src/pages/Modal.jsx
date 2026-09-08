@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { stationList } from '../utils/stationList.js';
-import { getArriveTime } from '../utils/time.js';
+import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 
 function Modal() {
@@ -12,14 +12,6 @@ function Modal() {
     const navigate = useNavigate();
 
     const restTimerRef = useRef(null);
-
-    const TimerformatTime = (time) => {
-        const hours = Math.floor(time / 3600);
-        const minutes = Math.floor((time % 3600) / 60);
-        const seconds = time % 60;
-
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-    };
 
     const modalContent = {
         departure: {
@@ -91,6 +83,7 @@ function Modal() {
             setModal(false);
             setTimerState(false);
             navigate('/result');
+
             return;
         }
 
@@ -101,27 +94,25 @@ function Modal() {
     const handleCancel = () => {
         setModal(false);
         setTimerState(true);
-        // navigate('/result');
     };
 
     return (
         <div className="modal">
             <div className="modal-content item">
-                {/* <h2>여행을 종료할까요?</h2> */}
                 <h2>{content.title}</h2>
 
                 {content.description && <p>{content.description}</p>}
                 {modal === 'end' && (
                     <div className="now">
                         <h4>현재 집중 시간</h4>
-                        <h1>{TimerformatTime(elapsed)}</h1>
+                        <h1>{formatDurationTime(elapsed)}</h1>
                     </div>
                 )}
 
                 {modal === 'rest' && (
                     <div className="timer">
                         <h4>휴식 시간</h4>
-                        <h1>{TimerformatTime(restSeconds)}</h1>
+                        <h1>{formatDurationTime(restSeconds)}</h1>
                     </div>
                 )}
 

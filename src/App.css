@@ -302,8 +302,8 @@ h3 {
 }
 
 .pomodoroStation img {
-  width: 16px;
-  height: 10px;
+  width: 14px;
+  height: 8px;
   margin-bottom: 0;
   background-image: none;
   /* transition: transform 0.2s ease; */

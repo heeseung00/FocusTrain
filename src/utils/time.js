@@ -16,17 +16,43 @@ export function formatTime(time) {
 
 // 시간을 초 단위로 출력
 export function formatElapsedTime(seconds) {
-    const hour = Math.floor(seconds / 60);
-    const minute = Math.floor(seconds / 60);
+    const hour = Math.floor(seconds / 3600);
+    const minute = Math.floor((seconds % 3600) / 60);
     const second = seconds % 60;
 
-    if ((hour === 0, minute === 0)) {
+    if (hour === 0 && minute === 0) {
         return `${second}초`;
     }
 
-    return `${formatTime(minute)} ${second}초`;
+    if (hour === 0 && second === 0) {
+        return `${minute}분`;
+    }
+
+    if (minute === 0 && second === 0) {
+        return `${hour}시간`;
+    }
+
+    if (hour === 0) {
+        return `${minute}분 ${second}초`;
+    }
+
+    if (minute === 0) {
+        return `${hour}시간 ${second}초`;
+    }
+
+    return `${hour}시간 ${minute}분 ${second}초`;
 }
 
+// 00:00:00 단위로 시간 출력
+export function formatDurationTime(time) {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+}
+
+// 현재 시간 기준 도착 시간 계산
 export function getArriveTime(minutes) {
     // 시간 계산 - 출발지 시간 + 소요시간 = 도착지 시간
     const today = new Date();
