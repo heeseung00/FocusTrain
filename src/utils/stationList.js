@@ -24,7 +24,7 @@ export const stationList = [
     },
     {
         id: 3,
-        city: '대구(동대구)',
+        city: '대구',
         line: '경부선',
         times: {
             ktx: 110,
@@ -57,7 +57,7 @@ export const stationList = [
     },
     {
         id: 6,
-        city: '광주(광주송정역)',
+        city: '광주',
         line: '호남선',
         times: {
             ktx: 90,
@@ -79,7 +79,7 @@ export const stationList = [
     },
     {
         id: 8,
-        city: '여수(여수엑스포)',
+        city: '여수',
         line: '전라선',
         times: {
             ktx: 180,
