@@ -495,3 +495,15 @@ img.icon {
 .notice-text {
   font-weight: 600;
 }
+
+/* ============================================ */
+/* 반응형 */
+@media (min-width: 481px) and (max-width: 768px) {
+  .train-select {
+    margin-bottom: 16px;
+  }
+  .card {
+    grid-template-columns: none;
+    grid-template-rows: none;
+  }
+}

@@ -266,3 +266,91 @@
     font-size: var(--fs-md);
     color: var(--sub-text);
 }
+
+/* ============================================ */
+/* 반응형 */
+@media (min-width: 481px) and (max-width: 768px) {
+    .ticket-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .ticket-main {
+        width: 100%;
+        padding: 24px;
+        border-radius: 32px 32px 16px 16px;
+
+        @supports (corner-shape: bevel) {
+            corner-shape: squircle squircle scoop scoop;
+        }
+    }
+
+    .ticket-title {
+        gap: 12px;
+    }
+
+    .ticket-title .title {
+        font-size: var(--fs-5xl);
+    }
+
+    .ticket-stub {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        padding: 24px;
+        border-radius: 16px 16px 32px 32px;
+
+        @supports (corner-shape: bevel) {
+            corner-shape: scoop scoop squircle squircle;
+        }
+    }
+
+    .perforation-line {
+        position: absolute;
+        right: 14px;
+        top: inherit;
+        bottom: 0;
+        width: calc(100% - 28px);
+        height: 4px;
+        background: repeating-linear-gradient(to bottom, transparent 0, transparent 6px, #999 6px, #999 8px);
+        z-index: 20;
+    }
+
+    /* .barcode-wrap {
+        transform: rotate(90deg);
+    } */
+
+    .barcode {
+        width: 150px;
+        height: 40px;
+        background: repeating-linear-gradient(
+            to left,
+            var(--ink-color) 0,
+            var(--ink-color) 2px,
+            transparent 2px,
+            transparent 5px,
+            var(--ink-color) 5px,
+            var(--ink-color) 6px,
+            transparent 6px,
+            transparent 9px
+        );
+        opacity: 0.8;
+        /* background: repeating-linear-gradient(
+            to bottom,
+            var(--ink-color) 0,
+            var(--ink-color) 2px,
+            transparent 2px,
+            transparent 5px,
+            var(--ink-color) 5px,
+            var(--ink-color) 6px,
+            transparent 6px,
+            transparent 9px
+        );
+        opacity: 0.8; */
+    }
+
+    .stub-text {
+        writing-mode: inherit;
+        transform: inherit;
+    }
+}
