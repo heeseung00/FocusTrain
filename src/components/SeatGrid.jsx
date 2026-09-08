@@ -36,7 +36,7 @@ function SeatGrid({ seats, activeCoach, selectedSeat, handleSeatClick }) {
                                 onClick={() => handleSeatClick(row, 'LeftSeat2', `${seatNumber}B`)}
                             />
 
-                            <div className="seat-aisle">{index + 1}</div>
+                            <div className="seat-aisle">{seatNumber}</div>
 
                             <Seat
                                 seatType={`${seatNumber}C`}
