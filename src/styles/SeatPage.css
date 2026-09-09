@@ -2,7 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    /* padding: 20px; */
+    padding: 0;
     gap: 24px;
 }
 
@@ -13,6 +14,10 @@
     align-items: center;
     position: relative;
     width: 100%;
+    padding: 20px;
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    background: var(--surface);
 }
 
 /* Train coaches display */
@@ -22,12 +27,8 @@
     justify-content: center;
     gap: 6px;
     margin-bottom: 0;
-    padding: 20px;
     position: relative;
     z-index: 2;
-    border: 1px solid var(--border-light);
-    border-radius: 18px;
-    background: var(--surface);
 }
 
 .coach-button {
@@ -205,4 +206,38 @@
     border: 1px solid #333;
     background: #b1b1b1;
     pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .train-booking {
+        gap: 12px;
+        padding: 0;
+    }
+    .train-display {
+        justify-content: flex-start;
+        padding-bottom: 8px;
+        overflow: auto;
+    }
+
+    .seat-list {
+        gap: 6px;
+    }
+    .seat-box {
+        font-size: var(--fs-xs);
+    }
+
+    .seat-aisle {
+        font-size: var(--fs-xs);
+    }
+
+    .coach hr {
+        margin: 16px 0;
+    }
+}
+
+@media (max-width: 394px) {
+    .coach-button {
+        width: 56px;
+        flex-shrink: 0;
+    }
 }

@@ -78,7 +78,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .item hr {
@@ -463,7 +463,6 @@ h2.depart {
 .result-metric {
   display: flex;
   justify-content: space-between;
-  padding: 8px;
 }
 
 .metric {
@@ -498,7 +497,11 @@ img.icon {
 
 /* ============================================ */
 /* 반응형 */
-@media (min-width: 481px) and (max-width: 768px) {
+@media (max-width: 768px) {
+  .container {
+    margin-bottom: 12px;
+  }
+
   .modal-content h2 {
     font-size: var(--fs-lg);
   }
@@ -543,5 +546,92 @@ img.icon {
 
   button {
     padding: 14px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  #wrapper {
+    padding: 32px 24px 24px;
+  }
+
+  h3 {
+    font-size: var(--fs-sm);
+  }
+
+  h4 {
+    font-size: var(--fs-xs);
+  }
+
+  .train-select ul {
+    gap: 8px;
+  }
+
+  .station select {
+    font-size: var(--fs-2xl);
+    font-weight: bold;
+  }
+
+  .stop {
+    align-items: flex-start;
+  }
+
+  .stop-text p {
+    font-size: var(--fs-xs);
+  }
+
+  .toggle-show p {
+    font-size: var(--fs-xs);
+  }
+
+  .time-adjust > button {
+    width: 28px;
+    height: 28px;
+    font-size: var(--fs-md);
+  }
+
+  .elapsed-timer {
+    font-size: var(--fs-11xl);
+  }
+
+  .pomodoroTimes {
+    gap: 20px;
+    margin-bottom: 0;
+  }
+
+  .pomodoroTimes .arrive {
+    font-size: var(--fs-sm);
+  }
+
+  .station-wrap {
+    font-size: var(--fs-sm);
+  }
+
+  h2.depart {
+    font-size: var(--fs-3xl);
+  }
+
+  .result-notice {
+    gap: 12px;
+  }
+
+  .result-notice {
+    align-items: flex-start;
+  }
+
+  .notice-img {
+    margin-top: 4px;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 274px;
+  }
+
+  .modal-content h1 {
+    font-size: var(--fs-2xl);
+  }
+
+  .modal-content h2 {
+    font-size: var(--fs-md);
   }
 }
