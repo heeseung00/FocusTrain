@@ -499,11 +499,49 @@ img.icon {
 /* ============================================ */
 /* 반응형 */
 @media (min-width: 481px) and (max-width: 768px) {
+  .modal-content h2 {
+    font-size: var(--fs-lg);
+  }
+
+  h3 {
+    font-size: var(--fs-md);
+  }
+
   .train-select {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
   .card {
     grid-template-columns: none;
     grid-template-rows: none;
+    gap: var(--s3);
+    margin-bottom: 12px;
+  }
+
+  .station {
+    gap: 20px;
+  }
+
+  .elapsed-timer {
+    font-size: 64px;
+  }
+
+  .remaining-time {
+    font-size: var(--fs-xl);
+  }
+
+  h2.depart {
+    font-size: var(--fs-8xl);
+  }
+
+  .metric-text {
+    font-size: var(--fs-xl);
+  }
+
+  .modal-content h1 {
+    font-size: var(--fs-3xl);
+  }
+
+  button {
+    padding: 14px 6px;
   }
 }
