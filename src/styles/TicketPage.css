@@ -269,7 +269,7 @@
 
 /* ============================================ */
 /* 반응형 */
-@media (min-width: 481px) and (max-width: 768px) {
+@media (max-width: 768px) {
     .ticket-container {
         flex-direction: column;
         width: 100%;
@@ -348,5 +348,28 @@
 
     .ticket-guide {
         font-size: var(--fs-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .ticket-content {
+        gap: 16px;
+    }
+
+    .ticket-main {
+        border-radius: 24px 24px 12px 12px;
+    }
+
+    .ticket-title .title {
+        font-size: var(--fs-3xl);
+    }
+
+    .arrow-text {
+        bottom: 6px;
+        font-size: var(--fs-xs);
+    }
+
+    .ticket-stub {
+        border-radius: 12px 12px 24px 24px;
     }
 }
