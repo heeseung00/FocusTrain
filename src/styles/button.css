@@ -80,3 +80,15 @@ button[aria-checked="true"] {
     background: var(--accent-tint);
     color: var(--accent-deep);
 }
+
+/* ============================================ */
+/* 반응형 */
+@media (min-width: 481px) and (max-width: 768px) {
+    button {
+        padding: 14px 6px;
+    }
+
+    .button-group {
+        gap: var(--s3);
+    }
+}
