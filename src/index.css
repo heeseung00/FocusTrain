@@ -96,6 +96,33 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: red;
+  border-radius: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: transparent;
+} */
+
+/* body::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: var(--border-light);
+  border-radius: 8px;
+} */
+
 /* 
 - 모바일 (Mobile): 480px 이하 (소형 스마트폰은 375px~480px 구간 대응)
 - 태블릿 (Tablet): 481px ~ 1024px (세로 및 가로 방향 포함)
