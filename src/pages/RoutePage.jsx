@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { stationList } from '../utils/stationList.js';
 import { formatTime, getArriveTime } from '../utils/time.js';
@@ -28,34 +28,28 @@ function RoutePage() {
         setModal,
     } = useTrip();
 
+    // 드롭다운
+    const [isOpen, setIsOpen] = useState(false);
+    const ref = useRef(null);
+
+    useOnClickOutside(ref, () => setIsOpen(false));
+
     //  ---- 선택에서 파생되는 값들 ----
     const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
-    // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
+    // // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
+    // const filterStation = stationList.filter((item) => {
+    //     if (train === 'KTX') {
+    //         return item.times.ktx !== null;
+    //     }
+    //     if (train === 'ITX') {
+    //         return item.times.itx !== null;
+    //     }
+    //     if (train === '무궁화') {
+    //         return item.times.mugunghwa !== null;
+    //     }
+    // });
     const filterStation = stationList.filter((item) => {
-        if (train === 'KTX') {
-            return item.times.ktx !== null;
-        }
-        if (train === 'ITX') {
-            return item.times.itx !== null;
-        }
-        if (train === '무궁화') {
-            return item.times.mugunghwa !== null;
-        }
-    });
-
-    // selectedStation되어있을때 selectedStation에 따라서 그 stationList의 times에서 restcount를 나누어 휴식시간을 지정...
-    // 그리고 그 값을 isStopTime에 넣는다.. 그리면 isStopTime(예를 들면 10분)이 지난 후에 restcount만큼 중간 팝업창이 열린다.
-    // setRestSeconds는 10분 동안 쉰다..
-    const runningTime = stationList.filter((item) => {
-        if (train === 'KTX') {
-            return item.times.ktx !== null;
-        }
-        if (train === 'ITX') {
-            return item.times.itx !== null;
-        }
-        if (train === '무궁화') {
-            return item.times.mugunghwa !== null;
-        }
+        return item.times[trainKey] !== null;
     });
 
     // 다음 페이지 이동
@@ -72,8 +66,10 @@ function RoutePage() {
         setTrain(trainType);
         setSelected('선택');
     };
-    const handleSelect = (e) => {
-        setSelected(e.target.value);
+    const handleSelect = (city) => {
+        // setSelected(e.target.value);
+        setSelected(city);
+        setIsOpen(false);
     };
 
     // 모달 열기
@@ -150,7 +146,6 @@ function RoutePage() {
                                     <button
                                         className="option"
                                         type="button"
-                                        className="counter"
                                         role="radio"
                                         aria-checked={train === 'KTX'}
                                         onClick={() => handleTrainChange('KTX')}>
@@ -161,7 +156,6 @@ function RoutePage() {
                                     <button
                                         className="option"
                                         type="button"
-                                        className="counter"
                                         role="radio"
                                         aria-checked={train === 'ITX'}
                                         onClick={() => handleTrainChange('ITX')}>
@@ -172,7 +166,6 @@ function RoutePage() {
                                     <button
                                         className="option"
                                         type="button"
-                                        className="counter"
                                         role="radio"
                                         aria-checked={train === '무궁화'}
                                         onClick={() => handleTrainChange('무궁화')}>
@@ -188,14 +181,48 @@ function RoutePage() {
                                 <div className="station">
                                     <div className="title">
                                         <h4>출발</h4>
-                                        <select value="departure" disabled>
+                                        <div className="select-station disabled">
+                                            <span>{departure}</span>
+                                        </div>
+                                        {/* <select value="departure" disabled>
                                             <option value="departure">{departure}</option>
-                                        </select>
+                                        </select> */}
                                     </div>
                                     {/* <button type="button">⇔</button> */}
                                     <div className="title">
                                         <h4>도착</h4>
-                                        <select onChange={handleSelect} value={selected}>
+                                        <div
+                                            ref={ref}
+                                            className={`select-station ${isOpen ? 'station-active' : ''}`}
+                                            onClick={() => setIsOpen((prev) => !prev)}
+                                            onChange={handleSelect}>
+                                            <span>{selected}</span>
+
+                                            <div className="station-scroll">
+                                                {isOpen && (
+                                                    <ul className="station-menu">
+                                                        {filterStation.map((item) => {
+                                                            return (
+                                                                <li key={item.id}>
+                                                                    <div
+                                                                        className="station-city"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            handleSelect(item.city);
+                                                                            setIsOpen(false);
+                                                                        }}>
+                                                                        <div className="station-title">{item.city}</div>
+                                                                        <div>{formatTime(item.times[trainKey])}</div>
+                                                                    </div>
+                                                                </li>
+                                                            );
+                                                        })}
+                                                    </ul>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {/* <select onChange={handleSelect} value={selected}>
                                             <option value="선택" disabled>
                                                 선택
                                             </option>
@@ -206,7 +233,7 @@ function RoutePage() {
                                                     </option>
                                                 );
                                             })}
-                                        </select>
+                                        </select> */}
                                     </div>
                                 </div>
 
@@ -336,6 +363,18 @@ function TimeControl({ focusTime, setFocusTime, travelTime, selectedStation }) {
             </div>
         </div>
     );
+}
+
+function useOnClickOutside(ref, handler) {
+    useEffect(() => {
+        const onPointerDown = (e) => {
+            const el = ref?.current;
+            if (!el || el.contains(e.target)) return;
+            handler(e);
+        };
+        document.addEventListener('pointerdown', onPointerDown, { passive: true });
+        return () => document.removeEventListener('pointerdown', onPointerDown);
+    }, [ref, handler]);
 }
 
 export default RoutePage;
