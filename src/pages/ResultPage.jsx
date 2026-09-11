@@ -5,6 +5,9 @@ import { stationList } from '../utils/stationList.js';
 import { formatTime, formatElapsedTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import noticeIcon from '../assets/notice-icon.svg';
+import useWindowSize from 'react-use/lib/useWindowSize';
+import Confetti from 'react-confetti';
+import useDebouncedWinSize from '../hooks/useDebouncedWinSize.jsx';
 
 function ResultPage() {
     // ---- 선택 상태 ----
@@ -20,6 +23,8 @@ function ResultPage() {
     } = useTrip();
 
     const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
+
+    const { width, height } = useDebouncedWinSize(); // 커스텀 훅 사용
 
     const [initialtimer, setinitalTimer] = useState({
         focusTime: travelTime,
@@ -53,6 +58,7 @@ function ResultPage() {
 
     return (
         <div className="result">
+            {resultPercent === 100 && <Confetti width={width} height={height} recycle={false} numberOfPieces={200} />}
             <div className="result-content item">
                 <div className="result-title">
                     <h2 className="depart">{selectedStation?.city}</h2>

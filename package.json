@@ -13,10 +13,13 @@
     "@ramonak/react-progress-bar": "^5.4.0",
     "@reduxjs/toolkit": "^2.12.0",
     "@tailwindcss/vite": "^4.3.3",
+    "lodash": "^4.18.1",
     "react": "^19.2.8",
+    "react-confetti": "^6.4.0",
     "react-dom": "^19.2.8",
     "react-redux": "^9.3.0",
     "react-router-dom": "^7.18.2",
+    "react-use": "^17.6.1",
     "redux": "^5.0.1",
     "tailwindcss": "^4.3.3",
     "use-sound": "^5.0.0"

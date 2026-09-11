@@ -365,6 +365,7 @@ function TimeControl({ focusTime, setFocusTime, travelTime, selectedStation }) {
     );
 }
 
+// 외부 클릭 감지
 function useOnClickOutside(ref, handler) {
     useEffect(() => {
         const onPointerDown = (e) => {
