@@ -95,13 +95,12 @@ button[aria-checked="true"] {
 
 @media (max-width: 480px) {
     button {
-        padding: 8px 4px;
+        /* padding: 8px 4px;
+        border-radius: 10px; */
         font-size: var(--fs-sm);
-        border-radius: 10px;
     }
 
     .button-group {
         gap: var(--s2);
     }
-    
 }

@@ -315,7 +315,6 @@
         width: calc(100% - 28px);
         height: 1px;
         background-image: linear-gradient(to right, transparent 50%, rgba(0, 0, 0, 0.15) 50%);
-
         background-size: 12px 100%;
         z-index: 20;
     }
