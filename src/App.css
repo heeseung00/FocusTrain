@@ -680,6 +680,13 @@ h2.depart {
   .layer {
     display: block;
   }
+
+  .bottom-sheet h3 {
+    font-size: var(--fs-lg);
+  }
+  .bottom-sheet h4 {
+    font-size: var(--fs-sm);
+  }
 }
 
 @media (max-width: 480px) {
@@ -766,5 +773,12 @@ h2.depart {
 
   .modal-content h2 {
     font-size: var(--fs-md);
+  }
+
+  .bottom-sheet h3 {
+    font-size: var(--fs-lg);
+  }
+  .bottom-sheet h4 {
+    font-size: var(--fs-sm);
   }
 }
