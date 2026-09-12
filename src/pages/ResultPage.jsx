@@ -5,7 +5,7 @@ import { stationList } from '../utils/stationList.js';
 import { formatTime, formatElapsedTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import noticeIcon from '../assets/notice-icon.svg';
-import useWindowSize from 'react-use/lib/useWindowSize';
+// import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
 import useDebouncedWinSize from '../hooks/useDebouncedWinSize.jsx';
 
@@ -14,7 +14,6 @@ function ResultPage() {
     const {
         train,
         selected,
-        focusTime,
         departure,
         resultPercent,
         elapsed,
@@ -22,17 +21,9 @@ function ResultPage() {
         resetTrip,
     } = useTrip();
 
-    const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
+    const { selectedStation, trainLabel } = getTrainInfo(train, selected, stationList);
 
     const { width, height } = useDebouncedWinSize(); // 커스텀 훅 사용
-
-    const [initialtimer, setinitalTimer] = useState({
-        focusTime: travelTime,
-        shortbreak: 5,
-    });
-
-    // // 집중시간
-    // const totalSecondsTime = parseInt(initialtimer.focusTime) * 60;
 
     const navigate = useNavigate();
     // 처음으로 돌아가기 버튼
@@ -81,7 +72,7 @@ function ResultPage() {
                     </div>
                 </div>
                 <div className="result-notice">
-                    <img src={noticeIcon} alt="notice-img" className="icon"></img>
+                    <img src={noticeIcon} alt="트로피 이미지" className="notice-img"></img>
                     <p className="notice-text">{parcentText()}</p>
                 </div>
             </div>
