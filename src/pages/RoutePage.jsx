@@ -5,6 +5,7 @@ import { formatTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { useTrip } from '../context/TripContext.jsx';
 import Modal from './Modal.jsx';
+import { motion } from 'framer-motion';
 // import styled from 'styled-components';
 
 // 열차, 출발역, 도착역, 시간 선택
@@ -28,9 +29,10 @@ function RoutePage() {
 
     // 드롭다운
     const [isOpen, setIsOpen] = useState(false);
-    const ref = useRef(null);
+    const selectRef = useRef(null);
+    const sheetRef = useRef(null);
 
-    useOnClickOutside(ref, () => setIsOpen(false));
+    useOnClickOutside([sheetRef, selectRef], () => setIsOpen(false));
 
     //  ---- 선택에서 파생되는 값들 ----
     const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
@@ -158,7 +160,7 @@ function RoutePage() {
                                     <div className="title">
                                         <h4>도착</h4>
                                         <div
-                                            ref={ref}
+                                            ref={selectRef}
                                             className={`select-station ${isOpen ? 'station-active' : ''}`}
                                             onClick={() => setIsOpen((prev) => !prev)}
                                             onChange={handleSelect}>
@@ -197,6 +199,7 @@ function RoutePage() {
                                     departure={departure}
                                     isOpen={isOpen}
                                     setIsOpen={setIsOpen}
+                                    sheetRef={sheetRef}
                                 />
 
                                 <hr />
@@ -328,26 +331,67 @@ function TimeControl({ focusTime, setFocusTime, selectedStation }) {
 }
 
 // 외부 클릭 감지
-function useOnClickOutside(ref, handler) {
+function useOnClickOutside(refs, handler) {
     useEffect(() => {
         const onPointerDown = (e) => {
-            const el = ref?.current;
-            if (!el || el.contains(e.target)) return;
+            const isInside = refs.some((ref) => {
+                const el = ref?.current;
+                return el && el.contains(e.target);
+            });
+            if (isInside) return;
             handler(e);
         };
         document.addEventListener('pointerdown', onPointerDown, { passive: true });
         return () => document.removeEventListener('pointerdown', onPointerDown);
-    }, [ref, handler]);
+    }, [refs, handler]);
 }
 
-function BottomSheet({ filterStation, selected, handleSelect, trainKey, departure, isOpen, setIsOpen }) {
+function BottomSheet({ filterStation, selected, handleSelect, trainKey, departure, isOpen, setIsOpen, sheetRef }) {
+    //     const handleDragStart = useCallback(
+    //   (e: MouseEvent | TouchEvent) => {
+    //     startYRef.current = clientY;
+    //     currentHeightRef.current = sheetHeight;
+
+    //     document.addEventListener('mousemove', handleDrag);
+    //     document.addEventListener('mouseup', handleDragEnd);
+    //     document.addEventListener('touchmove', handleDrag);
+    //     document.addEventListener('touchend', handleDragEnd);
+    //   },
+    //   [sheetHeight]
+    // );
+
+    // const handleDrag = useCallback(
+    //   (e: MouseEvent | TouchEvent) => {
+    //     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    //     const delta = startYRef.current - clientY;
+    //     const newHeight = currentHeightRef.current + delta;
+
+    //     if (newHeight < dvhToPixels(minHeight)) {
+    //       setSheetHeight(dvhToPixels(minHeight));
+    //     } else if (newHeight > dvhToPixels(maxHeight)) {
+    //       setSheetHeight(dvhToPixels(maxHeight));
+    //     } else {
+    //       setSheetHeight(newHeight);
+    //     }
+    //   },
+    //   [minHeight, maxHeight]
+    // );
+
     return (
         <>
             {isOpen && (
-                <div className="layer" onClick={() => setIsOpen(false)}>
+                <div className="layer">
                     <div className="dim" onClick={() => setIsOpen(false)}></div>
 
-                    <div className="bottom-sheet">
+                    <motion.div
+                        className="bottom-sheet"
+                        initaial={{ y: '100%' }}
+                        animate={{ y: 0 }}
+                        exit={{ y: '100%' }}
+                        trasition={{ duration: 0.25 }}
+                        ref={sheetRef}>
+                        <div className="handle-drag" onPointerDown={(e) => controls.start(e)} />
+
                         <div className="title">
                             <h3>도착지 선택</h3>
                             <h4>{departure}에서 출발하는 노선</h4>
@@ -377,7 +421,7 @@ function BottomSheet({ filterStation, selected, handleSelect, trainKey, departur
                             </ul>
                             {/* )} */}
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             )}
         </>
