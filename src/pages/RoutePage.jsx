@@ -20,11 +20,9 @@ function RoutePage() {
         focusTime,
         setFocusTime,
         departure,
-        setDeparture,
         seats,
         setActiveCoach,
         setSelectedSeat,
-        currentIndex,
         setModal,
     } = useTrip();
 
@@ -36,18 +34,8 @@ function RoutePage() {
 
     //  ---- 선택에서 파생되는 값들 ----
     const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
-    // // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
-    // const filterStation = stationList.filter((item) => {
-    //     if (train === 'KTX') {
-    //         return item.times.ktx !== null;
-    //     }
-    //     if (train === 'ITX') {
-    //         return item.times.itx !== null;
-    //     }
-    //     if (train === '무궁화') {
-    //         return item.times.mugunghwa !== null;
-    //     }
-    // });
+
+    // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
     const filterStation = stationList.filter((item) => {
         return item.times[trainKey] !== null;
     });
@@ -67,7 +55,6 @@ function RoutePage() {
         setSelected('선택');
     };
     const handleSelect = (city) => {
-        // setSelected(e.target.value);
         setSelected(city);
         setIsOpen(false);
     };
@@ -104,7 +91,6 @@ function RoutePage() {
         const randomSeatType = seatTypes[Math.floor(Math.random() * seatTypes.length)];
 
         // SeatGrid에서 쓰는 좌석 번호 계산
-        // const rowIndex = rows.indexOf(row);
         const seatNumber = rows.length - randomIndex;
 
         const seatLetters = {
@@ -119,7 +105,6 @@ function RoutePage() {
         // 기존에 사용하던 선택 함수 그대로 사용
         setActiveCoach(Number(randomSeat));
 
-        // handleSeatClick(row, randomSeatType, seatName);
         setSelectedSeat({
             row,
             seatType: randomSeatType,
@@ -142,36 +127,20 @@ function RoutePage() {
                         {/* 기차 종류 선택 */}
                         <div className="train-select">
                             <ul>
-                                <li>
-                                    <button
-                                        className="option"
-                                        type="button"
-                                        role="radio"
-                                        aria-checked={train === 'KTX'}
-                                        onClick={() => handleTrainChange('KTX')}>
-                                        KTX
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="option"
-                                        type="button"
-                                        role="radio"
-                                        aria-checked={train === 'ITX'}
-                                        onClick={() => handleTrainChange('ITX')}>
-                                        ITX
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="option"
-                                        type="button"
-                                        role="radio"
-                                        aria-checked={train === '무궁화'}
-                                        onClick={() => handleTrainChange('무궁화')}>
-                                        무궁화
-                                    </button>
-                                </li>
+                                {['KTX', 'ITX', '무궁화'].map((type) => {
+                                    return (
+                                        <li key={type}>
+                                            <button
+                                                className="option"
+                                                type="button"
+                                                role="radio"
+                                                aria-checked={train === type}
+                                                onClick={() => handleTrainChange(type)}>
+                                                {type}
+                                            </button>
+                                        </li>
+                                    );
+                                })}
                             </ul>
                         </div>
 
@@ -184,9 +153,6 @@ function RoutePage() {
                                         <div className="select-station disabled">
                                             <span>{departure}</span>
                                         </div>
-                                        {/* <select value="departure" disabled>
-                                            <option value="departure">{departure}</option>
-                                        </select> */}
                                     </div>
                                     {/* <button type="button">⇔</button> */}
                                     <div className="title">
@@ -205,7 +171,7 @@ function RoutePage() {
                                                             return (
                                                                 <li key={item.id}>
                                                                     <div
-                                                                        className="station-city"
+                                                                        className={`station-city ${selected === item.city ? 'active' : ''}`}
                                                                         onClick={(e) => {
                                                                             e.stopPropagation();
                                                                             handleSelect(item.city);
@@ -221,26 +187,22 @@ function RoutePage() {
                                                 )}
                                             </div>
                                         </div>
-
-                                        {/* <select onChange={handleSelect} value={selected}>
-                                            <option value="선택" disabled>
-                                                선택
-                                            </option>
-                                            {filterStation.map((item) => {
-                                                return (
-                                                    <option value={item.city} key={item.id}>
-                                                        {item.city}
-                                                    </option>
-                                                );
-                                            })}
-                                        </select> */}
                                     </div>
                                 </div>
+                                <BottomSheet
+                                    filterStation={filterStation}
+                                    selected={selected}
+                                    handleSelect={handleSelect}
+                                    trainKey={trainKey}
+                                    departure={departure}
+                                    isOpen={isOpen}
+                                    setIsOpen={setIsOpen}
+                                />
 
                                 <hr />
+
                                 {/* 소요시간에 따른 중간정차역 휴식 시간 지정*/}
                                 {/* 도착지까지 정보 표시 */}
-
                                 <div className="time-info">
                                     <div className="info duration">
                                         <h4>소요시간</h4>
@@ -335,7 +297,7 @@ function ToggleShow({ isToggleOn, selectedStation, restCount }) {
 }
 
 // 시간 조정
-function TimeControl({ focusTime, setFocusTime, travelTime, selectedStation }) {
+function TimeControl({ focusTime, setFocusTime, selectedStation }) {
     const increase = () => {
         // 역 선택 전에는 미작동
         if (!selectedStation) {
@@ -376,6 +338,50 @@ function useOnClickOutside(ref, handler) {
         document.addEventListener('pointerdown', onPointerDown, { passive: true });
         return () => document.removeEventListener('pointerdown', onPointerDown);
     }, [ref, handler]);
+}
+
+function BottomSheet({ filterStation, selected, handleSelect, trainKey, departure, isOpen, setIsOpen }) {
+    return (
+        <>
+            {isOpen && (
+                <div className="layer" onClick={() => setIsOpen(false)}>
+                    <div className="dim" onClick={() => setIsOpen(false)}></div>
+
+                    <div className="bottom-sheet">
+                        <div className="title">
+                            <h3>도착지 선택</h3>
+                            <h4>{departure}에서 출발하는 노선</h4>
+                        </div>
+
+                        <hr />
+
+                        <div className="station-scroll">
+                            {/* {isOpen && ( */}
+                            <ul className="station-menu">
+                                {filterStation.map((item) => {
+                                    return (
+                                        <li key={item.id}>
+                                            <div
+                                                className={`station-city ${selected === item.city ? 'active' : ''}`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleSelect(item.city);
+                                                    setIsOpen(false);
+                                                }}>
+                                                <div className="station-title">{item.city}</div>
+                                                <div>{formatTime(item.times[trainKey])}</div>
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                            {/* )} */}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
 }
 
 export default RoutePage;

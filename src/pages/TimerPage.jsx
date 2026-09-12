@@ -24,29 +24,24 @@ function TimerPage() {
         isToggleOn,
         focusTime,
         departure,
-        setActiveCoach,
-        setSelectedSeat,
-        totalTime,
         elapsed,
         setElapsed,
         resultPercent,
         timerState,
         setTimerState,
-        modal,
         setModal,
-        restSeconds,
         setRestSeconds,
         isResting,
         setIsResting,
     } = useTrip();
 
-    const { trainKey, selectedStation, travelTime, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
+    const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 
-    const [initialtimer, setinitalTimer] = useState({
-        focusTime: travelTime,
-        shortbreak: 5,
-        // sections: 4,
-    });
+    // const [initialtimer, setinitalTimer] = useState({
+    //     focusTime: travelTime,
+    //     shortbreak: 5,
+    //     // sections: 4,
+    // });
 
     const [isPaused, setIsPaused] = useState(false);
 
@@ -55,9 +50,9 @@ function TimerPage() {
     // 중간 정차역 리스트 관리
     const [showStationList, setShowStationList] = useState(false);
 
-    const handleEndClick = () => {
-        setModal('end');
-    };
+    // const handleEndClick = () => {
+    //     setModal('end');
+    // };
 
     return (
         <div className="pomodoro">
@@ -102,7 +97,7 @@ function PomodoroMain({
     setElapsed,
     resultPercent,
     trainLabel,
-    stationList,
+    // stationList,
 
     isResting,
     setIsResting,

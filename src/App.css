@@ -464,7 +464,7 @@ h3 {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 1;
+  z-index: 99;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -491,6 +491,7 @@ h3 {
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: 98;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
@@ -544,7 +545,7 @@ h2.depart {
   font-weight: 700;
 }
 
-img.icon {
+.notice-img {
   width: 19px;
   height: 19px;
 }
@@ -562,6 +563,61 @@ img.icon {
 .notice-text {
   text-align: left;
   font-weight: 600;
+}
+
+/* ============================================ */
+/* 바텀시트 */
+.layer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: none;
+  /* display: block; */
+  inset: 0;
+}
+
+.dim {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bottom-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* top: 50%; */
+  bottom: 0;
+  padding: 24px;
+  border-radius: 16px 16px 0 0;
+  background-color: var(--surface);
+  /* background-color: var(--accent); */
+  transition: transform 0.3s ease;
+}
+
+.bottom-sheet .station-scroll {
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.bottom-sheet .station-menu {
+  position: static;
+  display: block;
+  height: auto;
+  max-height: none;
+  margin-top: 16px;
+  overflow: visible;
+  border-radius: 0;
+  border: 0;
+}
+
+.bottom-sheet .title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 0;
 }
 
 /* ============================================ */
@@ -592,6 +648,9 @@ img.icon {
   .station {
     gap: 20px;
   }
+  .select-station .station-menu {
+    display: none;
+  }
 
   .elapsed-timer {
     font-size: 64px;
@@ -615,6 +674,11 @@ img.icon {
 
   button {
     padding: 14px 6px;
+  }
+
+  /* 바텀시트 */
+  .layer {
+    display: block;
   }
 }
 
