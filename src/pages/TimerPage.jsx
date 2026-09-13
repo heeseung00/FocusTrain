@@ -7,6 +7,7 @@ import { getTrainInfo } from '../utils/getTrainInfo.js';
 import Modal from './Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
+import resetIcon from '../assets/reset-icon.svg';
 // 짧은 효과음 사용을 위한 react hook
 import useSound from 'use-sound';
 // import './pomodoroMain.css';
@@ -280,7 +281,10 @@ function PomodoroMain({
                 </button>
 
                 <button onClick={handleTimerReset}>
-                    <span className="time-icon">⭮</span>다시
+                    <span className="time-icon">
+                        <img src={resetIcon} alt="리셋 아이콘" />
+                    </span>
+                    다시
                 </button>
                 <button className="end" onClick={handleModalOpen}>
                     <span className="time-icon">■</span>종료

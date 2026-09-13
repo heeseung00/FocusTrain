@@ -9,6 +9,9 @@
 }
 
 button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     padding: 16px 8px;
     border-radius: var(--r-md);
@@ -81,6 +84,10 @@ button[aria-checked="true"] {
     color: var(--accent-deep);
 }
 
+.time-icon img {
+    width: 12px;
+    height: 17px;
+}
 /* ============================================ */
 /* 반응형 */
 @media (max-width: 768px) {
