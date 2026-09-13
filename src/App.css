@@ -590,6 +590,11 @@ h2.depart {
   right: 0;
   /* top: 50%; */
   bottom: 0;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
   padding: 24px;
   border-radius: 16px 16px 0 0;
   background-color: var(--surface);
@@ -597,8 +602,19 @@ h2.depart {
   transition: transform 0.3s ease;
 }
 
+.bottom-content {
+  display: flex;
+  flex-direction: column;
+  /* [부모 높이에 맞춰 자동으로 스크롤 생기게 하기]
+  max-height:0 으로 영역이 불필요하게 커지는 것을 막고,
+  flex:1로 남은 공간을 채운다 */
+  flex: 1;
+  min-height: 0;
+}
+
 .bottom-sheet .station-scroll {
-  max-height: 40vh;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
 }
 
@@ -618,6 +634,25 @@ h2.depart {
   flex-direction: column;
   gap: 4px;
   padding: 16px 0;
+}
+
+.handle-drag {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle-drag:active {
+  cursor: grabbing;
+}
+
+.handle-drag div {
+  width: 80px;
+  height: 10px;
+  background-color: var(--bg);
+  border-radius: 20px;
 }
 
 /* ============================================ */
