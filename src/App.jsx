@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { TripProvider, useTrip } from './context/TripContext.jsx';
 
@@ -11,6 +11,16 @@ import TimerPage from './pages/TimerPage.jsx';
 import ResultPage from './pages/ResultPage.jsx';
 
 function App() {
+    // 새로고침으로 들어온 경우
+    const navigation = performance.getEntriesByType('navigation')[0];
+    const isReload = navigation?.type === 'reload';
+
+    // 메인이 아닌 페이지에서 새로고침했으면
+    // React 렌더링 전에 메인으로 이동
+    if (isReload && window.location.pathname !== '/') {
+        window.location.replace('/');
+        return null;
+    }
     return (
         <>
             <TripProvider>
@@ -52,7 +62,8 @@ function AppRoutes() {
                 <Route
                     path="/result"
                     element={train && selected && departure ? <ResultPage /> : <Navigate to="/" replace />}></Route>
-                {/* <Route path="*" element={<Navigate to="/" />} /> */}
+
+                <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </section>
     );
