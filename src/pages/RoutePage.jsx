@@ -347,35 +347,79 @@ function useOnClickOutside(refs, handler) {
 }
 
 function BottomSheet({ filterStation, selected, handleSelect, trainKey, departure, isOpen, setIsOpen, sheetRef }) {
-    //     const handleDragStart = useCallback(
-    //   (e: MouseEvent | TouchEvent) => {
-    //     startYRef.current = clientY;
-    //     currentHeightRef.current = sheetHeight;
+    // 바텀시트 높이
+    const [sheetHeight, setSheetHeight] = useState(60);
 
-    //     document.addEventListener('mousemove', handleDrag);
-    //     document.addEventListener('mouseup', handleDragEnd);
-    //     document.addEventListener('touchmove', handleDrag);
-    //     document.addEventListener('touchend', handleDragEnd);
-    //   },
-    //   [sheetHeight]
-    // );
+    // 드래그 시작 위치
+    const startYRef = useRef(0);
 
-    // const handleDrag = useCallback(
-    //   (e: MouseEvent | TouchEvent) => {
-    //     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
-    //     const delta = startYRef.current - clientY;
-    //     const newHeight = currentHeightRef.current + delta;
+    // 드래그 시작 당시 높이
+    const startHeightRef = useRef(60);
 
-    //     if (newHeight < dvhToPixels(minHeight)) {
-    //       setSheetHeight(dvhToPixels(minHeight));
-    //     } else if (newHeight > dvhToPixels(maxHeight)) {
-    //       setSheetHeight(dvhToPixels(maxHeight));
-    //     } else {
-    //       setSheetHeight(newHeight);
-    //     }
-    //   },
-    //   [minHeight, maxHeight]
-    // );
+    // 최소 / 최대 높이
+    const minHeight = 0;
+    const maxHeight = 100;
+
+    // 높이 제한
+    const clamp = (value) => {
+        return Math.min(Math.max(value, minHeight), maxHeight);
+    };
+
+    // 드래그 시작
+    const handlePointerDown = (e) => {
+        startYRef.current = e.clientY;
+        startHeightRef.current = sheetHeight;
+
+        document.addEventListener('pointermove', handlePointerMove);
+        document.addEventListener('pointerup', handlePointerUp);
+    };
+
+    // 드래그 중
+    const handlePointerMove = (e) => {
+        const delta = startYRef.current - e.clientY;
+
+        // 위로 끌면 +, 아래로 끌면 -
+        const newHeight = startHeightRef.current + (delta / window.innerHeight) * 100;
+
+        setSheetHeight(clamp(newHeight));
+    };
+
+    // 드래그 종료
+    const handlePointerUp = (e) => {
+        const delta = e.clientY - startYRef.current;
+        document.removeEventListener('pointermove', handlePointerMove);
+        document.removeEventListener('pointerup', handlePointerUp);
+
+        // 60vh(중간높이)에서 아래로 200px 이상 드래그하면 닫힘
+        if (startHeightRef.current === 60 && delta > 200) {
+            setIsOpen(false);
+            setSheetHeight(60);
+            return;
+        }
+
+        // 위로 100px 이상 드래그 하면 100vh(전체 높이)까지 올리기
+        if (delta < -100) {
+            setSheetHeight(maxHeight);
+            return;
+        }
+
+        // 100vh(전체 높이)에서 아래로 드래그하면  60vh(중간높이)로 내리기
+        if (startHeightRef.current === maxHeight && delta > 0) {
+            setSheetHeight(60);
+            return;
+        }
+
+        // 시작했던 초기 높이로 복귀
+        setSheetHeight(startHeightRef.current);
+    };
+
+    // 컴포넌트 제거 시 이벤트 정리
+    useEffect(() => {
+        return () => {
+            document.removeEventListener('pointermove', handlePointerMove);
+            document.removeEventListener('pointerup', handlePointerUp);
+        };
+    }, []);
 
     return (
         <>
@@ -385,41 +429,47 @@ function BottomSheet({ filterStation, selected, handleSelect, trainKey, departur
 
                     <motion.div
                         className="bottom-sheet"
-                        initaial={{ y: '100%' }}
+                        initial={{ y: '100%' }}
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
-                        trasition={{ duration: 0.25 }}
-                        ref={sheetRef}>
-                        <div className="handle-drag" onPointerDown={(e) => controls.start(e)} />
+                        transition={{ duration: 0.25 }}
+                        ref={sheetRef}
+                        style={{
+                            height: `${sheetHeight}vh
+                        `,
+                        }}>
+                        <motion.div className="handle-drag" onPointerDown={handlePointerDown}>
+                            <div></div>
+                        </motion.div>
 
-                        <div className="title">
-                            <h3>도착지 선택</h3>
-                            <h4>{departure}에서 출발하는 노선</h4>
-                        </div>
+                        <div className="bottom-content">
+                            <div className="title">
+                                <h3>도착지 선택</h3>
+                                <h4>{departure}에서 출발하는 노선</h4>
+                            </div>
 
-                        <hr />
+                            <hr />
 
-                        <div className="station-scroll">
-                            {/* {isOpen && ( */}
-                            <ul className="station-menu">
-                                {filterStation.map((item) => {
-                                    return (
-                                        <li key={item.id}>
-                                            <div
-                                                className={`station-city ${selected === item.city ? 'active' : ''}`}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleSelect(item.city);
-                                                    setIsOpen(false);
-                                                }}>
-                                                <div className="station-title">{item.city}</div>
-                                                <div>{formatTime(item.times[trainKey])}</div>
-                                            </div>
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                            {/* )} */}
+                            <div className="station-scroll">
+                                <ul className="station-menu">
+                                    {filterStation.map((item) => {
+                                        return (
+                                            <li key={item.id}>
+                                                <div
+                                                    className={`station-city ${selected === item.city ? 'active' : ''}`}
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleSelect(item.city);
+                                                        setIsOpen(false);
+                                                    }}>
+                                                    <div className="station-title">{item.city}</div>
+                                                    <div>{formatTime(item.times[trainKey])}</div>
+                                                </div>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
                         </div>
                     </motion.div>
                 </div>
