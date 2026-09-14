@@ -97,7 +97,7 @@ function Modal() {
     };
 
     return (
-        <div className="modal layer">
+        <div className="modal">
             <div className="modal-content item">
                 <h2>{content.title}</h2>
 
