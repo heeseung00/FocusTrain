@@ -9,10 +9,10 @@ export function TripProvider({ children }) {
     const [selected, setSelected] = useState('선택');
     // 토글 버튼
     const [isToggleOn, setIsToggleOn] = useState(true);
-    // 휴식시간 조절할 수 있게 (중간 정차역)
-    const [focusTime, setFocusTime] = useState(0);
     // 출발지 기본값 입력(추후 추가)
     const [departure, setDeparture] = useState('서울');
+    // 휴식시간 조절할 수 있게 (중간 정차역)
+    const [focusTime, setFocusTime] = useState(0);
 
     // ---- 좌석 선택 ----
     // 세로 한줄 최대 갯수 5개(row <= 5).
@@ -37,24 +37,11 @@ export function TripProvider({ children }) {
     // 현재 선택된 좌석
     const [selectedSeat, setSelectedSeat] = useState(false);
 
-    // 타이머 경과시간 표시
-    const [elapsed, setElapsed] = useState(0);
-    // 타이머 퍼센트
-    const [resultPercent, setResultPercent] = useState(0);
-    // 타이머가 지금 움직이는지 상태 확인
-    const [timerState, setTimerState] = useState(false);
-
     // 모달 열기
     const [modal, setModal] = useState(false);
-    // 휴식시간 카운트 관리
-
-    const [isResting, setIsResting] = useState(false);
-    // 
-    // const [restSeconds, setRestSeconds] = useState(20 * 60);
-    const [restSeconds, setRestSeconds] = useState(5);
 
     // 공통 context 초기화
-    const resetTrip = () => {
+    const resetTripInfo = () => {
         setTrain('KTX');
         setSelected('선택');
         setIsToggleOn(true);
@@ -70,13 +57,8 @@ export function TripProvider({ children }) {
         });
         setActiveCoach(1);
         setSelectedSeat(false);
-        setElapsed(0);
-        setResultPercent(0);
-        setTimerState(false);
+
         setModal(false);
-        // setRestSeconds(20 * 60);
-        setRestSeconds(5);
-        setIsResting(false);
     };
 
     return (
@@ -98,21 +80,11 @@ export function TripProvider({ children }) {
                 setActiveCoach,
                 selectedSeat,
                 setSelectedSeat,
-                elapsed,
-                setElapsed,
-                resultPercent,
-                setResultPercent,
-                timerState,
-                setTimerState,
                 modal,
                 setModal,
-                isResting,
-                setIsResting,
-                restSeconds,
-                setRestSeconds,
 
                 // 공통 context 초기화
-                resetTrip,
+                resetTripInfo,
             }}>
             {children}
         </TripContext.Provider>

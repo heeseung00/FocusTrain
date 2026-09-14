@@ -1,17 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
-import { stationList } from '../utils/stationList.js';
-import { formatDurationTime, getArriveTime } from '../utils/time.js';
-import { getTrainInfo } from '../utils/getTrainInfo.js';
+import { useTimer } from '../context/TimerContext.jsx';
+import { formatDurationTime } from '../utils/time.js';
 
 function Modal() {
     // ---- 선택 상태 ----
-    const { modal, setModal, elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTrip();
+    const { modal, setModal } = useTrip();
+    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTimer();
 
     const navigate = useNavigate();
-
-    const restTimerRef = useRef(null);
 
     const modalContent = {
         departure: {

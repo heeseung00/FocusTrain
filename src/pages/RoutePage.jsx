@@ -6,7 +6,6 @@ import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { useTrip } from '../context/TripContext.jsx';
 import Modal from './Modal.jsx';
 import { motion } from 'framer-motion';
-// import styled from 'styled-components';
 
 // 열차, 출발역, 도착역, 시간 선택
 function RoutePage() {

@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import '../styles/SeatPage.css';
@@ -74,16 +73,5 @@ const SeatPage = () => {
         </div>
     );
 };
-
-// // 좌석 상태와 클릭 효과
-// function Seat({ seatType, seat, selected, onClick }) {
-//     const isBooked = Boolean(seat);
-
-//     return (
-//         <div className={`seat-box ${selected ? 'selected' : ''}`} onClick={onClick}>
-//             {seatType}
-//         </div>
-//     );
-// }
 
 export default SeatPage;

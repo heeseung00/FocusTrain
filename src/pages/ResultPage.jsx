@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
+import { useTimer } from '../context/TimerContext.jsx';
 import { stationList } from '../utils/stationList.js';
-import { formatTime, formatElapsedTime } from '../utils/time.js';
+import { formatElapsedTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import noticeIcon from '../assets/notice-icon.svg';
-// import useWindowSize from 'react-use/lib/useWindowSize';
 import Confetti from 'react-confetti';
 import useDebouncedWinSize from '../hooks/useDebouncedWinSize.jsx';
 
@@ -15,11 +15,10 @@ function ResultPage() {
         train,
         selected,
         departure,
-        resultPercent,
-        elapsed,
 
-        resetTrip,
+        resetTripInfo,
     } = useTrip();
+    const { resultPercent, elapsed, resetTimer } = useTimer();
 
     const { selectedStation, trainLabel } = getTrainInfo(train, selected, stationList);
 
@@ -29,7 +28,8 @@ function ResultPage() {
     // 처음으로 돌아가기 버튼
     const navigateGoToFirst = () => {
         // 공통 context 초기화
-        resetTrip();
+        resetTripInfo();
+        resetTimer();
         navigate('/');
     };
 

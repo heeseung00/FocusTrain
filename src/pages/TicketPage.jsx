@@ -57,16 +57,7 @@ function TicketPage() {
     // 열차 선택값 받아오기
     const { train, selected, activeCoach, selectedSeat, focusTime } = useTrip();
 
-    const { trainKey, selectedStation, travelTime, trainLabel } = getTrainInfo(train, selected, stationList);
-
-    // // 열차 종류에 따라 기차 이름 다르게
-    // const trainLabelS = {
-    //     KTX: 'KTX 001',
-    //     ITX: 'ITX-새마을',
-    //     무궁화: '무궁화호 1151',
-    // };
-
-    // const trainLabel = trainLabelS[train];
+    const { trainLabel } = getTrainInfo(train, selected, stationList);
 
     return (
         <>
@@ -94,8 +85,6 @@ function TicketPage() {
                                         <p className="time">{getArriveTime(focusTime)}</p>
                                     </li>
                                 </ul>
-                                {/* <div className="Destination"></div>
-                                <p className="subtitle">{formatTime(focusTime)}</p> */}
                             </div>
 
                             <footer className="ticket-footer">
@@ -116,7 +105,6 @@ function TicketPage() {
                     </article>
 
                     <aside className="ticket-stub">
-                        {/* <div className="foil-seal"></div> */}
                         <div className="barcode-wrap">
                             <div className="barcode"></div>
                         </div>

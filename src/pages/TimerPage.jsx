@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
+import { useTimer } from '../context/TimerContext.jsx';
 import { stationList } from '../utils/stationList.js';
 import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
@@ -8,8 +9,8 @@ import Modal from './Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
 import resetIcon from '../assets/reset-icon.svg';
-// 짧은 효과음 사용을 위한 react hook
-import useSound from 'use-sound';
+// // 짧은 효과음 사용을 위한 react hook
+// import useSound from 'use-sound';
 // import './pomodoroMain.css';
 // import playIcon from './img/play.png';
 // import pauseIcon from './img/pause.png';
@@ -19,41 +20,16 @@ import useSound from 'use-sound';
 
 function TimerPage() {
     // ---- 선택 상태 ----
-    const {
-        train,
-        selected,
-        isToggleOn,
-        focusTime,
-        departure,
-        elapsed,
-        setElapsed,
-        resultPercent,
-        timerState,
-        setTimerState,
-        setModal,
-        setRestSeconds,
-        isResting,
-        setIsResting,
-    } = useTrip();
+    const { train, selected, isToggleOn, focusTime, departure } = useTrip();
+    const { elapsed, setElapsed, resultPercent, timerState, setTimerState, setRestSeconds, isResting, setIsResting } =
+        useTimer();
 
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
-
-    // const [initialtimer, setinitalTimer] = useState({
-    //     focusTime: travelTime,
-    //     shortbreak: 5,
-    //     // sections: 4,
-    // });
-
-    const [isPaused, setIsPaused] = useState(false);
 
     // 중간 정차 시간 관리
     const [currentIndex, setCurrentIndex] = useState(0);
     // 중간 정차역 리스트 관리
     const [showStationList, setShowStationList] = useState(false);
-
-    // const handleEndClick = () => {
-    //     setModal('end');
-    // };
 
     return (
         <div className="pomodoro">
@@ -69,7 +45,6 @@ function TimerPage() {
                 setElapsed={setElapsed}
                 resultPercent={resultPercent}
                 trainLabel={trainLabel}
-                stationList={stationList}
                 isResting={isResting}
                 setIsResting={setIsResting}
                 currentIndex={currentIndex}
@@ -98,7 +73,6 @@ function PomodoroMain({
     setElapsed,
     resultPercent,
     trainLabel,
-    // stationList,
 
     isResting,
     setIsResting,
@@ -121,9 +95,6 @@ function PomodoroMain({
     // 전체 시간 표시
     const [totalSeconds, setTotalSeconds] = useState(parseInt(focusTime) * 60);
     const [timerReset, setTimerReset] = useState(false);
-    const [pomodoroTerms, setPomodoroTerms] = useState(0);
-
-    const timeminute = parseInt(focusTime);
 
     const totalSecondsTime = parseInt(focusTime) * 60;
 
@@ -296,7 +267,7 @@ function PomodoroMain({
 
 // 소요시간과 progress연결
 function ProgressTimer({ totalTime, remainingTime, departure, selectedStation }) {
-    const { setResultPercent } = useTrip();
+    const { setResultPercent } = useTimer();
 
     const progress = ((totalTime - remainingTime) / totalTime) * 100;
     const percent = Math.min(Math.max(progress, 0), 100);

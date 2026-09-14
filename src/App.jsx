@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { TripProvider, useTrip } from './context/TripContext.jsx';
+import { TimerProvider, useTimer } from './context/TimerContext.jsx';
 
 import './App.css';
 import './styles/button.css';
@@ -24,9 +25,11 @@ function App() {
     return (
         <>
             <TripProvider>
-                <BrowserRouter>
-                    <AppRoutes />
-                </BrowserRouter>
+                <TimerProvider>
+                    <BrowserRouter>
+                        <AppRoutes />
+                    </BrowserRouter>
+                </TimerProvider>
             </TripProvider>
         </>
     );
