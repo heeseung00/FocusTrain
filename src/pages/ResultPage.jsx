@@ -51,13 +51,13 @@ function ResultPage() {
         <div className="result">
             {resultPercent === 100 && <Confetti width={width} height={height} recycle={false} numberOfPieces={200} />}
             <div className="result-content item">
-                <div className="result-title">
-                    <h2 className="depart">{selectedStation?.city}</h2>
+                <header className="result-title">
+                    <h1 className="depart">{selectedStation?.city}</h1>
 
                     <p className="info">
                         {departure} → {selectedStation?.city} · {trainLabel}
                     </p>
-                </div>
+                </header>
 
                 <hr />
 

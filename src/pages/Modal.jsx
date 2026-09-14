@@ -97,7 +97,7 @@ function Modal() {
     };
 
     return (
-        <div className="modal">
+        <div className="modal layer">
             <div className="modal-content item">
                 <h2>{content.title}</h2>
 
@@ -131,7 +131,7 @@ function Modal() {
                     </button>
                 </div>
             </div>
-            <div className="modal-background"></div>
+            <div className="dim"></div>
         </div>
     );
 }
