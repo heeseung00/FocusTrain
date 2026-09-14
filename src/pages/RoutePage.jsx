@@ -122,7 +122,7 @@ function RoutePage() {
     }, [travelTime]);
 
     return (
-        <>
+        <main>
             <form onSubmit={(e) => e.preventDefault()}>
                 <>
                     <div className="content">
@@ -153,7 +153,7 @@ function RoutePage() {
                                     <div className="title">
                                         <h4>출발</h4>
                                         <div className="select-station disabled">
-                                            <span>{departure}</span>
+                                            <h1>{departure}</h1>
                                         </div>
                                     </div>
                                     {/* <button type="button">⇔</button> */}
@@ -164,7 +164,7 @@ function RoutePage() {
                                             className={`select-station ${isOpen ? 'station-active' : ''}`}
                                             onClick={() => setIsOpen((prev) => !prev)}
                                             onChange={handleSelect}>
-                                            <span>{selected}</span>
+                                            <h1>{selected}</h1>
 
                                             <div className="station-scroll">
                                                 {isOpen && (
@@ -271,7 +271,7 @@ function RoutePage() {
             </form>
 
             <Modal />
-        </>
+        </main>
     );
 }
 

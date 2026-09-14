@@ -1,6 +1,5 @@
 /* Pretendard */
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css");
-/* @import "tailwindcss"; */
 
 :root {
   /* 색상 */
@@ -9,10 +8,10 @@
   --code-bg: #f4f3ec;
 
   --text: #18181c;
-  --sub-text: #8a8a93;
+  --sub-text: #7a7a73;
   --light-text: #c6c6ce;
 
-  --border: #a5a5a8;
+  --border: #7a7a73;
   --border-light: #e7e7ec;
 
   --accent: #4b3fe0;
@@ -41,11 +40,6 @@
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neprtendardue",
     "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", sans-serif;
-  --font-mono: ui-monospace, Consolas, monospace;
-  /* --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-  */
-
   /* 폰트 사이즈 */
   --fs-xs: 12px;
   --fs-sm: 14px;
@@ -96,38 +90,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+body:has(.dim) {
+  overflow: hidden;
 }
-
-html::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-thumb {
-  background: red;
-  border-radius: 8px;
-}
-
-html::-webkit-scrollbar-track,
-body::-webkit-scrollbar-track {
-  background: transparent;
-} */
-
-/* body::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-body::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: 8px;
-} */
-
-/* 
-- 모바일 (Mobile): 480px 이하 (소형 스마트폰은 375px~480px 구간 대응)
-- 태블릿 (Tablet): 481px ~ 1024px (세로 및 가로 방향 포함)
-- 데스크톱 (Desktop): 1025px 이상 (일반 PC 및 노트북) 
-*/
-
-/* #root {
-} */
