@@ -83,7 +83,7 @@ function PomodoroMain({
     showStationList,
     setShowStationList,
 }) {
-    const triggeredStopsRef = useRef(new Set()); //추가로 선언 (컴포넌트 최상단에)
+    const triggeredStopsRef = useRef(new Set()); //주석
 
     // 모달 열기
     const { setModal } = useTrip();
@@ -93,10 +93,9 @@ function PomodoroMain({
     };
 
     // 전체 시간 표시
-    const [totalSeconds, setTotalSeconds] = useState(parseInt(focusTime) * 60);
-    const [timerReset, setTimerReset] = useState(false);
+    const [totalSeconds, setTotalSeconds] = useState(Number(focusTime) * 60);
 
-    const totalSecondsTime = parseInt(focusTime) * 60;
+    const totalSecondsTime = Number(focusTime) * 60;
 
     // 타이머 경과시간 표시
     const currentElapsed = totalSecondsTime - totalSeconds;
@@ -110,23 +109,22 @@ function PomodoroMain({
     // const [breakSoundPlay] = useSound(breakSound);
 
     const handleTimerStart = () => {
-        setTimerReset(false);
         setIsResting(false);
         setTimerState(true);
     };
     const handleTimerStop = () => {
-        setTimerReset(false);
         setTimerState(false);
     };
     const handleTimerReset = () => {
         setTotalSeconds(parseInt(focusTime) * 60);
-        setIsResting(false);
         setTimerState(false);
+        // 즉시시작
+        setIsResting(false);
+        handleTimerStart();
         // 중간정차 list 초기화
         setCurrentIndex(0);
         // 중간정차 모달 초기화
         triggeredStopsRef.current.clear();
-        handleTimerStart();
     };
     // 재생 - 일시정지 토글 버튼
     const handleTimerToggle = () => {
