@@ -46,9 +46,6 @@ function RoutePage() {
     const navigateGoToSeat = () => {
         navigate('/seat');
     };
-    const navigateGoToTicket = () => {
-        navigate('/ticket');
-    };
 
     //  ---- 이벤트 핸들러 ----
     const handleTrainChange = (trainType) => {
@@ -115,7 +112,7 @@ function RoutePage() {
         navigate('/ticket');
     }
 
-    //  ---- 기타 효과 ----
+    //  목표 시간(focusTime) 조정시 소요시간(travelTime)과 동기화
     useEffect(() => {
         setFocusTime(travelTime);
     }, [travelTime]);
@@ -167,38 +164,27 @@ function RoutePage() {
 
                                             <div className="station-scroll">
                                                 {isOpen && (
-                                                    <ul className="station-menu">
-                                                        {filterStation.map((item) => {
-                                                            return (
-                                                                <li key={item.id}>
-                                                                    <div
-                                                                        className={`station-city ${selected === item.city ? 'active' : ''}`}
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleSelect(item.city);
-                                                                            setIsOpen(false);
-                                                                        }}>
-                                                                        <div className="station-title">{item.city}</div>
-                                                                        <div>{formatTime(item.times[trainKey])}</div>
-                                                                    </div>
-                                                                </li>
-                                                            );
-                                                        })}
-                                                    </ul>
+                                                    <StationMenu
+                                                        filterStation={filterStation}
+                                                        selected={selected}
+                                                        handleSelect={handleSelect}
+                                                        trainKey={trainKey}
+                                                        setIsOpen={setIsOpen}
+                                                    />
                                                 )}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <BottomSheet
-                                    filterStation={filterStation}
-                                    selected={selected}
-                                    handleSelect={handleSelect}
-                                    trainKey={trainKey}
                                     departure={departure}
                                     isOpen={isOpen}
                                     setIsOpen={setIsOpen}
                                     sheetRef={sheetRef}
+                                    filterStation={filterStation}
+                                    selected={selected}
+                                    handleSelect={handleSelect}
+                                    trainKey={trainKey}
                                 />
 
                                 <hr />
@@ -321,31 +307,69 @@ function TimeControl({ focusTime, setFocusTime, selectedStation }) {
         <div className="time-control">
             <h4>목표 시간</h4>
             <div className="time-adjust">
-                <button onClick={decrease}>-</button>
+                <button type="button" onClick={decrease}>
+                    -
+                </button>
                 <h3>{formatTime(focusTime)}</h3>
-                <button onClick={increase}>+</button>
+                <button type="button" onClick={increase}>
+                    +
+                </button>
             </div>
         </div>
     );
 }
 
 // 외부 클릭 감지
-function useOnClickOutside(refs, handler) {
+function useOnClickOutside(ref1, ref2, handler) {
+    const handleRef = useRef(handler);
+
+    useEffect(() => {
+        handleRef.current = handler;
+    });
+
     useEffect(() => {
         const onPointerDown = (e) => {
-            const isInside = refs.some((ref) => {
-                const el = ref?.current;
-                return el && el.contains(e.target);
-            });
-            if (isInside) return;
-            handler(e);
+            const isInside = ref1.current?.contains(e.target) || ref2.current?.contains(e.target);
+
+            if (isInside) {
+                handleRef.current(e);
+            }
         };
+
         document.addEventListener('pointerdown', onPointerDown, { passive: true });
         return () => document.removeEventListener('pointerdown', onPointerDown);
-    }, [refs, handler]);
+    }, [ref1, ref2]);
 }
 
-function BottomSheet({ filterStation, selected, handleSelect, trainKey, departure, isOpen, setIsOpen, sheetRef }) {
+// 역 선택
+function StationMenu({ filterStation, selected, handleSelect, trainKey, setIsOpen }) {
+    return (
+        <>
+            <div className="station-scroll">
+                <ul className="station-menu">
+                    {filterStation.map((item) => {
+                        return (
+                            <li key={item.id}>
+                                <div
+                                    className={`station-city ${selected === item.city ? 'active' : ''}`}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleSelect(item.city);
+                                        setIsOpen(false);
+                                    }}>
+                                    <div className="station-title">{item.city}</div>
+                                    <div>{formatTime(item.times[trainKey])}</div>
+                                </div>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </>
+    );
+}
+
+function BottomSheet({ departure, isOpen, setIsOpen, sheetRef, filterStation, selected, handleSelect, trainKey }) {
     // 바텀시트 높이
     const [sheetHeight, setSheetHeight] = useState(60);
 
@@ -449,26 +473,13 @@ function BottomSheet({ filterStation, selected, handleSelect, trainKey, departur
 
                             <hr />
 
-                            <div className="station-scroll">
-                                <ul className="station-menu">
-                                    {filterStation.map((item) => {
-                                        return (
-                                            <li key={item.id}>
-                                                <div
-                                                    className={`station-city ${selected === item.city ? 'active' : ''}`}
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        handleSelect(item.city);
-                                                        setIsOpen(false);
-                                                    }}>
-                                                    <div className="station-title">{item.city}</div>
-                                                    <div>{formatTime(item.times[trainKey])}</div>
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
-                            </div>
+                            <StationMenu
+                                filterStation={filterStation}
+                                selected={selected}
+                                handleSelect={handleSelect}
+                                trainKey={trainKey}
+                                setIsOpen={setIsOpen}
+                            />
                         </div>
                     </motion.div>
                 </div>
