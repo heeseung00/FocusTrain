@@ -8,8 +8,8 @@ export function TimerProvider({ children }) {
     const [elapsed, setElapsed] = useState(0);
     // 타이머 퍼센트
     const [resultPercent, setResultPercent] = useState(0);
-    // 타이머가 지금 움직이는지 상태 확인
-    const [timerState, setTimerState] = useState(false);
+    // 타이머가 지금 움직이는지 상태 확인 - 타이머 페이지 진입시 바로 시작하기 위해 true로 설정
+    const [timerState, setTimerState] = useState(true);
 
     // 휴식시간 카운트 관리
     const [isResting, setIsResting] = useState(false);
@@ -20,7 +20,7 @@ export function TimerProvider({ children }) {
     const resetTimer = () => {
         setElapsed(0);
         setResultPercent(0);
-        setTimerState(false);
+        setTimerState(true);
         // setRestSeconds(20 * 60);
         setRestSeconds(5);
         setIsResting(false);

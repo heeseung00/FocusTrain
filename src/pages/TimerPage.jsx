@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTrip } from '../context/TripContext.jsx';
 import { useTimer } from '../context/TimerContext.jsx';
@@ -9,117 +9,59 @@ import Modal from './Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
 import resetIcon from '../assets/reset-icon.svg';
-// // 짧은 효과음 사용을 위한 react hook
-// import useSound from 'use-sound';
-// import './pomodoroMain.css';
-// import playIcon from './img/play.png';
-// import pauseIcon from './img/pause.png';
-// import resetIcon from './img/reset.png';
-// import focusSound from './alarm/focus.mp3';
-// import breakSound from './alarm/break.mp3';
+// import { number } from 'framer-motion';
 
 function TimerPage() {
     // ---- 선택 상태 ----
-    const { train, selected, isToggleOn, focusTime, departure } = useTrip();
-    const { elapsed, setElapsed, resultPercent, timerState, setTimerState, setRestSeconds, isResting, setIsResting } =
-        useTimer();
+    const { train, selected, isToggleOn, focusTime, departure, setModal } = useTrip();
+    const {
+        setElapsed,
+        resultPercent,
+        setResultPercent,
+        timerState,
+        setTimerState,
+        setRestSeconds,
+        isResting,
+        setIsResting,
+    } = useTimer();
 
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
+
+    const navigate = useNavigate();
 
     // 중간 정차 시간 관리
     const [currentIndex, setCurrentIndex] = useState(0);
     // 중간 정차역 리스트 관리
     const [showStationList, setShowStationList] = useState(false);
 
-    return (
-        <div className="pomodoro">
-            <PomodoroMain
-                timerState={timerState}
-                setTimerState={setTimerState}
-                restCount={restCount}
-                departure={departure}
-                selectedStation={selectedStation}
-                focusTime={focusTime}
-                isToggleOn={isToggleOn}
-                elapsed={elapsed}
-                setElapsed={setElapsed}
-                resultPercent={resultPercent}
-                trainLabel={trainLabel}
-                isResting={isResting}
-                setIsResting={setIsResting}
-                currentIndex={currentIndex}
-                setCurrentIndex={setCurrentIndex}
-                setRestSeconds={setRestSeconds}
-                // 중간 정차역 리스트 관리
-                showStationList={showStationList}
-                setShowStationList={setShowStationList}
-            />
-
-            <Modal />
-        </div>
-    );
-}
-
-// 타이머가 보여지는 부분: PomodoroMain
-function PomodoroMain({
-    timerState,
-    setTimerState,
-    restCount,
-    departure,
-    selectedStation,
-    focusTime,
-    isToggleOn,
-    elapsed,
-    setElapsed,
-    resultPercent,
-    trainLabel,
-
-    isResting,
-    setIsResting,
-    currentIndex,
-    setCurrentIndex,
-    setRestSeconds,
-
-    showStationList,
-    setShowStationList,
-}) {
+    // pomodoro-main
     const triggeredStopsRef = useRef(new Set()); //주석
 
     // 모달 열기
-    const { setModal } = useTrip();
     const handleModalOpen = () => {
-        setTimerState(false);
-        setModal('end');
+        setTimerState(false); //타이머 정지
+        setModal('end'); // 모달 열기
     };
 
-    // 전체 시간 표시
-    const [totalSeconds, setTotalSeconds] = useState(Number(focusTime) * 60);
+    // 전체 목표 시간
+    const totalTimeSeconds = Number(focusTime) * 60;
 
-    const totalSecondsTime = Number(focusTime) * 60;
+    // 현재 남은 시간
+    const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
 
-    // 타이머 경과시간 표시
-    const currentElapsed = totalSecondsTime - totalSeconds;
-    useEffect(() => {
-        setElapsed(currentElapsed);
-    }, [currentElapsed, setElapsed]);
-
-    const navigate = useNavigate();
-    // // 임시 주석 - 소리재생: 타이머 시작할때 시작, 종료음을 위한 코드
-    // const [soundPlay] = useSound(focusSound);
-    // const [breakSoundPlay] = useSound(breakSound);
+    // 타이머 경과시간 표시 (전체 - 남은 시간)
+    const elapsed = totalTimeSeconds - remainingTime;
 
     const handleTimerStart = () => {
-        setIsResting(false);
+        setIsResting(false); // 휴식 상태 진입
         setTimerState(true);
     };
     const handleTimerStop = () => {
         setTimerState(false);
     };
     const handleTimerReset = () => {
-        setTotalSeconds(parseInt(focusTime) * 60);
-        setTimerState(false);
+        setRemainingTime(Number(focusTime) * 60);
         // 즉시시작
-        setIsResting(false);
         handleTimerStart();
         // 중간정차 list 초기화
         setCurrentIndex(0);
@@ -135,36 +77,38 @@ function PomodoroMain({
         }
     };
 
-    // 페이지가 로드 될 때 타이머 바로 start 실행
-    useEffect(() => {
-        handleTimerStart();
-    }, []);
-
     // 타이머 종류 후 결과 페이지로 이동
     useEffect(() => {
-        if (totalSeconds === 0) {
-            setTimerState(false);
-            // 100%까지 완전히 도달하는게 보인 후 다음 페이지로 이동 되도록.
-            setTimeout(() => {
-                navigate('/result');
-            }, 1000);
-        }
-    }, [totalSeconds, navigate, setTimerState]);
+        if (remainingTime !== 0) return;
 
+        setTimerState(false);
+        setElapsed(elapsed);
+        setResultPercent(100);
+
+        // 100%까지 완전히 도달하는게 보인 후 다음 페이지로 이동
+        const timer = setTimeout(() => {
+            navigate('/result');
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [remainingTime, elapsed, navigate, setElapsed, setResultPercent, setTimerState]);
+
+    // 1초가 지날 때 마다 남은 시간 1초씩 감소
     useEffect(() => {
         if (!timerState || isResting) return;
 
         const countdown = setInterval(() => {
-            setTotalSeconds((prev) => Math.max(prev - 1, 0));
+            setRemainingTime((prev) => Math.max(prev - 1, 0));
         }, 1000);
 
         return () => clearInterval(countdown);
     }, [timerState, isResting]);
 
+    // 중간 정차 - 집중시간이 20분 마다 도달하면 중간 정차 처리
     useEffect(() => {
         if (!timerState || isResting) return;
 
-        const currentElapsed = totalSecondsTime - totalSeconds;
+        const currentElapsed = totalTimeSeconds - remainingTime;
         const stopUnit = Math.floor(currentElapsed / 5);
         // 집중 구간 시간 설정: 10분 설정시 10분 후 중간정차모달 열림
         const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
@@ -174,99 +118,101 @@ function PomodoroMain({
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
             triggeredStopsRef.current.add(stopUnit);
 
-            setTimerState(false); //타이머 정지
-            setIsResting(true); // 휴식 상태 진입
+            setTimerState(false);
+            setIsResting(true);
             setRestSeconds(10 * 60); // 휴식 시간 설정
             // setRestSeconds(5); // 휴식 시간 5초 설정 - 테스트용
-            setModal('rest'); // 모달 열기
+            setModal('rest');
             setCurrentIndex((prev) => prev + 1);
         }
-    }, [totalSeconds, totalSecondsTime, timerState, isResting, isToggleOn, currentIndex, restCount]);
+    }, [remainingTime, totalTimeSeconds, timerState, isResting, isToggleOn, currentIndex, restCount]);
 
     return (
-        <div className="pomodoro-wrap">
-            <div className="pomodoroMain item">
-                <div className="pomodoroMainText">
-                    <p>
-                        {departure} → {selectedStation?.city} · {trainLabel}
-                    </p>
+        <div className="pomodoro">
+            {/* 타이머가 보여지는 부분: Pomodoro-main */}
+            <div className="pomodoro-main">
+                <div className="pomodoro-wrap">
+                    <div className="pomodoroMain item">
+                        <div className="pomodoroMainText">
+                            <p>
+                                {departure} → {selectedStation?.city} · {trainLabel}
+                            </p>
 
-                    <p className="percent">{resultPercent}%</p>
-                </div>
+                            <p className="percent">{resultPercent}%</p>
+                        </div>
 
-                <div className="pomodoroTimer">
-                    <div className="pomodoroTimerText">
-                        <div className="pomodoroTimes">
-                            <div className="timer-main">
-                                <div className="elapsed-timer">{formatDurationTime(elapsed)}</div>
-                                <p className="arrive">도착 {getArriveTime(focusTime)}</p>
-                            </div>
+                        <div className="pomodoroTimer">
+                            <div className="pomodoroTimerText">
+                                <div className="pomodoroTimes">
+                                    <div className="timer-main">
+                                        <div className="elapsed-timer">{formatDurationTime(elapsed)}</div>
+                                        <p className="arrive">도착 {getArriveTime(focusTime)}</p>
+                                    </div>
 
-                            <ProgressTimer
-                                totalTime={parseInt(focusTime) * 60}
-                                remainingTime={totalSeconds}
-                                departure={departure}
-                                selectedStation={selectedStation}
-                            />
+                                    <ProgressTimer
+                                        totalTime={totalTimeSeconds}
+                                        remainingTime={remainingTime}
+                                        setResultPercent={setResultPercent}
+                                        departure={departure}
+                                        selectedStation={selectedStation}
+                                    />
 
-                            <div className="remaining">
-                                <h4>남은시간</h4>
-                                <div className="remaining-time">{formatDurationTime(totalSeconds)}</div>
+                                    <div className="remaining">
+                                        <h4>남은시간</h4>
+                                        <div className="remaining-time">{formatDurationTime(remainingTime)}</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        {isToggleOn && restCount > 0 && (
+                            <div className="pomodoroStation">
+                                <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
+                                    <p>{isToggleOn ? `전체 여정 보기` : null}</p>
+                                    <img
+                                        src="src/assets/arrow.svg"
+                                        className={showStationList ? 'arrow' : 'arrow-up'}
+                                        alt="화살표 아이콘"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
+
+                    <div className="button-group">
+                        <button onClick={handleTimerToggle}>
+                            {timerState ? (
+                                <>
+                                    <span className="time-icon">❚❚</span>일시정지
+                                </>
+                            ) : (
+                                <>
+                                    <span className="time-icon">▶</span>재생
+                                </>
+                            )}
+                        </button>
+
+                        <button onClick={handleTimerReset}>
+                            <span className="time-icon">
+                                <img src={resetIcon} alt="리셋 아이콘" />
+                            </span>
+                            다시
+                        </button>
+                        <button className="end" onClick={handleModalOpen}>
+                            <span className="time-icon">■</span>종료
+                        </button>
                     </div>
                 </div>
-
-                {isToggleOn && restCount > 0 && (
-                    <div className="pomodoroStation">
-                        <div className="station-text" onClick={() => setShowStationList((prev) => !prev)}>
-                            <p>{isToggleOn ? `전체 여정 보기` : null}</p>
-                            <img
-                                src="src/assets/arrow.svg"
-                                className={showStationList ? 'arrow' : 'arrow-up'}
-                                alt="화살표 아이콘"
-                            />
-                        </div>
-                    </div>
-                )}
             </div>
-            {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
 
-            <div className="button-group">
-                {/* 임시 주석 - 타이머 시작, 멈춤, 리셋 이미지
-                                <img src={playIcon} alt="play" width={20} height={20} onClick={handleTimerStart}></img>
-                                <img src={pauseIcon} width={20} height={20} onClick={handleTimerStop}></img>
-                                <img src={resetIcon} width={20} height={20} onClick={handleTimerReset}></img> */}
-                <button onClick={handleTimerToggle}>
-                    {timerState ? (
-                        <>
-                            <span className="time-icon">❚❚</span>일시정지
-                        </>
-                    ) : (
-                        <>
-                            <span className="time-icon">▶</span>재생
-                        </>
-                    )}
-                </button>
-
-                <button onClick={handleTimerReset}>
-                    <span className="time-icon">
-                        <img src={resetIcon} alt="리셋 아이콘" />
-                    </span>
-                    다시
-                </button>
-                <button className="end" onClick={handleModalOpen}>
-                    <span className="time-icon">■</span>종료
-                </button>
-            </div>
+            <Modal />
         </div>
     );
 }
 
 // 소요시간과 progress연결
-function ProgressTimer({ totalTime, remainingTime, departure, selectedStation }) {
-    const { setResultPercent } = useTimer();
-
+function ProgressTimer({ totalTime, remainingTime, setResultPercent, departure, selectedStation }) {
     const progress = ((totalTime - remainingTime) / totalTime) * 100;
     const percent = Math.min(Math.max(progress, 0), 100);
     const percentResult = Math.floor(percent);
@@ -301,6 +247,7 @@ function ProgressTimer({ totalTime, remainingTime, departure, selectedStation })
     );
 }
 
+// 중간 정차 목록
 function StationList({ restCount, currentIndex }) {
     // 남은 높이를 계산하여 .station-list 높이로 지정 (브라우저 전체 기준)
     const containerHeight = document.querySelector('.container')?.offsetHeight ?? 0;
