@@ -6,8 +6,8 @@ import { formatDurationTime } from '../utils/time.js';
 
 function Modal() {
     // ---- 선택 상태 ----
-    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTripStore();
-    const { modal, setModal } = useTimerStore();
+    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTimerStore();
+    const { modal, setModal } = useTripStore();
 
     const navigate = useNavigate();
 
@@ -41,18 +41,17 @@ function Modal() {
         }
 
         const timer = setInterval(() => {
-            setRestSeconds((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    setIsResting(false);
-                    setModal(false);
-                    setTimerState(true);
+            const currentSeconds = useTimerStore.getState().restSeconds;
 
-                    return 0;
-                }
+            if (currentSeconds <= 1) {
+                clearInterval(timer);
+                setIsResting(false);
+                setModal(false);
+                setTimerState(true);
 
-                return prev - 1;
-            });
+                return 0;
+            }
+            setRestSeconds(currentSeconds - 1);
         }, 1000);
 
         return () => clearInterval(timer);

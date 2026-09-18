@@ -43,7 +43,6 @@ const SeatPage = () => {
                             className={`coach-button ${activeCoach === Number(coachId) ? 'active' : ''}`}
                             onClick={() => handleCoachClick(coachId)}>
                             {coachId}호차
-                            {/* <div className="coach-label">{coachId}호차</div> */}
                         </button>
                     ))}
                 </div>

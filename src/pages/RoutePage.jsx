@@ -292,7 +292,7 @@ function TimeControl({ focusTime, setFocusTime, selectedStation }) {
             return;
         }
         // 숫자가 아닌 문자열로 더해지는 오류 방지(ex) '90+5 = 905'이런 덧셈 오류를 '90+5 = 95'가 되도록)
-        setFocusTime((prev) => prev + 5);
+        setFocusTime(focusTime + 5);
     };
 
     const decrease = () => {
@@ -301,7 +301,7 @@ function TimeControl({ focusTime, setFocusTime, selectedStation }) {
             return;
         }
 
-        setFocusTime((prev) => prev - 5);
+        setFocusTime(focusTime - 5);
     };
     return (
         <div className="time-control">

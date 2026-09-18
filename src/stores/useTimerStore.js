@@ -26,8 +26,8 @@ const useTimerStore = create((set) => ({
             elapsed: 0,
             resultPercent: 0,
             timerState: true,
-            isResting: 5,
-            restSeconds: false,
+            isResting: false,
+            restSeconds: 5,
         }),
 }));
 
