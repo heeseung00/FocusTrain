@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { TripProvider, useTrip } from './context/TripContext.jsx';
-import { TimerProvider } from './context/TimerContext.jsx';
+// import { TripProvider, useTrip } from './context/TripContext.jsx';
+// import { TimerProvider } from './context/TimerContext.jsx';
+import useTripStore from './stores/useTripStore.js';
+// import useTimerStore from './stores/useTimerStore.js';
 
 import './App.css';
 import './styles/button.css';
@@ -24,21 +26,17 @@ function App() {
 
     return (
         <>
-            <TripProvider>
-                <TimerProvider>
-                    <BrowserRouter>
-                        <AppRoutes />
-                    </BrowserRouter>
-                </TimerProvider>
-            </TripProvider>
+            <BrowserRouter>
+                <AppRoutes />
+            </BrowserRouter>
         </>
     );
 }
 
 function AppRoutes() {
-    const { train, selected, departure } = useTrip();
+    const { train, selected, departure } = useTripStore();
     // 각 페이지 접근에 필요한 조건
-    const isTripReady = Boolean(train &&  selected && selected!== '선택' && departure);
+    const isTripReady = Boolean(train && selected && selected !== '선택' && departure);
 
     return (
         <section id="wrapper">

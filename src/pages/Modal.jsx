@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTrip } from '../context/TripContext.jsx';
-import { useTimer } from '../context/TimerContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
+import useTimerStore from '../stores/useTimerStore.js';
 import { formatDurationTime } from '../utils/time.js';
 
 function Modal() {
     // ---- 선택 상태 ----
-    const { modal, setModal } = useTrip();
-    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTimer();
+    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTripStore();
+    const { modal, setModal } = useTimerStore();
 
     const navigate = useNavigate();
 

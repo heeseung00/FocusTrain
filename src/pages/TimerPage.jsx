@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useTrip } from '../context/TripContext.jsx';
-import { useTimer } from '../context/TimerContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
+import useTimerStore from '../stores/useTimerStore.js';
 import { stationList } from '../utils/stationList.js';
 import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
@@ -13,7 +13,7 @@ import resetIcon from '../assets/reset-icon.svg';
 
 function TimerPage() {
     // ---- 선택 상태 ----
-    const { train, selected, isToggleOn, focusTime, departure, setModal } = useTrip();
+    const { train, selected, isToggleOn, focusTime, departure, setModal } = useTripStore();
     const {
         setElapsed,
         resultPercent,
@@ -23,7 +23,7 @@ function TimerPage() {
         setRestSeconds,
         isResting,
         setIsResting,
-    } = useTimer();
+    } = useTimerStore();
 
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 

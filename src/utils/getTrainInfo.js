@@ -1,9 +1,9 @@
 import { stationList } from '../utils/stationList.js';
-import { useTrip } from '../context/TripContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
 
 // 공통 사용
 export function getTrainInfo() {
-    const { train, selected, focusTime } = useTrip();
+    const { train, selected, focusTime } = useTripStore();
 
     // 열차 종류에 맞는 데이터 키 변환
     const trainKey = train === '무궁화' ? 'mugunghwa' : train.toLowerCase();

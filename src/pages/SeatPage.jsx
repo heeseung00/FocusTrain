@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useTrip } from '../context/TripContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
 import '../styles/SeatPage.css';
 import SeatGrid from '../components/SeatGrid.jsx';
 
 const SeatPage = () => {
-    const { seats, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTrip();
+    const { seats, activeCoach, setActiveCoach, selectedSeat, setSelectedSeat } = useTripStore();
 
     // 기차 호차 선택
     const handleCoachClick = (coachId) => {

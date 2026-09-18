@@ -4,7 +4,7 @@ import '../styles/TicketPage.css';
 import { stationList } from '../utils/stationList.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { formatTime, getArriveTime } from '../utils/time.js';
-import { useTrip } from '../context/TripContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
 
 function TicketPage() {
     const navigate = useNavigate();
@@ -55,7 +55,7 @@ function TicketPage() {
         }, 800);
     }
     // 열차 선택값 받아오기
-    const { train, selected, activeCoach, selectedSeat, focusTime } = useTrip();
+    const { train, selected, activeCoach, selectedSeat, focusTime } = useTripStore();
 
     const { trainLabel } = getTrainInfo(train, selected, stationList);
 

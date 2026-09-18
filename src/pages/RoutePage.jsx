@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { stationList } from '../utils/stationList.js';
 import { formatTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import { useTrip } from '../context/TripContext.jsx';
+import useTripStore from '../stores/useTripStore.js';
 import Modal from './Modal.jsx';
 import { motion } from 'framer-motion';
 
@@ -24,7 +24,7 @@ function RoutePage() {
         setActiveCoach,
         setSelectedSeat,
         setModal,
-    } = useTrip();
+    } = useTripStore();
 
     // 드롭다운
     const [isOpen, setIsOpen] = useState(false);
