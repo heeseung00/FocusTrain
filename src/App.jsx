@@ -1,8 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-// import { TripProvider, useTrip } from './context/TripContext.jsx';
-// import { TimerProvider } from './context/TimerContext.jsx';
 import useTripStore from './stores/useTripStore.js';
-// import useTimerStore from './stores/useTimerStore.js';
 
 import './App.css';
 import './styles/button.css';
