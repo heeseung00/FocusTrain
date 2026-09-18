@@ -231,7 +231,7 @@ function ProgressTimer({ totalTime, remainingTime, setResultPercent, departure, 
             </div>
             <ProgressBar
                 completed={percent}
-                height="8px"
+                height="20px"
                 width="100%"
                 isLabelVisible={false}
                 baseBgColor="#E7E7EC" // 배경색
