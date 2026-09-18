@@ -66,7 +66,6 @@ function RoutePage() {
     const handleNextPage = (navigate) => {
         if (!selectedStation) {
             handleModalOpen();
-            // alert('도착지를 선택해주세요.');
             return;
         }
 
