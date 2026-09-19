@@ -11,16 +11,6 @@ import TimerPage from './pages/TimerPage.jsx';
 import ResultPage from './pages/ResultPage.jsx';
 
 function App() {
-    // 새로고침으로 들어온 경우
-    const navigation = performance.getEntriesByType('navigation')[0];
-    const isReload = navigation?.type === 'reload';
-
-    // 메인이 아닌 페이지에서 새로고침했으면 React 렌더링 전에 메인으로 이동
-    if (isReload && window.location.pathname !== '/') {
-        window.location.replace('/');
-        return null;
-    }
-
     return (
         <>
             <BrowserRouter>
