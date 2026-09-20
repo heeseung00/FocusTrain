@@ -3,13 +3,17 @@
 
 :root {
   /* 색상 */
+  --body-bg: #f4f4f6;
   --bg: #f4f4f6;
+  --paper-color: #fcfcfb;
   --surface: #fff;
   --code-bg: #f4f3ec;
 
   --text: #18181c;
   --sub-text: #7a7a73;
   --light-text: #c6c6ce;
+
+  --ink-color: #18181c;
 
   --border: #7a7a73;
   --border-light: #e7e7ec;
@@ -32,6 +36,8 @@
   --adjust-bg: #f1f1f3;
   --adjust-hover: #e7e7ec;
   --adjust-active: #d9d9de;
+
+  --ambient: #e9e9ed;
 
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -81,13 +87,56 @@
   --r-2xl: 30px;
 }
 
+[data-theme="dark"] {
+  --body-bg: #202126;
+  --bg: #202126;
+  --paper-color: #fcfcfb0e;
+  --surface: #2b2c32;
+  --code-bg: #302f29;
+
+  --text: #f5f5f7;
+  --sub-text: #b5b6bd;
+  --light-text: #8f9098;
+
+  --ink-color: #f5f5f7;
+
+  --border: #55565e;
+  --border-light: #414249;
+
+  --accent: #9a93ff;
+  --accent-hover: #aaa4ff;
+  --accent-active: #b9b4ff;
+  --accent-deep: #cdc9ff;
+  --accent-tint: #35315f;
+
+  --signal: #ff6f7c;
+  --signal-tint: #512c32;
+  --signal-tint-active: #62343b;
+
+  --disabled-bg: #303137;
+  --disabled-border: #4b4c53;
+
+  --adjust-bg: #303137;
+  --adjust-hover: #393a41;
+  --adjust-active: #44454d;
+
+  --ambient: #17181c;
+
+  --shadow: rgba(0, 0, 0, 0.32) 0 10px 15px -3px, rgba(0, 0, 0, 0.22) 0 4px 6px -2px;
+}
+
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--body-bg);
   color: var(--text);
   font-size: var(--fs-sm);
   font-family: var(--font-pretendard);
   -webkit-font-smoothing: antialiased;
+}
+
+body [data-theme="dark"] {
+  background: var(--body-bg);
+  color: var(--text);
 }
 
 body:has(.dim) {

@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import useThemeStore from '../stores/useThemeStore.js';
 import '../App.css';
 
 function Header() {
@@ -16,8 +17,15 @@ function Header() {
         <div className="container">
             <h1 className="title-text">Focus Train</h1>
             <div className="page">{pageTitle}</div>
+            <ThemeToggle />
         </div>
     );
+}
+
+function ThemeToggle() {
+    const { theme, toggleTheme } = useThemeStore();
+
+    return <button onClick={toggleTheme}>{theme === 'light' ? '🌙' : '☀️'}</button>;
 }
 
 export default Header;

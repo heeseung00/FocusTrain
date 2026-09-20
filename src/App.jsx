@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import useTripStore from './stores/useTripStore.js';
+import useThemeStore from './stores/useThemeStore.js';
 
 import './App.css';
 import './styles/button.css';
@@ -11,12 +12,13 @@ import TimerPage from './pages/TimerPage.jsx';
 import ResultPage from './pages/ResultPage.jsx';
 
 function App() {
+    const theme = useThemeStore((state) => state.theme);
     return (
-        <>
+        <div data-theme={theme}>
             <BrowserRouter>
                 <AppRoutes />
             </BrowserRouter>
-        </>
+        </div>
     );
 }
 

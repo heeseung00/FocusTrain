@@ -5,7 +5,7 @@ import useTimerStore from '../stores/useTimerStore.js';
 import { stationList } from '../utils/stationList.js';
 import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import Modal from './Modal.jsx';
+import Modal from '../components/Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
 import resetIcon from '../assets/reset-icon.svg';
