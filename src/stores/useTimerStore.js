@@ -21,8 +21,7 @@ const useTimerStore = create((set) => ({
     restSeconds: 5,
     setRestSeconds: (restSeconds) => set({ restSeconds }),
 
-    resetTimer: () =>
-        set({ remainingTime: 0, elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 5 }),
+    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 5 }),
 }));
 
 export default useTimerStore;
