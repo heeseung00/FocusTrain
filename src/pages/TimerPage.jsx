@@ -14,6 +14,7 @@ function TimerPage() {
     // ---- 선택 상태 ----
     const { train, selected, isToggleOn, focusTime, departure, setModal } = useTripStore();
     const {
+        elapsed,
         setElapsed,
         resultPercent,
         setResultPercent,
@@ -36,20 +37,12 @@ function TimerPage() {
     // pomodoro-main
     const triggeredStopsRef = useRef(new Set()); //주석
 
-    // 모달 열기
-    const handleModalOpen = () => {
-        setTimerState(false); //타이머 정지
-        setModal('end'); // 모달 열기
-    };
-
     // 전체 목표 시간
     const totalTimeSeconds = Number(focusTime) * 60;
-
-    // 현재 남은 시간
-    const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
-
     // 타이머 경과시간 표시 (전체 - 남은 시간)
-    const elapsed = totalTimeSeconds - remainingTime;
+    const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
+    // 경과 시간 계산식
+    const currentElapsed = totalTimeSeconds - remainingTime;
 
     const handleTimerStart = () => {
         setIsResting(false); // 휴식 상태 진입
@@ -74,6 +67,12 @@ function TimerPage() {
         } else {
             handleTimerStart();
         }
+    };
+    // 모달 열기
+    const handleModalOpen = () => {
+        setElapsed(currentElapsed); // 경과 시간 계산식을 공통상태에 전달
+        setTimerState(false); //타이머 정지
+        setModal('end'); // 모달 열기
     };
 
     // 타이머 종류 후 결과 페이지로 이동
@@ -111,6 +110,7 @@ function TimerPage() {
         const stopUnit = Math.floor(currentElapsed / 5);
         // 집중 구간 시간 설정: 10분 설정시 10분 후 중간정차모달 열림
         const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
+        // const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0; // 테스트용
         const alreadyTriggered = triggeredStopsRef.current.has(stopUnit);
 
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
@@ -142,7 +142,7 @@ function TimerPage() {
                             <div className="pomodoroTimerText">
                                 <div className="pomodoroTimes">
                                     <div className="timer-main">
-                                        <div className="elapsed-timer">{formatDurationTime(elapsed)}</div>
+                                        <div className="elapsed-timer">{formatDurationTime(currentElapsed)}</div>
                                         <p className="arrive">도착 {getArriveTime(focusTime)}</p>
                                     </div>
 
