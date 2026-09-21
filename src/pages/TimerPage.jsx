@@ -8,6 +8,10 @@ import { getTrainInfo } from '../utils/getTrainInfo.js';
 import Modal from '../components/Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
+
+import endIcon from '../assets/end-icon.svg';
+import pauseIcon from '../assets/pause-icon.svg';
+import playIcon from '../assets/play-icon.svg';
 import resetIcon from '../assets/reset-icon.svg';
 
 function TimerPage() {
@@ -178,26 +182,37 @@ function TimerPage() {
                     {isToggleOn && showStationList && <StationList restCount={restCount} currentIndex={currentIndex} />}
 
                     <div className="button-group">
-                        <button onClick={handleTimerToggle}>
+                        <button
+                            className={`control-button${timerState ? 'pause' : 'play'}`}
+                            onClick={handleTimerToggle}>
                             {timerState ? (
                                 <>
-                                    <span className="time-icon">❚❚</span>일시정지
+                                    <span>
+                                        <img src={pauseIcon} alt="일시정지 아이콘" />
+                                    </span>
+                                    일시정지
                                 </>
                             ) : (
                                 <>
-                                    <span className="time-icon">▶</span>재생
+                                    <span>
+                                        <img src={playIcon} alt="재생 아이콘" />
+                                    </span>
+                                    재생
                                 </>
                             )}
                         </button>
 
-                        <button onClick={handleTimerReset}>
-                            <span className="time-icon">
+                        <button className="control-button reset" onClick={handleTimerReset}>
+                            <span className="">
                                 <img src={resetIcon} alt="리셋 아이콘" />
                             </span>
                             다시
                         </button>
-                        <button className="end" onClick={handleModalOpen}>
-                            <span className="time-icon">■</span>종료
+                        <button className="control-button end" onClick={handleModalOpen}>
+                            <span>
+                                <img src={endIcon} alt="종료 아이콘" />
+                            </span>
+                            종료
                         </button>
                     </div>
                 </div>

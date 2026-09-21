@@ -3,11 +3,11 @@
 
 :root {
   /* 색상 */
-  --body-bg: #f4f4f6;
   --bg: #f4f4f6;
   --paper-color: #fcfcfb;
   --surface: #fff;
   --code-bg: #f4f3ec;
+  --dim: rgba(0, 0, 0, 0.4);
 
   --text: #18181c;
   --sub-text: #7a7a73;
@@ -32,12 +32,19 @@
   --disabled-bg: #f1f1f3;
   --disabled-border: #d9d9de;
 
+  /* button */
+  --button-bg: var(--surface);
+  --button-hover: #f1f1f3;
+  --button-active: var(--accent-tint);
+
   /* Time Adjust */
   --adjust-bg: #f1f1f3;
   --adjust-hover: #e7e7ec;
   --adjust-active: #d9d9de;
 
   --ambient: #e9e9ed;
+
+  --ticket-line: rgba(0, 0, 0, 0.15);
 
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -88,11 +95,11 @@
 }
 
 [data-theme="dark"] {
-  --body-bg: #202126;
   --bg: #202126;
   --paper-color: #fcfcfb0e;
   --surface: #2b2c32;
   --code-bg: #302f29;
+  --dim: rgba(0, 0, 0, 0.6);
 
   --text: #f5f5f7;
   --sub-text: #b5b6bd;
@@ -116,18 +123,24 @@
   --disabled-bg: #303137;
   --disabled-border: #4b4c53;
 
+  --button-bg: var(--surface);
+  --button-hover: #33343b;
+  --button-active: var(--accent-tint);
+
   --adjust-bg: #303137;
   --adjust-hover: #393a41;
   --adjust-active: #44454d;
 
   --ambient: #17181c;
 
+  --ticket-line: rgba(255, 255, 255, 0.15);
+
   --shadow: rgba(0, 0, 0, 0.32) 0 10px 15px -3px, rgba(0, 0, 0, 0.22) 0 4px 6px -2px;
 }
 
 body {
   margin: 0;
-  background: var(--body-bg);
+  background: var(--bg);
   color: var(--text);
   font-size: var(--fs-sm);
   font-family: var(--font-pretendard);
@@ -135,7 +148,7 @@ body {
 }
 
 body [data-theme="dark"] {
-  background: var(--body-bg);
+  background: var(--bg);
   color: var(--text);
 }
 

@@ -18,16 +18,16 @@ button {
     font-size: var(--fs-md);
     font-weight: 700;
     color: var(--text);
-    background: var(--surface);
+    background: var(--button-bg);
     border: 1px solid var(--border-light);
     cursor: pointer;
 }
 
 button:hover {
-    background: var(--bg);
+    background: var(--button-hover);
 }
 button:active {
-    background: #ebebee;
+    background: var(--bg);
 }
 
 /* 주요 버튼 */
@@ -53,10 +53,6 @@ button.option {
     border-radius: var(--r-sm);
     color: var(--sub-text);
 }
-
-/* button.option:hover {
-    background-color: ;
-} */
 
 button.disable {
     border-color: var(--disabled-border);
@@ -102,8 +98,6 @@ button[aria-checked="true"] {
 
 @media (max-width: 480px) {
     button {
-        /* padding: 8px 4px;
-        border-radius: 10px; */
         font-size: var(--fs-sm);
     }
 
