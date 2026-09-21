@@ -27,7 +27,13 @@ function Header() {
 
 function ThemeToggle() {
     // localStorage에 테마 설정값을 저장하여 새로고침을 해도 유지되도록.
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+    const [theme, setTheme] = useState(() => {
+        const saveTheme = localStorage.getItem('theme') || 'light';
+
+        document.documentElement.dataset.theme = saveTheme;
+
+        return saveTheme;
+    });
 
     const toggleTheme = () => {
         const nextTheme = theme === 'light' ? 'dark' : 'light';
