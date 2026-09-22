@@ -113,8 +113,8 @@ function TimerPage() {
         const currentElapsed = totalTimeSeconds - remainingTime;
         const stopUnit = Math.floor(currentElapsed / 5);
         // 집중 구간 시간 설정: 10분 설정시 10분 후 중간정차모달 열림
-        const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
-        // const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0; // 테스트용
+        // const isStopTime = currentElapsed > 0 && currentElapsed % (20 * 60) === 0;
+        const isStopTime = currentElapsed > 0 && currentElapsed % 5 === 0; // 테스트용
         const alreadyTriggered = triggeredStopsRef.current.has(stopUnit);
 
         if (isToggleOn && isStopTime && !alreadyTriggered && currentIndex < restCount) {
@@ -122,7 +122,7 @@ function TimerPage() {
 
             setTimerState(false);
             setIsResting(true);
-            setRestSeconds(10 * 60); // 휴식 시간 설정
+            // setRestSeconds(10 * 60); // 휴식 시간 설정
             setModal('rest');
             setCurrentIndex((prev) => prev + 1);
         }

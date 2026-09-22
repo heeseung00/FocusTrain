@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { stationList } from '../utils/stationList.js';
-import { formatTime, getArriveTime } from '../utils/time.js';
-import { getTrainInfo } from '../utils/getTrainInfo.js';
+import useArriveTime from '../hooks/useArriveTime.jsx';
 import useTripStore from '../stores/useTripStore.js';
+import { getTrainInfo } from '../utils/getTrainInfo.js';
+import { formatTime } from '../utils/time.js';
+import { stationList } from '../utils/stationList.js';
 import Modal from '../components/Modal.jsx';
 import { motion } from 'framer-motion';
 
@@ -26,6 +27,7 @@ function RoutePage() {
         setModal,
     } = useTripStore();
 
+    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
     // 드롭다운
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
@@ -33,13 +35,13 @@ function RoutePage() {
 
     useOnClickOutside([sheetRef, selectRef], () => setIsOpen(false));
 
-    //  ---- 선택에서 파생되는 값들 ----
-    const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
-
     // 선택한 열차에 따라 선택 가능한 역 필터링(조건부 랜더링)
     const filterStation = stationList.filter((item) => {
         return item.times[trainKey] !== null;
     });
+
+    // 도착시간
+    const arriveTime = useArriveTime();
 
     // 다음 페이지 이동
     const navigate = useNavigate();
@@ -198,7 +200,7 @@ function RoutePage() {
                                     </div>
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
-                                        <h3 className="accent">{selectedStation ? getArriveTime(focusTime) : ''}</h3>
+                                        <h3 className="accent">{selectedStation ? arriveTime : ''}</h3>
                                     </div>
                                 </div>
                             </li>

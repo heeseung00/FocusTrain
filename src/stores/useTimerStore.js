@@ -17,11 +17,11 @@ const useTimerStore = create((set) => ({
     isResting: false,
     setIsResting: (isResting) => set({ isResting }),
 
-    // 휴식시간 조절 (중간 정차역)
-    restSeconds: 5,
+    // 휴식시간 설정 (중간 정차역)
+    restSeconds: 10 * 60,
     setRestSeconds: (restSeconds) => set({ restSeconds }),
 
-    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 5 }),
+    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 10 }),
 }));
 
 export default useTimerStore;

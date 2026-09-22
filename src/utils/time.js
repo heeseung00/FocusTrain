@@ -53,11 +53,13 @@ export function formatDurationTime(time) {
 }
 
 // 현재 시간 기준 도착 시간 계산
-export function getArriveTime(minutes) {
-    // 시간 계산 - 출발지 시간 + 소요시간 = 도착지 시간
+export function getArriveTime(restCount, focusTime, restSeconds) {
     const today = new Date();
 
-    const total = today.getHours() * 60 + today.getMinutes() + minutes;
+    const restMinutes = Math.floor((restCount * restSeconds) / 60);
+
+    // 전체 시간 - 출발지 시간 + (소요시간 + 휴식시간) = 도착지 시간
+    const total = today.getHours() * 60 + today.getMinutes() + focusTime + restMinutes;
 
     const hours = String(Math.floor(total / 60) % 24).padStart(2, '0');
     const min = String(total % 60).padStart(2, '0');

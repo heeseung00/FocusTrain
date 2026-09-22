@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TicketPage.css';
+import useArriveTime from '../hooks/useArriveTime.jsx';
+import useTripStore from '../stores/useTripStore.js';
 import { stationList } from '../utils/stationList.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import { formatTime, getArriveTime } from '../utils/time.js';
-import useTripStore from '../stores/useTripStore.js';
+import { formatTime } from '../utils/time.js';
 
 function TicketPage() {
     const navigate = useNavigate();
@@ -59,6 +60,9 @@ function TicketPage() {
 
     const { trainLabel } = getTrainInfo(train, selected, stationList);
 
+    // 도착 시간
+    const arriveTime = useArriveTime();
+
     return (
         <>
             <div className="ticket-page">
@@ -82,7 +86,7 @@ function TicketPage() {
                                     </li>
                                     <li className="arrive">
                                         <h1 className="title">{selected}</h1>
-                                        <p className="time">{getArriveTime(focusTime)}</p>
+                                        <p className="time">{arriveTime}</p>
                                     </li>
                                 </ul>
                             </div>
