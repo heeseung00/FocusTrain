@@ -353,6 +353,17 @@ h3 {
   height: 20px;
 }
 
+[data-theme="dark"] .pause-icon {
+  content: url("./assets/pause-icon_w.svg");
+}
+
+[data-theme="dark"] .play-icon {
+  content: url("./assets/play-icon_w.svg");
+}
+[data-theme="dark"] .reset-icon {
+  content: url("./assets/reset-icon_w.svg");
+}
+
 .remaining {
   display: flex;
   flex-direction: column;

@@ -191,19 +191,19 @@ function TimerPage() {
 
                     <div className="button-group">
                         <button
-                            className={`control-button${timerState ? 'pause' : 'play'}`}
+                            className={`control-button ${timerState ? 'pause' : 'play'}`}
                             onClick={handleTimerToggle}>
                             {timerState ? (
                                 <>
                                     <span>
-                                        <img src={pauseIcon} alt="일시정지 아이콘" />
+                                        <img className="pause-icon" src={pauseIcon} alt="일시정지 아이콘" />
                                     </span>
                                     일시정지
                                 </>
                             ) : (
                                 <>
                                     <span>
-                                        <img src={playIcon} alt="재생 아이콘" />
+                                        <img className="play-icon" src={playIcon} alt="재생 아이콘" />
                                     </span>
                                     재생
                                 </>
@@ -211,8 +211,8 @@ function TimerPage() {
                         </button>
 
                         <button className="control-button reset" onClick={handleTimerReset}>
-                            <span className="">
-                                <img src={resetIcon} alt="리셋 아이콘" />
+                            <span>
+                                <img className="reset-icon" src={resetIcon} alt="리셋 아이콘" />
                             </span>
                             다시
                         </button>
