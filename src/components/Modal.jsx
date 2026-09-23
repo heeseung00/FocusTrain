@@ -5,12 +5,10 @@ import useTimerStore from '../stores/useTimerStore.js';
 import { formatDurationTime } from '../utils/time.js';
 
 function Modal() {
-    // ---- 선택 상태 ----
     const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTimerStore();
     const { modal, setModal } = useTripStore();
 
     const navigate = useNavigate();
-
     const modalContent = {
         departure: {
             title: '출발지를 선택해주세요.',
@@ -24,7 +22,6 @@ function Modal() {
 
         rest: {
             title: '정차역에 도착했습니다.',
-            // description: '10분간 정차합니다.',
             confirmText: '휴식 종료하기',
         },
 

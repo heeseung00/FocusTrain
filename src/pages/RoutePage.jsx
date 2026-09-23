@@ -25,6 +25,7 @@ function RoutePage() {
         seats,
         setActiveCoach,
         setSelectedSeat,
+        modal,
         setModal,
     } = useTripStore();
     const { restSeconds } = useTimerStore();
@@ -262,7 +263,7 @@ function RoutePage() {
                 </>
             </form>
 
-            <Modal />
+            {(modal === 'departure' || modal === 'arrival') && <Modal />}
         </main>
     );
 }

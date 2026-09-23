@@ -17,7 +17,7 @@ import resetIcon from '../assets/reset-icon.svg';
 
 function TimerPage() {
     // ---- 선택 상태 ----
-    const { train, selected, isToggleOn, focusTime, departure, setModal } = useTripStore();
+    const { train, selected, isToggleOn, focusTime, departure, modal, setModal } = useTripStore();
     const {
         elapsed,
         setElapsed,
@@ -30,7 +30,6 @@ function TimerPage() {
         setRestSeconds,
         restTime,
     } = useTimerStore();
-
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 
     //전체시간
@@ -226,7 +225,7 @@ function TimerPage() {
                 </div>
             </div>
 
-            <Modal />
+            {(modal === 'rest' || modal === 'end') && <Modal />}
         </div>
     );
 }
