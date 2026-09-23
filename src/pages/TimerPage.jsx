@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useArriveTime from '../hooks/useArriveTime.jsx';
 import useTripStore from '../stores/useTripStore.js';
 import useTimerStore from '../stores/useTimerStore.js';
-import { stationList } from '../utils/stationList.js';
-import { formatDurationTime, getArriveTime } from '../utils/time.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
+import { stationList } from '../utils/stationList.js';
+import { formatDurationTime, getTotalTime } from '../utils/time.js';
 import Modal from '../components/Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
@@ -24,12 +25,18 @@ function TimerPage() {
         setResultPercent,
         timerState,
         setTimerState,
-        setRestSeconds,
         isResting,
         setIsResting,
+        setRestSeconds,
+        restTime,
     } = useTimerStore();
 
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
+
+    //전체시간
+    const totalTime = getTotalTime(focusTime, restCount, restTime, isToggleOn);
+    // 도착 시간
+    const arriveTime = useArriveTime(totalTime);
 
     const navigate = useNavigate();
 
@@ -42,7 +49,8 @@ function TimerPage() {
     const triggeredStopsRef = useRef(new Set()); //주석
 
     // 전체 목표 시간
-    const totalTimeSeconds = Number(focusTime) * 60;
+    // const totalTimeSeconds = Number(focusTime * 60 + restCount * restSeconds);
+    const totalTimeSeconds = Number(totalTime * 60);
     // 타이머 경과시간 표시 (전체 - 남은 시간)
     const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
     // 경과 시간 계산식
@@ -56,7 +64,7 @@ function TimerPage() {
         setTimerState(false);
     };
     const handleTimerReset = () => {
-        setRemainingTime(Number(focusTime) * 60);
+        setRemainingTime(totalTimeSeconds);
         // 즉시시작
         handleTimerStart();
         // 중간정차 list 초기화
@@ -122,7 +130,7 @@ function TimerPage() {
 
             setTimerState(false);
             setIsResting(true);
-            // setRestSeconds(10 * 60); // 휴식 시간 설정
+            setRestSeconds(restTime);
             setModal('rest');
             setCurrentIndex((prev) => prev + 1);
         }
@@ -147,7 +155,7 @@ function TimerPage() {
                                 <div className="pomodoroTimes">
                                     <div className="timer-main">
                                         <div className="elapsed-timer">{formatDurationTime(currentElapsed)}</div>
-                                        <p className="arrive">도착 {getArriveTime(focusTime)}</p>
+                                        <p className="arrive">도착 {arriveTime}</p>
                                     </div>
 
                                     <ProgressTimer

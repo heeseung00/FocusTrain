@@ -2,13 +2,25 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TicketPage.css';
 import useArriveTime from '../hooks/useArriveTime.jsx';
+import useTimerStore from '../stores/useTimerStore.js';
 import useTripStore from '../stores/useTripStore.js';
 import { stationList } from '../utils/stationList.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import { formatTime } from '../utils/time.js';
+import { formatTime, getTotalTime } from '../utils/time.js';
 
 function TicketPage() {
+    // 열차 선택값 받아오기
+    const { train, selected, activeCoach, selectedSeat, isToggleOn, focusTime } = useTripStore();
+    const { restSeconds } = useTimerStore();
+    const { trainLabel, restCount } = getTrainInfo(train, selected, stationList);
+
+    //전체시간
+    const totalTime = getTotalTime(focusTime, restCount, restSeconds, isToggleOn);
+    // 도착 시간
+    const arriveTime = useArriveTime(totalTime);
+
     const navigate = useNavigate();
+
     const [isOpened, setIsOpened] = useState(false);
 
     function getToday() {
@@ -55,13 +67,6 @@ function TicketPage() {
             navigate('/timer');
         }, 800);
     }
-    // 열차 선택값 받아오기
-    const { train, selected, activeCoach, selectedSeat, focusTime } = useTripStore();
-
-    const { trainLabel } = getTrainInfo(train, selected, stationList);
-
-    // 도착 시간
-    const arriveTime = useArriveTime();
 
     return (
         <>
@@ -82,7 +87,7 @@ function TicketPage() {
                                         <p className="time">{TodayTime()}</p>
                                     </li>
                                     <li className="arrow">
-                                        <div className="arrow-text">{formatTime(focusTime)}</div>
+                                        <div className="arrow-text">{formatTime(totalTime)}</div>
                                     </li>
                                     <li className="arrive">
                                         <h1 className="title">{selected}</h1>

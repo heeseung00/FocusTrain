@@ -2,8 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useArriveTime from '../hooks/useArriveTime.jsx';
 import useTripStore from '../stores/useTripStore.js';
+import useTimerStore from '../stores/useTimerStore.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
-import { formatTime } from '../utils/time.js';
+import { formatTime, getTotalTime } from '../utils/time.js';
 import { stationList } from '../utils/stationList.js';
 import Modal from '../components/Modal.jsx';
 import { motion } from 'framer-motion';
@@ -26,8 +27,13 @@ function RoutePage() {
         setSelectedSeat,
         setModal,
     } = useTripStore();
-
+    const { restSeconds } = useTimerStore();
     const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
+    //전체시간
+    const totalTime = getTotalTime(focusTime, restCount, restSeconds, isToggleOn);
+    // 도착시간
+    const arriveTime = useArriveTime(totalTime);
+
     // 드롭다운
     const [isOpen, setIsOpen] = useState(false);
     const selectRef = useRef(null);
@@ -39,9 +45,6 @@ function RoutePage() {
     const filterStation = stationList.filter((item) => {
         return item.times[trainKey] !== null;
     });
-
-    // 도착시간
-    const arriveTime = useArriveTime();
 
     // 다음 페이지 이동
     const navigate = useNavigate();
@@ -196,7 +199,7 @@ function RoutePage() {
                                     <div className="info duration">
                                         <h4>소요시간</h4>
                                         {/* 선택된 역이 있으면 매핑된 시간값 바로 출력 */}
-                                        <h3>{selectedStation ? formatTime(focusTime) : ''}</h3>
+                                        <h3>{selectedStation ? formatTime(totalTime) : ''}</h3>
                                     </div>
                                     <div className="info eta">
                                         <h4>도착 예정</h4>
@@ -239,6 +242,9 @@ function RoutePage() {
                                     setFocusTime={setFocusTime}
                                     travelTime={travelTime}
                                     selectedStation={selectedStation}
+                                    totalTime={totalTime}
+                                    // restCount={restCount}
+                                    // restSeconds={restSeconds}
                                 />
                             </li>
                         </ul>
@@ -286,7 +292,7 @@ function ToggleShow({ isToggleOn, selectedStation, restCount }) {
 }
 
 // 시간 조정
-function TimeControl({ focusTime, setFocusTime, selectedStation }) {
+function TimeControl({ focusTime, setFocusTime, selectedStation, totalTime }) {
     const increase = () => {
         // 역 선택 전에는 미작동
         if (!selectedStation) {
@@ -311,7 +317,7 @@ function TimeControl({ focusTime, setFocusTime, selectedStation }) {
                 <button type="button" onClick={decrease}>
                     -
                 </button>
-                <h3>{formatTime(focusTime)}</h3>
+                <h3>{formatTime(totalTime)}</h3>
                 <button type="button" onClick={increase}>
                     +
                 </button>

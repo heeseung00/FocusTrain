@@ -21,7 +21,11 @@ const useTimerStore = create((set) => ({
     restSeconds: 10 * 60,
     setRestSeconds: (restSeconds) => set({ restSeconds }),
 
-    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 10 }),
+    // 정차 1회 당 총 휴식시간
+    restTime: 10 * 60,
+    setRestTime: (restTime) => set({ restTime }),
+
+    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 10 * 60 }),
 }));
 
 export default useTimerStore;
