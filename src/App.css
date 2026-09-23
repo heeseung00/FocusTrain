@@ -349,18 +349,8 @@ h3 {
 }
 
 .control-button img {
-  width: 24px;
-  height: 24px;
-}
-
-.reset img {
-  width: 18px;
-  height: 17px;
-}
-
-.play img {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
 }
 
 .remaining {
