@@ -675,7 +675,12 @@ h2.depart {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 16px 0;
+  margin: 16px 0;
+  /* 드래그 막기 - 바텀시트 드래그 동작과 글자 드래그가 겹쳐서 사용에 불편을 주어 막게 됨*/
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .handle-drag {

@@ -407,6 +407,7 @@ function BottomSheet({ departure, isOpen, setIsOpen, sheetRef, filterStation, se
 
     // 드래그 중
     const handlePointerMove = (e) => {
+        // 마우스 또는 터치가 몇 px 움직였는지
         const delta = startYRef.current - e.clientY;
 
         // 위로 끌면 +, 아래로 끌면 -
@@ -421,15 +422,29 @@ function BottomSheet({ departure, isOpen, setIsOpen, sheetRef, filterStation, se
         document.removeEventListener('pointermove', handlePointerMove);
         document.removeEventListener('pointerup', handlePointerUp);
 
+        // 100vh(전체 높이)에서 50vh(중간 이하) 이하로 드래그하면 닫힘
+        // 드래그 시작 당시 높이가 전체높이와 같다면,
+        if (startHeightRef.current === maxHeight) {
+            // (내려가야 하는 vh / 100) × 화면 전체 높이
+            // ex) 0.5 * window.innerHeight, 0.5 × 900 = 450
+            const closeDistance = ((maxHeight - 50) / 100) * window.innerHeight;
+            // 현재 드래그 위치와 닫으려는 위치를 비교해서 계산해서50% 이상 내려가면 바텀시트를 닫고 초기 높이를 60으로 한다.
+            if (delta >= closeDistance) {
+                setIsOpen(false);
+                setSheetHeight(60);
+                return;
+            }
+        }
+
         // 60vh(중간높이)에서 아래로 200px 이상 드래그하면 닫힘
-        if (startHeightRef.current === 60 && delta > 200) {
+        if (startHeightRef.current === 60 && delta > 100) {
             setIsOpen(false);
             setSheetHeight(60);
             return;
         }
 
         // 위로 100px 이상 드래그 하면 100vh(전체 높이)까지 올리기
-        if (delta < -100) {
+        if (delta < -50) {
             setSheetHeight(maxHeight);
             return;
         }
