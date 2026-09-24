@@ -18,6 +18,9 @@
   --border: #7a7a73;
   --border-light: #e7e7ec;
 
+  --scroll: #c6c6ce;
+  --scroll-hover: #7a7a73;
+
   --accent: #4b3fe0;
   --accent-hover: #4035c9;
   --accent-active: #382db4;
@@ -110,6 +113,9 @@
   --border: #55565e;
   --border-light: #414249;
 
+  --scroll: #8f9098;
+  --scroll-hover: #b5b6bd;
+
   --accent: #9a93ff;
   --accent-hover: #aaa4ff;
   --accent-active: #b9b4ff;
@@ -145,11 +151,40 @@ body {
   font-size: var(--fs-sm);
   font-family: var(--font-pretendard);
   -webkit-font-smoothing: antialiased;
+  overflow: auto;
 }
 
 body [data-theme="dark"] {
   background: var(--bg);
   color: var(--text);
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  margin: 10px 0;
+}
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+  margin: 8px 0;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll);
+}
+*::-webkit-scrollbar-button {
+  display: none;
+}
+
+/* hover 효과 */
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-hover);
+}
+
+/* 코너에 라운드 효과 */
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+}
+*::-webkit-scrollbar-button {
+  display: none;
 }
 
 body:has(.dim) {

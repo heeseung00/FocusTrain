@@ -210,6 +210,9 @@
         overflow: auto;
     }
 
+    .train-display::-webkit-scrollbar {
+        height: 8px;
+    }
     .seat-list {
         gap: 6px;
     }

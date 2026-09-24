@@ -197,7 +197,7 @@ function TimerPage() {
                                     <span>
                                         <img className="pause-icon" src={pauseIcon} alt="일시정지 아이콘" />
                                     </span>
-                                    일시정지
+                                    정지
                                 </>
                             ) : (
                                 <>
@@ -235,6 +235,7 @@ function ProgressTimer({ totalTime, remainingTime, setResultPercent, departure, 
     const progress = ((totalTime - remainingTime) / totalTime) * 100;
     const percent = Math.min(Math.max(progress, 0), 100);
     const percentResult = Math.floor(percent);
+    const isMobile = window.innerWidth <= 480;
 
     useEffect(() => {
         setResultPercent(percentResult);
@@ -252,8 +253,9 @@ function ProgressTimer({ totalTime, remainingTime, setResultPercent, departure, 
                 </div>
             </div>
             <ProgressBar
+                className="progress"
                 completed={percent}
-                height="20px"
+                height={isMobile ? '14px' : '20px'}
                 width="100%"
                 isLabelVisible={false}
                 baseBgColor="#E7E7EC" // 배경색
