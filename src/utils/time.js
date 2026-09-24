@@ -1,7 +1,10 @@
 // 시간을 분 단위로 출력(소요시간)
-export function formatTime(time, restCount = 0, restSeconds = 0) {
-    const restMinutes = Math.floor((restCount * restSeconds) / 60);
-    const totalTime = time + restMinutes;
+export function formatTime(time, restCount = 0, restSeconds = 0, restOff = 0) {
+    const totalRestSeconds = restCount * restSeconds;
+    const usedRestSeconds = Math.max(0, totalRestSeconds - restOff);
+
+    const restMinutes = Math.floor(usedRestSeconds / 60);
+    const totalTime = Number(time) + restMinutes;
 
     const hour = Math.floor(totalTime / 60);
     const minute = totalTime % 60;
@@ -17,6 +20,7 @@ export function formatTime(time, restCount = 0, restSeconds = 0) {
     return `${hour}시간 ${minute}분`;
 }
 
+// 결과 페이지 출력
 // 시간을 초 단위로 출력
 export function formatElapsedTime(seconds) {
     const hour = Math.floor(seconds / 3600);
@@ -46,6 +50,7 @@ export function formatElapsedTime(seconds) {
     return `${hour}시간 ${minute}분 ${second}초`;
 }
 
+// 중간정차 시간 출력
 // 00:00:00 단위로 시간 출력
 export function formatDurationTime(time) {
     const hours = Math.floor(time / 3600);
@@ -56,12 +61,15 @@ export function formatDurationTime(time) {
 }
 
 // 전체 소요시간 계산(분)
-export function getTotalTime(focusTime, restCount, restSeconds, isToggleOn) {
+export function getTotalTime(focusTime, restCount, restSeconds, isToggleOn, restOff = 0) {
     if (!isToggleOn) {
         return Number(focusTime);
     }
 
-    const restMinutes = Math.floor((restCount * restSeconds) / 60);
+    const totalRestSeconds = restCount * restSeconds;
+    const usedRestSeconds = Math.max(0, totalRestSeconds - restOff);
+
+    const restMinutes = Math.floor(usedRestSeconds / 60);
 
     return Number(focusTime) + restMinutes;
 }

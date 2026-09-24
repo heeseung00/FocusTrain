@@ -5,7 +5,8 @@ import useTimerStore from '../stores/useTimerStore.js';
 import { formatDurationTime } from '../utils/time.js';
 
 function Modal() {
-    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting } = useTimerStore();
+    const { elapsed, setTimerState, restSeconds, setRestSeconds, isResting, setIsResting, restTime, addRestOff } =
+        useTimerStore();
     const { modal, setModal } = useTripStore();
 
     const navigate = useNavigate();
@@ -66,6 +67,9 @@ function Modal() {
         }
 
         if (modal === 'rest') {
+            addRestOff(restSeconds);
+            setRestSeconds(restTime);
+
             setIsResting(false);
             setModal(false);
             setTimerState(true);

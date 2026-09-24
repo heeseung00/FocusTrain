@@ -29,11 +29,13 @@ function TimerPage() {
         setIsResting,
         setRestSeconds,
         restTime,
+        restOff,
+        setRestOff,
     } = useTimerStore();
     const { selectedStation, restCount, trainLabel } = getTrainInfo(train, selected, stationList);
 
     //전체시간
-    const totalTime = getTotalTime(focusTime, restCount, restTime, isToggleOn);
+    const totalTime = getTotalTime(focusTime, restCount, restTime, isToggleOn, restOff);
     // 도착 시간
     const arriveTime = useArriveTime(totalTime);
 
@@ -48,12 +50,15 @@ function TimerPage() {
     const triggeredStopsRef = useRef(new Set()); //주석
 
     // 전체 목표 시간
-    // const totalTimeSeconds = Number(focusTime * 60 + restCount * restSeconds);
+    // const totalTimeSeconds = Number(getTotalTime(focusTime, restCount, restTime, isToggleOn) * 60);
     const totalTimeSeconds = Number(totalTime * 60);
     // 타이머 경과시간 표시 (전체 - 남은 시간)
     const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
     // 경과 시간 계산식
     const currentElapsed = totalTimeSeconds - remainingTime;
+
+    // 사용하지 않은 휴식시간만 남은 시간에서 제외
+    const prevRestOff = useRef(0);
 
     const handleTimerStart = () => {
         setIsResting(false); // 휴식 상태 진입
@@ -63,7 +68,11 @@ function TimerPage() {
         setTimerState(false);
     };
     const handleTimerReset = () => {
-        setRemainingTime(totalTimeSeconds);
+        setRestOff(0);
+
+        const resetTotalTime = getTotalTime(focusTime, restCount, restTime, isToggleOn);
+
+        setRemainingTime(resetTotalTime * 60);
         // 즉시시작
         handleTimerStart();
         // 중간정차 list 초기화
@@ -85,6 +94,19 @@ function TimerPage() {
         setTimerState(false); //타이머 정지
         setModal('end'); // 모달 열기
     };
+
+    useEffect(() => {
+        const restOffDiff = restOff - prevRestOff.current;
+
+        if (restOffDiff <= 0) {
+            prevRestOff.current = restOff;
+            return;
+        }
+
+        setRemainingTime((prev) => Math.max(prev - restOffDiff, 0));
+
+        prevRestOff.current = restOff;
+    }, [restOff]);
 
     // 타이머 종류 후 결과 페이지로 이동
     useEffect(() => {

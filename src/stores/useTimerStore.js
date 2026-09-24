@@ -25,7 +25,14 @@ const useTimerStore = create((set) => ({
     restTime: 10 * 60,
     setRestTime: (restTime) => set({ restTime }),
 
-    resetTimer: () => set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 10 * 60 }),
+    // 완료하지 않은 휴식 시간 누적(해당 시간만큼 제외)
+    restOff: 0,
+    setRestOff: (restOff) => set({ restOff }),
+    // 여러번 정차했을때 쓰지 않은 휴식시간 누적
+    addRestOff: (seconds) => set((state) => ({ restOff: state.restOff + seconds })),
+
+    resetTimer: () =>
+        set({ elapsed: 0, resultPercent: 0, timerState: true, isResting: false, restSeconds: 10 * 60, restOff: 0 }),
 }));
 
 export default useTimerStore;
