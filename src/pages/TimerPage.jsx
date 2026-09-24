@@ -5,7 +5,7 @@ import useTripStore from '../stores/useTripStore.js';
 import useTimerStore from '../stores/useTimerStore.js';
 import { getTrainInfo } from '../utils/getTrainInfo.js';
 import { stationList } from '../utils/stationList.js';
-import { formatDurationTime, getTotalTime } from '../utils/time.js';
+import { formatDurationTime, getTotalTime, getTotalTimeSeconds } from '../utils/time.js';
 import Modal from '../components/Modal.jsx';
 import ProgressBarModule from '@ramonak/react-progress-bar';
 const ProgressBar = ProgressBarModule.default ?? ProgressBarModule;
@@ -36,6 +36,8 @@ function TimerPage() {
 
     //전체시간
     const totalTime = getTotalTime(focusTime, restCount, restTime, isToggleOn, restOff);
+    //전체목표시간
+    const totalTimeSeconds = getTotalTimeSeconds(focusTime, restCount, restTime, isToggleOn, restOff);
     // 도착 시간
     const arriveTime = useArriveTime(totalTime);
 
@@ -47,18 +49,14 @@ function TimerPage() {
     const [showStationList, setShowStationList] = useState(false);
 
     // pomodoro-main
-    const triggeredStopsRef = useRef(new Set()); //주석
+    const triggeredStopsRef = useRef(new Set());
 
-    // 전체 목표 시간
-    // const totalTimeSeconds = Number(getTotalTime(focusTime, restCount, restTime, isToggleOn) * 60);
-    const totalTimeSeconds = Number(totalTime * 60);
     // 타이머 경과시간 표시 (전체 - 남은 시간)
     const [remainingTime, setRemainingTime] = useState(totalTimeSeconds);
-    // 경과 시간 계산식
-    const currentElapsed = totalTimeSeconds - remainingTime;
-
     // 사용하지 않은 휴식시간만 남은 시간에서 제외
     const prevRestOff = useRef(0);
+    // 경과 시간 계산식
+    const currentElapsed = totalTimeSeconds - (remainingTime - (restOff - prevRestOff.current));
 
     const handleTimerStart = () => {
         setIsResting(false); // 휴식 상태 진입
@@ -181,7 +179,7 @@ function TimerPage() {
 
                                     <ProgressTimer
                                         totalTime={totalTimeSeconds}
-                                        remainingTime={remainingTime}
+                                        remainingTime={remainingTime - (restOff - prevRestOff.current)}
                                         setResultPercent={setResultPercent}
                                         departure={departure}
                                         selectedStation={selectedStation}
@@ -189,7 +187,9 @@ function TimerPage() {
 
                                     <div className="remaining">
                                         <h4>남은시간</h4>
-                                        <div className="remaining-time">{formatDurationTime(remainingTime)}</div>
+                                        <div className="remaining-time">
+                                            {formatDurationTime(remainingTime - (restOff - prevRestOff.current))}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -74,6 +74,18 @@ export function getTotalTime(focusTime, restCount, restSeconds, isToggleOn, rest
     return Number(focusTime) + restMinutes;
 }
 
+// 전체 소요시간 계산(초) - 타이머용
+export function getTotalTimeSeconds(focusTime, restCount, restSeconds, isToggleOn, restOff = 0) {
+    if (!isToggleOn) {
+        return Number(focusTime) * 60;
+    }
+
+    const totalRestSeconds = restCount * restSeconds;
+    const usedRestSeconds = Math.max(0, totalRestSeconds - restOff);
+
+    return Number(focusTime) * 60 + usedRestSeconds;
+}
+
 // 현재 시간 기준 도착 시간 계산
 export function getArriveTime(totalTime) {
     const today = new Date();
