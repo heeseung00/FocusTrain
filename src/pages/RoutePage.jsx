@@ -32,6 +32,13 @@ function RoutePage() {
     const { trainKey, selectedStation, travelTime, restCount } = getTrainInfo(train, selected, stationList);
     //전체시간
     const totalTime = getTotalTime(focusTime, restCount, restSeconds, isToggleOn);
+    console.log({
+        focusTime,
+        restCount,
+        restSeconds,
+        isToggleOn,
+        totalTime,
+    });
     // 도착시간
     const arriveTime = useArriveTime(totalTime);
 
@@ -299,8 +306,12 @@ function TimeControl({ focusTime, setFocusTime, selectedStation, totalTime }) {
         if (!selectedStation) {
             return;
         }
+
         // 숫자가 아닌 문자열로 더해지는 오류 방지(ex) '90+5 = 905'이런 덧셈 오류를 '90+5 = 95'가 되도록)
         setFocusTime(focusTime + 5);
+
+        // console.log('focusTime:', focusTime + 5);
+        // console.log('totalTime:', totalTime);
     };
 
     const decrease = () => {
@@ -310,6 +321,9 @@ function TimeControl({ focusTime, setFocusTime, selectedStation, totalTime }) {
         }
 
         setFocusTime(focusTime - 5);
+
+        // console.log('focusTime:', focusTime - 5);
+        // console.log('totalTime:', totalTime);
     };
     return (
         <div className="time-control">
